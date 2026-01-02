@@ -1,8 +1,8 @@
 {
-  "name": "church-admin-dashboard",
+  "name": "cag-kazhakkuttom-portal",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://jincepgeorge.github.io/cag-admin-dashboard",
+  "homepage": "https://cagkzkmedia.github.io/cag-kazhakkuttom-portal",
   "dependencies": {
     "@reduxjs/toolkit": "^2.11.2",
     "@testing-library/dom": "^10.4.1",
