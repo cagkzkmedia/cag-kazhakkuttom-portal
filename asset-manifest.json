@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/cag-kazhakkuttom-portal/static/css/main.e4304e55.css",
+    "main.css": "/cag-kazhakkuttom-portal/static/css/main.0529a17d.css",
     "main.js": "/cag-kazhakkuttom-portal/static/js/main.33a378cf.js",
     "static/js/453.6e792eca.chunk.js": "/cag-kazhakkuttom-portal/static/js/453.6e792eca.chunk.js",
     "static/media/gallery1.jpg": "/cag-kazhakkuttom-portal/static/media/gallery1.a4c8373d0032a2b36cac.jpg",
@@ -11,12 +11,12 @@
     "static/media/pastor-jobin.png": "/cag-kazhakkuttom-portal/static/media/pastor-jobin.72d5498aef042e514da5.png",
     "static/media/cag-logo.png": "/cag-kazhakkuttom-portal/static/media/cag-logo.a24ac5af93b74e872167.png",
     "index.html": "/cag-kazhakkuttom-portal/index.html",
-    "main.e4304e55.css.map": "/cag-kazhakkuttom-portal/static/css/main.e4304e55.css.map",
+    "main.0529a17d.css.map": "/cag-kazhakkuttom-portal/static/css/main.0529a17d.css.map",
     "main.33a378cf.js.map": "/cag-kazhakkuttom-portal/static/js/main.33a378cf.js.map",
     "453.6e792eca.chunk.js.map": "/cag-kazhakkuttom-portal/static/js/453.6e792eca.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.e4304e55.css",
+    "static/css/main.0529a17d.css",
     "static/js/main.33a378cf.js"
   ]
 }
