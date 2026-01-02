@@ -1,6 +1,7 @@
 /**
  * Create Role-Based Users Script
  * Creates admin, events manager, and finance manager users
+ * Reads credentials from .env file
  * 
  * Usage: node src/scripts/createRoleUsers.js
  */
@@ -25,33 +26,50 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// Users to create
+// Build users array dynamically from environment variables
 const users = [
   {
-    email: 'admin@christag.com',
-    password: 'admin123',
-    name: 'Admin',
+    email: process.env.ADMIN_EMAIL,
+    password: process.env.ADMIN_PASSWORD,
+    name: process.env.ADMIN_NAME,
     role: 'admin',
   },
   {
-    email: 'events@christag.com',
-    password: 'events123',
-    name: 'Events Manager',
+    email: process.env.EVENTS_MANAGER_EMAIL,
+    password: process.env.EVENTS_MANAGER_PASSWORD,
+    name: process.env.EVENTS_MANAGER_NAME,
     role: 'events_manager',
   },
   {
-    email: 'finance@christag.com',
-    password: 'finance123',
-    name: 'Finance Manager',
+    email: process.env.FINANCE_MANAGER_EMAIL,
+    password: process.env.FINANCE_MANAGER_PASSWORD,
+    name: process.env.FINANCE_MANAGER_NAME,
     role: 'finance_manager',
   },
   {
-    email: 'resource@christag.com',
-    password: 'resource123',
-    name: 'Resource Manager',
+    email: process.env.RESOURCE_MANAGER_EMAIL,
+    password: process.env.RESOURCE_MANAGER_PASSWORD,
+    name: process.env.RESOURCE_MANAGER_NAME,
     role: 'resource_manager',
   },
 ];
+
+// Validate that all required environment variables are set
+function validateEnvironment() {
+  const requiredVars = [
+    'ADMIN_EMAIL', 'ADMIN_PASSWORD', 'ADMIN_NAME',
+    'EVENTS_MANAGER_EMAIL', 'EVENTS_MANAGER_PASSWORD', 'EVENTS_MANAGER_NAME',
+    'FINANCE_MANAGER_EMAIL', 'FINANCE_MANAGER_PASSWORD', 'FINANCE_MANAGER_NAME',
+    'RESOURCE_MANAGER_EMAIL', 'RESOURCE_MANAGER_PASSWORD', 'RESOURCE_MANAGER_NAME',
+  ];
+
+  const missing = requiredVars.filter(v => !process.env[v]);
+  if (missing.length > 0) {
+    console.error('\n✗ Missing environment variables:', missing.join(', '));
+    console.error('Please check your .env file and ensure all user credentials are defined.\n');
+    process.exit(1);
+  }
+}
 
 async function createUser(userData) {
   try {
@@ -103,26 +121,26 @@ async function createAllUsers() {
   console.log('=================================\n');
   
   console.log('Login Credentials:\n');
-  console.log('1. ADMIN (Full Access):');
-  console.log('   Email: admin@christag.com');
-  console.log('   Password: admin123\n');
-  
-  console.log('2. EVENTS MANAGER (Events & Notifications):');
-  console.log('   Email: events@christag.com');
-  console.log('   Password: events123\n');
-  
-  console.log('3. FINANCE MANAGER (Donations & Finances):');
-  console.log('   Email: finance@christag.com');
-  console.log('   Password: finance123\n');
-
-  console.log('4. RESOURCE MANAGER (Articles & Resources):');
-  console.log('   Email: resource@christag.com');
-  console.log('   Password: resource123\n');
+  users.forEach((user, index) => {
+    const roleLabel = user.role
+      .split('_')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+    console.log(`${index + 1}. ${roleLabel}:`);
+    console.log(`   Email: ${user.email}`);
+    console.log(`   Password: ${user.password}\n`);
+  });
 
   process.exit(0);
 }
 
-createAllUsers().catch(error => {
-  console.error('\n✗ Script failed:', error);
-  process.exit(1);
-});
+// Main execution
+(async () => {
+  try {
+    validateEnvironment();
+    await createAllUsers();
+  } catch (error) {
+    console.error('\n✗ Script failed:', error);
+    process.exit(1);
+  }
+})();
