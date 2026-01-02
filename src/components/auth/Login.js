@@ -111,12 +111,6 @@ const Login = () => {
           </button>
 
           <div className="auth-footer">
-            <p>
-              Don't have an account?{' '}
-              <Link to="/register" className="link">
-                Register here
-              </Link>
-            </p>
             <Link to="/" className="home-link">
               <span className="home-icon">🏠</span>
               Back to Home
