@@ -8,7 +8,7 @@ import {
   createUserWithEmailAndPassword,
   signOut,
   updateProfile,
-  updatePassword,
+  updatePassword as firebaseUpdatePassword,
   sendPasswordResetEmail,
   onAuthStateChanged
 } from 'firebase/auth';
@@ -196,6 +196,41 @@ const updateUserProfile = async (userId, profileData) => {
 };
 
 /**
+ * Change user password with current password verification
+ */
+const updatePassword = async (currentPassword, newPassword) => {
+  try {
+    const user = auth.currentUser;
+    
+    if (!user) {
+      throw new Error('No user logged in');
+    }
+    
+    // Re-authenticate user with current password
+    try {
+      await signInWithEmailAndPassword(auth, user.email, currentPassword);
+    } catch (error) {
+      throw new Error('Current password is incorrect');
+    }
+    
+    // Change to new password
+    const updatedUser = auth.currentUser;
+    await firebaseUpdatePassword(updatedUser, newPassword);
+    
+    // Update timestamp in Firestore
+    await setDoc(doc(db, USERS_COLLECTION, user.uid), {
+      lastPasswordChange: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    }, { merge: true });
+    
+    return true;
+  } catch (error) {
+    console.error('Password update error:', error);
+    throw new Error(error.message || 'Failed to update password');
+  }
+};
+
+/**
  * Change user password
  */
 const changePassword = async (newPassword) => {
@@ -206,7 +241,7 @@ const changePassword = async (newPassword) => {
       throw new Error('No user logged in');
     }
     
-    await updatePassword(user, newPassword);
+    await firebaseUpdatePassword(user, newPassword);
     
     // Update timestamp in Firestore
     await setDoc(doc(db, USERS_COLLECTION, user.uid), {
@@ -278,6 +313,7 @@ export {
   logout,
   getCurrentUser,
   updateUserProfile,
+  updatePassword,
   changePassword,
   resetPassword,
   validateToken,
@@ -293,6 +329,7 @@ const authService = {
   logout,
   getCurrentUser,
   updateUserProfile,
+  updatePassword,
   changePassword,
   resetPassword,
   validateToken,

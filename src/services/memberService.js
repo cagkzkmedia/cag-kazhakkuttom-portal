@@ -4,24 +4,14 @@
  */
 
 /**
- * Generate a secure random password
- */
-const generatePassword = () => {
-  const length = 12;
-  const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
-  let password = '';
-  for (let i = 0; i < length; i++) {
-    password += charset.charAt(Math.floor(Math.random() * charset.length));
-  }
-  return password;
-};
-
-/**
  * Generate credentials for a member
+ * Username: email
+ * Password: emailprefix123 (email substring before @)
  */
 const generateCredentials = (member) => {
-  const username = member.email.split('@')[0] + member.id;
-  const password = generatePassword();
+  const username = member.email;
+  const emailPrefix = member.email.split('@')[0];
+  const password = emailPrefix + '123';
   return {
     username,
     password,
@@ -250,7 +240,8 @@ export const resetMemberCredentials = async (id) => {
     throw new Error('Member does not have portal access');
   }
   
-  const newPassword = generatePassword();
+  const emailPrefix = member.email.split('@')[0];
+  const newPassword = emailPrefix + '123';
   const updatedMember = {
     ...member,
     credentials: {

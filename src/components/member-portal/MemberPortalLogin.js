@@ -91,6 +91,10 @@ const MemberPortalLogin = () => {
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
 
+          <div className="signup-section">
+            <p>Don't have an account? <button type="button" className="link-button-signup" onClick={() => navigate('/member-portal/signup')}>Register Here</button></p>
+          </div>
+
           <div className="member-portal-footer">
             <button type="button" className="link-button" onClick={() => navigate('/login')}>
               Admin Login

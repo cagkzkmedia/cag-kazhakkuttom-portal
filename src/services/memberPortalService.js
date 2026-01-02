@@ -17,6 +17,11 @@ export const memberLogin = async (username, password) => {
       throw new Error('Invalid username or password');
     }
     
+    // Check if account is approved
+    if (member.isApproved === false) {
+      throw new Error('Your account has not been activated yet. Please wait for administrator approval.');
+    }
+    
     if (!member.hasPortalAccess) {
       throw new Error('Portal access not enabled for this account');
     }

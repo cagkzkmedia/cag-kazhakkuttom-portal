@@ -22,6 +22,7 @@ import Members from './components/members/Members';
 import Events from './components/events/Events';
 import Donations from './components/donations/Donations';
 import Settings from './components/settings/Settings';
+import ChangePassword from './components/settings/ChangePassword';
 import UserManagement from './components/users/UserManagement';
 import ResourcesManager from './components/resources/ResourcesManager';
 import ArticleDetailPage from './components/articles/ArticleDetailPage';
@@ -36,6 +37,11 @@ import MemberPortalDashboard from './components/member-portal/MemberPortalDashbo
 import MemberDonation from './components/member-portal/MemberDonation';
 import MemberDonationHistory from './components/member-portal/MemberDonationHistory';
 import MemberEvents from './components/member-portal/MemberEvents';
+import MemberChangePassword from './components/member-portal/MemberChangePassword';
+import MemberSignup from './components/member-portal/MemberSignup';
+
+// Admin Components
+import AdminMemberApprovals from './components/admin/AdminMemberApprovals';
 
 import './App.css';
 
@@ -91,6 +97,7 @@ function App() {
 
             {/* Member Portal Public Routes */}
             <Route path="/member-portal/login" element={<MemberPortalLogin />} />
+            <Route path="/member-portal/signup" element={<MemberSignup />} />
 
             {/* Member Portal Protected Routes */}
             <Route
@@ -106,6 +113,7 @@ function App() {
               <Route path="donate" element={<MemberDonation />} />
               <Route path="donation-history" element={<MemberDonationHistory />} />
               <Route path="events" element={<MemberEvents />} />
+              <Route path="change-password" element={<MemberChangePassword />} />
             </Route>
 
             {/* Admin Protected Routes */}
@@ -124,6 +132,14 @@ function App() {
                 element={
                   <RoleGuard allowedRoles={['admin']}>
                     <Members />
+                  </RoleGuard>
+                } 
+              />
+              <Route 
+                path="member-approvals" 
+                element={
+                  <RoleGuard allowedRoles={['admin']}>
+                    <AdminMemberApprovals />
                   </RoleGuard>
                 } 
               />
@@ -184,6 +200,7 @@ function App() {
                 } 
               />
               <Route path="settings" element={<Settings />} />
+              <Route path="change-password" element={<ChangePassword />} />
             </Route>
 
             {/* Fallback Route */}

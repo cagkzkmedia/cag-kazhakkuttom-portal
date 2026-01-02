@@ -36,6 +36,12 @@ const Login = () => {
       const response = await login(formData.email, formData.password);
       // Firebase returns data directly, not wrapped in response.data
       const authData = response.data || response;
+      
+      // Ensure role is trimmed and properly formatted
+      if (authData.user) {
+        authData.user.role = (authData.user.role || 'admin').trim();
+      }
+      
       dispatch(loginSuccess(authData));
       navigate('/admin/dashboard');
     } catch (err) {

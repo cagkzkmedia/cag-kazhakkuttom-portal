@@ -53,6 +53,9 @@ const MemberPortalLayout = () => {
             <button onClick={() => navigateTo('/member-portal/donation-history')} className="nav-link">
               📜 History
             </button>
+            <button onClick={() => navigateTo('/member-portal/change-password')} className="nav-link">
+              🔐 Change Password
+            </button>
           </nav>
         </div>
         <div className="member-portal-nav-right">

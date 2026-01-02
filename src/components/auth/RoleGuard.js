@@ -14,7 +14,10 @@ const RoleGuard = ({ children, allowedRoles }) => {
     return <Navigate to="/login" replace />;
   }
 
-  if (!allowedRoles.includes(user?.role)) {
+  // Trim and normalize the user role for comparison
+  const userRole = (user?.role || '').trim();
+
+  if (!allowedRoles.includes(userRole)) {
     return (
       <div style={{
         padding: '60px',

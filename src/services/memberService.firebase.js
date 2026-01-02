@@ -22,24 +22,14 @@ import { db } from '../config/firebase';
 const MEMBERS_COLLECTION = 'members';
 
 /**
- * Generate a secure random password
- */
-const generatePassword = () => {
-  const length = 12;
-  const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
-  let password = '';
-  for (let i = 0; i < length; i++) {
-    password += charset.charAt(Math.floor(Math.random() * charset.length));
-  }
-  return password;
-};
-
-/**
  * Generate credentials for a member
+ * Username: email
+ * Password: emailprefix123 (email substring before @)
  */
 const generateCredentials = (member) => {
-  const username = member.email.split('@')[0] + (member.id || '');
-  const password = generatePassword();
+  const username = member.email;
+  const emailPrefix = member.email.split('@')[0];
+  const password = emailPrefix + '123';
   return {
     username,
     password,
@@ -59,6 +49,153 @@ const sendCredentialsEmail = async (member, credentials) => {
   
   await new Promise(resolve => setTimeout(resolve, 500));
   return true;
+};
+
+/**
+ * Create member signup (pending approval)
+ * Creates a new member record with isApproved = false
+ */
+const createMemberSignup = async (signupData) => {
+  try {
+    const { name, email, phone, gender, dateOfBirth, dateOfJoining } = signupData;
+    
+    // Check if member with this email already exists
+    const membersCol = collection(db, MEMBERS_COLLECTION);
+    const q = query(membersCol, where('email', '==', email.toLowerCase()));
+    const existingMembers = await getDocs(q);
+    
+    if (!existingMembers.empty) {
+      throw new Error('An account with this email already exists');
+    }
+    
+    // Create new member signup with pending approval
+    const newMember = {
+      name,
+      email: email.toLowerCase(),
+      phone,
+      gender,
+      dateOfBirth,
+      dateOfJoining,
+      status: 'pending',
+      isApproved: false,
+      hasPortalAccess: false,
+      credentials: null,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    };
+    
+    const docRef = await addDoc(membersCol, newMember);
+    
+    console.log(`Member signup created: ${email}`);
+    
+    return {
+      id: docRef.id,
+      ...newMember,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+  } catch (error) {
+    console.error('Error creating member signup:', error);
+    throw error;
+  }
+};
+
+/**
+ * Get all pending member signups
+ */
+const getPendingSignups = async () => {
+  try {
+    const membersCol = collection(db, MEMBERS_COLLECTION);
+    
+    // First, let's try to get all members to see if there are any
+    const allDocsSnapshot = await getDocs(membersCol);
+    console.log(`Total members in database: ${allDocsSnapshot.size}`);
+    
+    // Now query for unapproved members
+    const q = query(
+      membersCol,
+      where('isApproved', '==', false)
+    );
+    const querySnapshot = await getDocs(q);
+    console.log(`Pending signups found: ${querySnapshot.size}`);
+    
+    const signups = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+      createdAt: doc.data().createdAt?.toDate?.() || doc.data().createdAt,
+      updatedAt: doc.data().updatedAt?.toDate?.() || doc.data().updatedAt,
+    }));
+    
+    // Sort by createdAt descending on the client side
+    signups.sort((a, b) => {
+      const dateA = a.createdAt instanceof Date ? a.createdAt.getTime() : 0;
+      const dateB = b.createdAt instanceof Date ? b.createdAt.getTime() : 0;
+      return dateB - dateA;
+    });
+    
+    return signups;
+  } catch (error) {
+    console.error('Error fetching pending signups:', error);
+    console.error('Error details:', error.code, error.message);
+    throw error;
+  }
+};
+
+/**
+ * Approve a member signup
+ */
+const approveMemberSignup = async (memberId) => {
+  try {
+    const memberDoc = doc(db, MEMBERS_COLLECTION, memberId);
+    const memberData = await getDoc(memberDoc);
+    
+    if (!memberData.exists()) {
+      throw new Error('Member not found');
+    }
+    
+    const member = { id: memberDoc.id, ...memberData.data() };
+    const credentials = generateCredentials(member);
+    
+    await updateDoc(memberDoc, {
+      isApproved: true,
+      status: 'active',
+      hasPortalAccess: true,
+      credentials: credentials,
+      updatedAt: serverTimestamp(),
+    });
+    
+    // Send approval email with credentials
+    await sendCredentialsEmail(member, credentials);
+    
+    return {
+      id: memberId,
+      ...member,
+      isApproved: true,
+      status: 'active',
+      hasPortalAccess: true,
+      credentials: credentials,
+    };
+  } catch (error) {
+    console.error('Error approving member signup:', error);
+    throw error;
+  }
+};
+
+/**
+ * Reject a member signup
+ */
+const rejectMemberSignup = async (memberId) => {
+  try {
+    const memberDoc = doc(db, MEMBERS_COLLECTION, memberId);
+    
+    await deleteDoc(memberDoc);
+    
+    console.log(`Member signup rejected: ${memberId}`);
+    return true;
+  } catch (error) {
+    console.error('Error rejecting member signup:', error);
+    throw error;
+  }
 };
 
 /**
@@ -261,7 +398,8 @@ const resetMemberCredentials = async (memberId) => {
       throw new Error('Member does not have portal access');
     }
     
-    const newPassword = generatePassword();
+    const emailPrefix = member.email.split('@')[0];
+    const newPassword = emailPrefix + '123';
     
     const memberDoc = doc(db, MEMBERS_COLLECTION, memberId);
     await updateDoc(memberDoc, {
@@ -364,6 +502,10 @@ export {
   revokeMemberAccess,
   searchMembers,
   getMemberStats,
+  createMemberSignup,
+  getPendingSignups,
+  approveMemberSignup,
+  rejectMemberSignup,
 };
 
 // Default export
@@ -379,6 +521,10 @@ const memberService = {
   revokeMemberAccess,
   searchMembers,
   getMemberStats,
+  createMemberSignup,
+  getPendingSignups,
+  approveMemberSignup,
+  rejectMemberSignup,
 };
 
 export default memberService;
