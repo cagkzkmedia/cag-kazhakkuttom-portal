@@ -4,7 +4,7 @@
  */
 
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Provider, useDispatch } from 'react-redux';
 import { store } from './redux/store/store';
 import { loginSuccess } from './redux/slices/authSlice';
@@ -78,12 +78,12 @@ const AppInit = ({ children }) => {
   return children;
 };
 function App() {
-  const basename = process.env.NODE_ENV === 'production' ? '/cag-kazhakkuttom-portal' : '/';
+  const basename = '/';
 
   return (
     <Provider store={store}>
       <AppInit>
-        <Router basename={basename}>
+        <Router>
           <Routes>
             {/* Home Page */}
             <Route path="/" element={<HomePage />} />
