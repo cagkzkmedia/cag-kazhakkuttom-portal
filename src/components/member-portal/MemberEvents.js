@@ -32,14 +32,14 @@ const MemberEvents = () => {
   const filterCurrentWeekEvents = (allEvents) => {
     const now = new Date();
     const startOfWeek = new Date(now);
-    // Start from Monday
+    // Start from Sunday
     const dayOfWeek = now.getDay();
-    const daysFromMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-    startOfWeek.setDate(now.getDate() + daysFromMonday);
+    const daysFromSunday = -dayOfWeek;
+    startOfWeek.setDate(now.getDate() + daysFromSunday);
     startOfWeek.setHours(0, 0, 0, 0);
 
     const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(startOfWeek.getDate() + 5); // End on Saturday
+    endOfWeek.setDate(startOfWeek.getDate() + 6); // End on Saturday
     endOfWeek.setHours(23, 59, 59, 999);
 
     return allEvents
@@ -74,16 +74,16 @@ const MemberEvents = () => {
   const getWeekDateRange = () => {
     const now = new Date();
     const dayOfWeek = now.getDay();
-    const daysFromMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+    const daysFromSunday = -dayOfWeek;
     
-    const monday = new Date(now);
-    monday.setDate(now.getDate() + daysFromMonday);
+    const sunday = new Date(now);
+    sunday.setDate(now.getDate() + daysFromSunday);
     
-    const saturday = new Date(monday);
-    saturday.setDate(monday.getDate() + 5);
+    const saturday = new Date(sunday);
+    saturday.setDate(sunday.getDate() + 6);
     
     return {
-      start: monday.toLocaleDateString('en-US', { month: 'long', day: 'numeric' }),
+      start: sunday.toLocaleDateString('en-US', { month: 'long', day: 'numeric' }),
       end: saturday.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
     };
   };
@@ -93,7 +93,7 @@ const MemberEvents = () => {
   return (
     <div className="member-events-container">
       <div className="member-events-header">
-        <h2>📅 This Week's Events (Mon - Sat)</h2>
+        <h2>📅 This Week's Events (Sun - Sat)</h2>
         <p className="week-info">
           {weekRange.start} - {weekRange.end}
         </p>

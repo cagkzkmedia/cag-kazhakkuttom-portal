@@ -13,7 +13,7 @@ const MemberDonation = () => {
   const [donationType, setDonationType] = useState('one-time');
   const [amount, setAmount] = useState('');
   const [customAmount, setCustomAmount] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState('card');
+  const [paymentMethod, setPaymentMethod] = useState('upi');
   const [category, setCategory] = useState('general');
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -60,10 +60,10 @@ const MemberDonation = () => {
 
   const paymentMethods = [
     { value: 'upi', label: 'UPI (Google Pay/PhonePe)', icon: '📱' },
-    { value: 'card', label: 'Credit/Debit Card', icon: '💳' },
-    { value: 'netbanking', label: 'Net Banking', icon: '🏦' },
-    { value: 'paytm', label: 'Paytm Wallet', icon: '💰' },
-    { value: 'razorpay', label: 'Razorpay', icon: '💳' },
+    // { value: 'card', label: 'Credit/Debit Card', icon: '💳' }, // Disabled for now
+    // { value: 'netbanking', label: 'Net Banking', icon: '🏦' }, // Disabled for now
+    // { value: 'paytm', label: 'Paytm Wallet', icon: '💰' }, // Disabled for now
+    // { value: 'razorpay', label: 'Razorpay', icon: '💳' }, // Disabled for now
     { value: 'cash', label: 'Cash/Cheque', icon: '💵' }
   ];
 
@@ -98,6 +98,30 @@ const MemberDonation = () => {
 
   const getFinalAmount = () => {
     return customAmount || amount;
+  };
+
+  const openUpiApp = () => {
+    const finalAmount = getFinalAmount();
+    if (!finalAmount || parseFloat(finalAmount) <= 0) {
+      alert('Please enter a valid donation amount');
+      return;
+    }
+
+    const upiId = 'jobinelisha@okaxis';
+    const name = 'Christ AG Church';
+    const amount = parseFloat(finalAmount).toFixed(2);
+    const note = `${category} donation - ${member?.name || 'Anonymous'}`;
+    
+    // UPI deep link format: upi://pay?pa=UPI_ID&pn=NAME&am=AMOUNT&cu=INR&tn=NOTE
+    const upiUrl = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR&tn=${encodeURIComponent(note)}`;
+    
+    // Try to open UPI app
+    window.location.href = upiUrl;
+    
+    // Fallback: show instruction if app doesn't open
+    setTimeout(() => {
+      alert(`If the UPI app didn't open automatically, please use UPI ID: ${upiId}\nAmount: ₹${amount}`);
+    }, 1000);
   };
 
   const handleSubmit = async (e) => {
@@ -373,12 +397,20 @@ const MemberDonation = () => {
             <div className="payment-info-box">
               <h4>📱 Church UPI ID:</h4>
               <div className="wallet-address">
-                <code>christag@paytm</code>
-                <button type="button" className="copy-btn" onClick={() => navigator.clipboard.writeText('christag@paytm')}>
+                <code>jobinelisha@okaxis</code>
+                <button type="button" className="copy-btn" onClick={() => navigator.clipboard.writeText('jobinelisha@okaxis')}>
                   📋 Copy
                 </button>
               </div>
-              <p className="info-note">💸 Scan QR code or use the UPI ID to send your donation.</p>
+              <button 
+                type="button" 
+                className="upi-pay-btn"
+                onClick={openUpiApp}
+                disabled={!getFinalAmount()}
+              >
+                💳 Pay with UPI App
+              </button>
+              <p className="info-note">💸 Click the button above to open your UPI app, or manually use the UPI ID.</p>
               <p>You will receive a confirmation once the payment is completed.</p>
             </div>
           </div>

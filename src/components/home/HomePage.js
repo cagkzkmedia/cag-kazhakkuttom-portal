@@ -105,7 +105,7 @@ const HomePage = () => {
     return () => observer.disconnect();
   }, [testimonials]); // Added testimonials dependency so observer updates when testimonials load
 
-  // Load weekly events (Monday to Saturday of current week) from Firebase
+  // Load weekly events (Sunday to Saturday of current week) from Firebase
   useEffect(() => {
     let mounted = true;
     const loadWeekly = async () => {
@@ -113,21 +113,21 @@ const HomePage = () => {
         const allEvents = await getAllEvents();
         const now = new Date();
         
-        // Calculate Monday of the current week
+        // Calculate Sunday of the current week
         const day = now.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
-        const monday = new Date(now);
-        monday.setDate(now.getDate() - (day === 0 ? 6 : day - 1));
-        monday.setHours(0, 0, 0, 0);
+        const sunday = new Date(now);
+        sunday.setDate(now.getDate() - day);
+        sunday.setHours(0, 0, 0, 0);
         
         // Calculate Saturday of the current week
-        const saturday = new Date(monday);
-        saturday.setDate(monday.getDate() + 5);
+        const saturday = new Date(sunday);
+        saturday.setDate(sunday.getDate() + 6);
         saturday.setHours(23, 59, 59, 999);
 
         const weekEvents = allEvents
           .filter(e => {
             const d = new Date(e.date);
-            return d >= monday && d <= saturday;
+            return d >= sunday && d <= saturday;
           })
           .sort((a, b) => new Date(a.date) - new Date(b.date));
 
@@ -403,16 +403,16 @@ const HomePage = () => {
                   {(() => {
                     const now = new Date();
                     const day = now.getDay();
-                    const monday = new Date(now);
-                    monday.setDate(now.getDate() - (day === 0 ? 6 : day - 1));
+                    const sunday = new Date(now);
+                    sunday.setDate(now.getDate() - day);
                     
-                    const saturday = new Date(monday);
-                    saturday.setDate(monday.getDate() + 5);
+                    const saturday = new Date(sunday);
+                    saturday.setDate(sunday.getDate() + 6);
                     
-                    const mondayStr = monday.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                    const sundayStr = sunday.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
                     const saturdayStr = saturday.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
                     
-                    return <p>{mondayStr} - {saturdayStr}</p>;
+                    return <p>{sundayStr} - {saturdayStr}</p>;
                   })()}
                 </div>
               </div>

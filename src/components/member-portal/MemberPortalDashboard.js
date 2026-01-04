@@ -23,15 +23,15 @@ const MemberPortalDashboard = () => {
 
   const filterCurrentWeekEvents = (allEvents) => {
     const now = new Date();
-    // Start from Monday
+    // Start from Sunday
     const dayOfWeek = now.getDay();
-    const daysFromMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+    const daysFromSunday = -dayOfWeek;
     const startOfWeek = new Date(now);
-    startOfWeek.setDate(now.getDate() + daysFromMonday);
+    startOfWeek.setDate(now.getDate() + daysFromSunday);
     startOfWeek.setHours(0, 0, 0, 0);
 
     const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(startOfWeek.getDate() + 5); // End on Saturday
+    endOfWeek.setDate(startOfWeek.getDate() + 6); // End on Saturday
     endOfWeek.setHours(23, 59, 59, 999);
 
     return allEvents
@@ -107,7 +107,7 @@ const MemberPortalDashboard = () => {
         <div className="member-portal-card weekly-events-card">
           <div className="card-header">
             <h3>📅 This Week's Events</h3>
-            <span className="week-label">Mon - Sat</span>
+            <span className="week-label">Sun - Sat</span>
           </div>
           {myEvents.length === 0 ? (
             <div className="no-data-state">
