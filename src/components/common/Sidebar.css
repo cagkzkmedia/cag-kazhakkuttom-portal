@@ -110,3 +110,27 @@
     width: 250px;
   }
 }
+
+/* Mobile overlay - sits below the sidebar but above main content */
+.sidebar-overlay {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 85;
+    animation: sidebarFadeIn 0.25s ease;
+  }
+
+  @keyframes sidebarFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+}

@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import churchLogo from '../../assets/cag-logo.png';
 import './Sidebar.css';
 
-const Sidebar = ({ isOpen, onItemClick }) => {
+const Sidebar = ({ isOpen, onItemClick, onClose }) => {
   const { user } = useSelector((state) => state.auth);
   
   // Normalize the user role: trim whitespace and default to admin if empty
@@ -40,7 +40,16 @@ const Sidebar = ({ isOpen, onItemClick }) => {
   });
 
   return (
-    <aside className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
+    <>
+      {isOpen && (
+        <div
+          className="sidebar-overlay"
+          onClick={onClose || onItemClick}
+          aria-hidden="true"
+        />
+      )}
+
+      <aside className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
       <div className="sidebar-header">
         <img src={churchLogo} alt="Christ AG Church" className="sidebar-logo" />
         {isOpen && <h3 className="sidebar-title">Christ AG Church</h3>}
@@ -61,6 +70,7 @@ const Sidebar = ({ isOpen, onItemClick }) => {
         ))}
       </nav>
     </aside>
+    </>
   );
 };
 

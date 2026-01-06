@@ -33,11 +33,11 @@ const Layout = () => {
     <div className="layout">
       <Header toggleSidebar={toggleSidebar} />
       <div className="layout-content">
-        {/* Mobile overlay */}
-        {sidebarOpen && (
-          <div className="sidebar-overlay" onClick={handleOverlayClick}></div>
-        )}
-        <Sidebar isOpen={sidebarOpen} onItemClick={closeSidebarOnMobile} />
+        <Sidebar
+          isOpen={sidebarOpen}
+          onItemClick={closeSidebarOnMobile}
+          onClose={handleOverlayClick}
+        />
         <main className={`main-content ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
           <Outlet />
         </main>

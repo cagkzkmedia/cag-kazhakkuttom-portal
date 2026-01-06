@@ -31,7 +31,7 @@ const CredentialsModal = ({ credentials, onClose }) => {
     }
 
     const displayName = credentials.name || credentials.email || '';
-    const message = `Hello ${displayName},%0A%0AHere are your portal login details:%0AUsername: ${credentials.username}%0APassword: ${credentials.password}%0A%0ALogin: ${window.location.origin}/member-portal/login`;
+    const message = `Hello ${displayName},%0A%0AHere are your portal login details:%0AUsername: ${credentials.username}%0APassword: ${credentials.password}%0A%0ALogin: ${window.location.origin}/#member-portal/login`;
 
     const url = `https://wa.me/${phone}?text=${message}`;
     window.open(url, '_blank');
