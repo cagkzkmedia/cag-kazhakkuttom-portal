@@ -5,12 +5,15 @@
 
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { openCelebrationsModal } from '../../redux/slices/uiSlice';
 import churchLogo from '../../assets/cag-logo.png';
+import agLogo from '../../assets/ag-logo.png';
 import './Sidebar.css';
 
 const Sidebar = ({ isOpen, onItemClick, onClose }) => {
   const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   
   // Normalize the user role: trim whitespace and default to admin if empty
   const userRole = (user?.role || 'admin').trim().toLowerCase();
@@ -20,6 +23,7 @@ const Sidebar = ({ isOpen, onItemClick, onClose }) => {
 
   const allMenuItems = [
     { path: '/admin/dashboard', icon: '📊', label: 'Dashboard', roles: ['admin', 'events_manager', 'finance_manager', 'resource_manager'] },
+    { path: 'celebrations', icon: '🎉', label: 'Celebrations', roles: ['admin', 'events_manager', 'finance_manager', 'resource_manager'], isAction: true },
     { path: '/admin/members', icon: '👥', label: 'Members', roles: ['admin'] },
     { path: '/admin/member-approvals', icon: '✅', label: 'Member Approvals', roles: ['admin'] },
     { path: '/admin/events', icon: '📅', label: 'Events', roles: ['admin', 'events_manager'] },
@@ -51,22 +55,39 @@ const Sidebar = ({ isOpen, onItemClick, onClose }) => {
 
       <aside className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
       <div className="sidebar-header">
-        <img src={churchLogo} alt="Christ AG Church" className="sidebar-logo" />
+        <div className="sidebar-logos">
+          <img src={agLogo} alt="Assemblies of God" className="sidebar-logo ag-logo" />
+          <img src={churchLogo} alt="Christ AG Church" className="sidebar-logo church-logo" />
+        </div>
         {isOpen && <h3 className="sidebar-title">Christ AG Church</h3>}
       </div>
       <nav className="sidebar-nav">
         {menuItems.map((item) => (
-          <NavLink
-            key={item.path}
-            to={item.path}
-            onClick={onItemClick}
-            className={({ isActive }) =>
-              `sidebar-item ${isActive ? 'active' : ''}`
-            }
-          >
-            <span className="sidebar-icon">{item.icon}</span>
-            {isOpen && <span className="sidebar-label">{item.label}</span>}
-          </NavLink>
+          item.isAction ? (
+            <button
+              key={item.path}
+              onClick={() => {
+                dispatch(openCelebrationsModal());
+                if (onItemClick) onItemClick();
+              }}
+              className="sidebar-item sidebar-action-item"
+            >
+              <span className="sidebar-icon">{item.icon}</span>
+              {isOpen && <span className="sidebar-label">{item.label}</span>}
+            </button>
+          ) : (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              onClick={onItemClick}
+              className={({ isActive }) =>
+                `sidebar-item ${isActive ? 'active' : ''}`
+              }
+            >
+              <span className="sidebar-icon">{item.icon}</span>
+              {isOpen && <span className="sidebar-label">{item.label}</span>}
+            </NavLink>
+          )
         ))}
       </nav>
     </aside>

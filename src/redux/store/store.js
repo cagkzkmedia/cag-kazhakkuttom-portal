@@ -10,6 +10,7 @@ import eventReducer from '../slices/eventSlice';
 import donationReducer from '../slices/donationSlice';
 import notificationReducer from '../slices/notificationSlice';
 import memberPortalReducer from '../slices/memberPortalSlice';
+import uiReducer from '../slices/uiSlice';
 
 export const store = configureStore({
   reducer: {
@@ -19,6 +20,7 @@ export const store = configureStore({
     donations: donationReducer,
     notifications: notificationReducer,
     memberPortal: memberPortalReducer,
+    ui: uiReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -5,7 +5,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import churchLogo from '../../assets/cag-logo.png';
-import pastorImage from '../../assets/pastor-jobin.png';
+import agLogo from '../../assets/ag-logo.png';
+import pastorImage from '../../assets/pr-family.jpg';
 import churchGroupImage from '../../assets/church-group.jpg';
 import gallery1 from '../../assets/gallery1.jpg';
 import gallery2 from '../../assets/gallery2.jpg';
@@ -225,7 +226,10 @@ const HomePage = () => {
         <div className="hero-overlay"></div>
         <div className="hero-content">
           <div className="church-header">
-            <img src={churchLogo} alt="Christ AG Church Logo" className="hero-logo" />
+            <div className="hero-logos">
+              <img src={agLogo} alt="Assemblies of God" className="hero-logo ag-logo" />
+              <img src={churchLogo} alt="Christ AG Church Logo" className="hero-logo church-logo" />
+            </div>
             <h1 className="church-name">Christ AG Church</h1>
             <p className="church-location">Kazhakkuttom, Thiruvananthapuram</p>
           </div>
@@ -579,7 +583,7 @@ const HomePage = () => {
             </div>
           ) : (
             <div className="articles-grid">
-              {articles.map(article => (
+              {articles.slice(0, 10).map(article => (
                 <div key={article.id} className="article-card">
                   {article.imageUrl && (
                     <div className="article-image">
@@ -679,7 +683,10 @@ const HomePage = () => {
       <footer className="home-footer">
         <div className="footer-content">
           <div className="footer-logo">
-            <img src={churchLogo} alt="Christ AG Church" />
+            <div className="footer-logos">
+              <img src={agLogo} alt="Assemblies of God" className="ag-logo" />
+              <img src={churchLogo} alt="Christ AG Church" className="church-logo" />
+            </div>
             <p>Christ AG Church, Kazhakkuttom</p>
           </div>
           <div className="footer-nav">

@@ -28,13 +28,30 @@
   border-bottom: 1px solid #e2e8f0;
 }
 
-.sidebar-logo {
-  width: 50px;
-  height: auto;
+.sidebar-logos {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   margin-bottom: 10px;
 }
 
-.sidebar.open .sidebar-logo {
+.sidebar-logo {
+  height: auto;
+}
+
+.sidebar-logo.ag-logo {
+  width: 40px;
+}
+
+.sidebar-logo.church-logo {
+  width: 50px;
+}
+
+.sidebar.open .sidebar-logo.ag-logo {
+  width: 50px;
+}
+
+.sidebar.open .sidebar-logo.church-logo {
   width: 80px;
 }
 
@@ -62,6 +79,19 @@
   text-decoration: none;
   transition: all 0.2s;
   border-left: 4px solid transparent;
+  background: none;
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.sidebar-action-item {
+  border-left: 4px solid transparent;
 }
 
 .sidebar-item:hover {
@@ -69,7 +99,8 @@
   color: #667eea;
 }
 
-.sidebar-item.active {
+.sidebar-item.active,
+.sidebar-action-item.active {
   background: #edf2f7;
   color: #667eea;
   border-left-color: #667eea;

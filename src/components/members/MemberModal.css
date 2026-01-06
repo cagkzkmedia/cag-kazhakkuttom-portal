@@ -111,19 +111,46 @@
   margin-top: 24px;
   padding-top: 24px;
   border-top: 1px solid #e2e8f0;
+  flex-wrap: wrap;
 }
 
 .modal-actions .btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  padding: 8px 12px;
+  padding: 10px 20px;
+  min-width: 140px;
 }
 
 .modal-actions .btn svg {
   width: 18px;
   height: 18px;
   display: block;
+}
+
+.btn-success {
+  background: #25D366;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-success:hover {
+  background: #128C7E;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+}
+
+.btn-success:disabled {
+  background: #cbd5e0;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .btn-whatsapp {
@@ -135,7 +162,7 @@
   margin-left: 8px;
   font-size: 13px;
   font-weight: 600;
-  color: #155724;
+  color: white;
   text-transform: none;
 }
 

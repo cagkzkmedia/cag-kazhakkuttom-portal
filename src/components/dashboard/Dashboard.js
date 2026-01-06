@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setMembers } from '../../redux/slices/memberSlice';
 import { setEvents } from '../../redux/slices/eventSlice';
 import { setDonations } from '../../redux/slices/donationSlice';
+import { openCelebrationsModal } from '../../redux/slices/uiSlice';
 import { getAllMembers } from '../../services/memberService.firebase';
 import { getAllEvents } from '../../services/eventService.firebase';
 import { getAllDonations } from '../../services/donationService.firebase';
@@ -52,79 +53,6 @@ const Dashboard = () => {
     }
   };
 
-  // Get current week range (Sunday to Saturday)
-  const getWeekRange = () => {
-    const today = new Date();
-    const dayOfWeek = today.getDay();
-    const daysFromSunday = -dayOfWeek;
-    const startOfWeek = new Date(today);
-    startOfWeek.setDate(today.getDate() + daysFromSunday);
-    startOfWeek.setHours(0, 0, 0, 0);
-
-    const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(startOfWeek.getDate() + 6);
-    endOfWeek.setHours(23, 59, 59, 999);
-
-    return { startOfWeek, endOfWeek };
-  };
-
-  // Check if a date (month/day only) falls within current week
-  const isInCurrentWeek = (monthDay) => {
-    if (!monthDay) return false;
-    const { startOfWeek, endOfWeek } = getWeekRange();
-    const dateObj = new Date(monthDay);
-    const month = dateObj.getMonth();
-    const day = dateObj.getDate();
-
-    let checkDate = new Date(startOfWeek);
-    while (checkDate <= endOfWeek) {
-      if (checkDate.getMonth() === month && checkDate.getDate() === day) {
-        return true;
-      }
-      checkDate.setDate(checkDate.getDate() + 1);
-    }
-    return false;
-  };
-
-  // Get members celebrating birthdays this week
-  const birthdayMembers = members.filter(
-    (m) => m.dateOfBirth && isInCurrentWeek(m.dateOfBirth)
-  );
-
-  // Get members celebrating anniversaries this week
-  const anniversaryMembers = members.filter(
-    (m) => m.marriageDate && isInCurrentWeek(m.marriageDate)
-  );
-
-  // Get members celebrating church joining anniversaries this week
-  const churchJoinAnniversaryMembers = members.filter(
-    (m) => m.joinDate && isInCurrentWeek(m.joinDate)
-  );
-
-  // Combine and sort by date
-  const weekCelebrations = [
-    ...birthdayMembers.map((m) => ({
-      ...m,
-      type: 'birthday',
-      celebrationDate: new Date(m.dateOfBirth),
-      icon: '🎂',
-    })),
-    ...anniversaryMembers.map((m) => ({
-      ...m,
-      type: 'anniversary',
-      celebrationDate: new Date(m.marriageDate),
-      icon: '❤️',
-      years: new Date().getFullYear() - new Date(m.marriageDate).getFullYear(),
-    })),
-    ...churchJoinAnniversaryMembers.map((m) => ({
-      ...m,
-      type: 'churchJoinAnniversary',
-      celebrationDate: new Date(m.joinDate),
-      icon: '⛪',
-      years: new Date().getFullYear() - new Date(m.joinDate).getFullYear(),
-    })),
-  ].sort((a, b) => a.celebrationDate.getDate() - b.celebrationDate.getDate());
-
   // Calculate upcoming events
   const upcomingEvents = events
     .filter((event) => new Date(event.date) >= new Date())
@@ -146,56 +74,20 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       <div className="dashboard-header">
-        <h1>Dashboard Overview</h1>
-        <p>Welcome back! Here's what's happening today. | Pastor: Pr. Jobin Alisha</p>
-      </div>
-
-      {/* Weekly Celebrations Section */}
-      {weekCelebrations.length > 0 && (
-        <div className="celebrations-section">
-          <h2>🎉 This Week's Celebrations</h2>
-          <div className="celebrations-grid">
-            {weekCelebrations.map((member) => (
-              <div
-                key={`${member.id}-${member.type}`}
-                className={`celebration-card ${member.type}`}
-              >
-                <div className="celebration-display">
-                  <div className="celebration-icon">{member.icon}</div>
-                  {(member.type === 'anniversary' || member.type === 'churchJoinAnniversary') && (
-                    <div className="anniversary-badge">
-                      <span className="years-number">{member.years}</span>
-                      <span className="years-text">years</span>
-                    </div>
-                  )}
-                </div>
-                <div className="celebration-info">
-                  <h4>{member.name}</h4>
-                  <p className="celebration-type">
-                    {member.type === 'birthday'
-                      ? 'Birthday'
-                      : member.type === 'anniversary'
-                      ? 'Wedding Anniversary'
-                      : 'Church Joining'}
-                  </p>
-                  <p className="celebration-date">
-                    {new Date(
-                      member.type === 'birthday'
-                        ? member.dateOfBirth
-                        : member.type === 'anniversary'
-                        ? member.marriageDate
-                        : member.joinDate
-                    ).toLocaleDateString('en-US', {
-                      month: 'short',
-                      day: 'numeric',
-                    })}
-                  </p>
-                </div>
-              </div>
-            ))}
+        <div className="dashboard-header-content">
+          <div>
+            <h1>Dashboard Overview</h1>
+            <p>Welcome back! Here's what's happening today. | Pastor: Pr. Jobin Alisha</p>
           </div>
+          <button 
+            className="celebrations-btn"
+            onClick={() => dispatch(openCelebrationsModal())}
+            title="View This Week's Celebrations"
+          >
+            🎉 This Week's Celebrations
+          </button>
         </div>
-      )}
+      </div>
 
       {/* Stats Cards */}
       <div className="stats-grid">
