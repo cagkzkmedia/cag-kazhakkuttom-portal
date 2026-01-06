@@ -113,6 +113,38 @@
   border-top: 1px solid #e2e8f0;
 }
 
+.modal-actions .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+}
+
+.modal-actions .btn svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.btn-whatsapp {
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+
+.whatsapp-label {
+  margin-left: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #155724;
+  text-transform: none;
+}
+
+@media (max-width: 520px) {
+  .whatsapp-label {
+    display: none;
+  }
+}
+
 .checkbox-label {
   display: flex;
   align-items: flex-start;

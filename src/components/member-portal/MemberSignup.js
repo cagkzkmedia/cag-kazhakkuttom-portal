@@ -16,6 +16,8 @@ const MemberSignup = () => {
     gender: '',
     dateOfBirth: '',
     dateOfJoining: '',
+    maritalStatus: '',
+    marriageDate: '',
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -65,6 +67,14 @@ const MemberSignup = () => {
       setError('Date of Joining is required');
       return false;
     }
+    if (!formData.maritalStatus || !formData.maritalStatus.trim()) {
+      setError('Marital Status is required');
+      return false;
+    }
+    if (formData.maritalStatus === 'married' && (!formData.marriageDate || !formData.marriageDate.trim())) {
+      setError('Marriage Date is required for married members');
+      return false;
+    }
     return true;
   };
 
@@ -86,6 +96,8 @@ const MemberSignup = () => {
         gender: formData.gender.trim(),
         dateOfBirth: formData.dateOfBirth.trim(),
         dateOfJoining: formData.dateOfJoining.trim(),
+        maritalStatus: formData.maritalStatus.trim(),
+        marriageDate: formData.maritalStatus === 'married' ? formData.marriageDate.trim() : null,
       });
 
       setSignupEmail(formData.email);
@@ -96,6 +108,8 @@ const MemberSignup = () => {
         gender: '',
         dateOfBirth: '',
         dateOfJoining: '',
+        maritalStatus: '',
+        marriageDate: '',
       });
       setShowApprovalPopup(true);
     } catch (err) {
@@ -205,6 +219,38 @@ const MemberSignup = () => {
               required
             />
           </div>
+
+          <div className="form-group">
+            <label htmlFor="maritalStatus">Marital Status</label>
+            <select
+              id="maritalStatus"
+              name="maritalStatus"
+              value={formData.maritalStatus}
+              onChange={handleChange}
+              disabled={loading}
+              required
+            >
+              <option value="">Select Marital Status</option>
+              <option value="single">Single</option>
+              <option value="married">Married</option>
+              <option value="widowed">Widowed</option>
+            </select>
+          </div>
+
+          {formData.maritalStatus === 'married' && (
+            <div className="form-group">
+              <label htmlFor="marriageDate">Marriage Date</label>
+              <input
+                type="date"
+                id="marriageDate"
+                name="marriageDate"
+                value={formData.marriageDate}
+                onChange={handleChange}
+                disabled={loading}
+                required
+              />
+            </div>
+          )}
 
           <button type="submit" className="btn-signup" disabled={loading}>
             {loading ? 'Registering...' : 'Register'}

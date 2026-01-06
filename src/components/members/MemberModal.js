@@ -21,6 +21,8 @@ const MemberModal = ({ member, onClose, onSuccess, onRefresh }) => {
     joinDate: new Date().toISOString().split('T')[0],
     status: 'active',
     membershipType: 'regular',
+    maritalStatus: '',
+    marriageDate: '',
     hasPortalAccess: false,
   });
   const [loading, setLoading] = useState(false);
@@ -186,6 +188,34 @@ const MemberModal = ({ member, onClose, onSuccess, onRefresh }) => {
                 <option value="volunteer">Volunteer</option>
               </select>
             </div>
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label>Marital Status</label>
+              <select
+                name="maritalStatus"
+                value={formData.maritalStatus}
+                onChange={handleChange}
+              >
+                <option value="">Select Status</option>
+                <option value="single">Single</option>
+                <option value="married">Married</option>
+                <option value="widowed">Widowed</option>
+              </select>
+            </div>
+
+            {formData.maritalStatus === 'married' && (
+              <div className="form-group">
+                <label>Marriage Date</label>
+                <input
+                  type="date"
+                  name="marriageDate"
+                  value={formData.marriageDate}
+                  onChange={handleChange}
+                />
+              </div>
+            )}
           </div>
 
           {!member && (

@@ -23,7 +23,11 @@ const Dashboard = () => {
   const { members } = useSelector((state) => state.members);
   const { events } = useSelector((state) => state.events);
   const { donations, totalAmount, monthlyTotal } = useSelector((state) => state.donations);
+  const { user } = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(true);
+
+  // Check if user is event manager or resource manager
+  const isEventOrResourceManager = user?.role === 'events_manager' || user?.role === 'resource_manager';
 
   useEffect(() => {
     loadDashboardData();
@@ -47,6 +51,79 @@ const Dashboard = () => {
       setLoading(false);
     }
   };
+
+  // Get current week range (Sunday to Saturday)
+  const getWeekRange = () => {
+    const today = new Date();
+    const dayOfWeek = today.getDay();
+    const daysFromSunday = -dayOfWeek;
+    const startOfWeek = new Date(today);
+    startOfWeek.setDate(today.getDate() + daysFromSunday);
+    startOfWeek.setHours(0, 0, 0, 0);
+
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6);
+    endOfWeek.setHours(23, 59, 59, 999);
+
+    return { startOfWeek, endOfWeek };
+  };
+
+  // Check if a date (month/day only) falls within current week
+  const isInCurrentWeek = (monthDay) => {
+    if (!monthDay) return false;
+    const { startOfWeek, endOfWeek } = getWeekRange();
+    const dateObj = new Date(monthDay);
+    const month = dateObj.getMonth();
+    const day = dateObj.getDate();
+
+    let checkDate = new Date(startOfWeek);
+    while (checkDate <= endOfWeek) {
+      if (checkDate.getMonth() === month && checkDate.getDate() === day) {
+        return true;
+      }
+      checkDate.setDate(checkDate.getDate() + 1);
+    }
+    return false;
+  };
+
+  // Get members celebrating birthdays this week
+  const birthdayMembers = members.filter(
+    (m) => m.dateOfBirth && isInCurrentWeek(m.dateOfBirth)
+  );
+
+  // Get members celebrating anniversaries this week
+  const anniversaryMembers = members.filter(
+    (m) => m.marriageDate && isInCurrentWeek(m.marriageDate)
+  );
+
+  // Get members celebrating church joining anniversaries this week
+  const churchJoinAnniversaryMembers = members.filter(
+    (m) => m.joinDate && isInCurrentWeek(m.joinDate)
+  );
+
+  // Combine and sort by date
+  const weekCelebrations = [
+    ...birthdayMembers.map((m) => ({
+      ...m,
+      type: 'birthday',
+      celebrationDate: new Date(m.dateOfBirth),
+      icon: '🎂',
+    })),
+    ...anniversaryMembers.map((m) => ({
+      ...m,
+      type: 'anniversary',
+      celebrationDate: new Date(m.marriageDate),
+      icon: '❤️',
+      years: new Date().getFullYear() - new Date(m.marriageDate).getFullYear(),
+    })),
+    ...churchJoinAnniversaryMembers.map((m) => ({
+      ...m,
+      type: 'churchJoinAnniversary',
+      celebrationDate: new Date(m.joinDate),
+      icon: '⛪',
+      years: new Date().getFullYear() - new Date(m.joinDate).getFullYear(),
+    })),
+  ].sort((a, b) => a.celebrationDate.getDate() - b.celebrationDate.getDate());
 
   // Calculate upcoming events
   const upcomingEvents = events
@@ -73,6 +150,53 @@ const Dashboard = () => {
         <p>Welcome back! Here's what's happening today. | Pastor: Pr. Jobin Alisha</p>
       </div>
 
+      {/* Weekly Celebrations Section */}
+      {weekCelebrations.length > 0 && (
+        <div className="celebrations-section">
+          <h2>🎉 This Week's Celebrations</h2>
+          <div className="celebrations-grid">
+            {weekCelebrations.map((member) => (
+              <div
+                key={`${member.id}-${member.type}`}
+                className={`celebration-card ${member.type}`}
+              >
+                <div className="celebration-display">
+                  <div className="celebration-icon">{member.icon}</div>
+                  {(member.type === 'anniversary' || member.type === 'churchJoinAnniversary') && (
+                    <div className="anniversary-badge">
+                      <span className="years-number">{member.years}</span>
+                      <span className="years-text">years</span>
+                    </div>
+                  )}
+                </div>
+                <div className="celebration-info">
+                  <h4>{member.name}</h4>
+                  <p className="celebration-type">
+                    {member.type === 'birthday'
+                      ? 'Birthday'
+                      : member.type === 'anniversary'
+                      ? 'Wedding Anniversary'
+                      : 'Church Joining'}
+                  </p>
+                  <p className="celebration-date">
+                    {new Date(
+                      member.type === 'birthday'
+                        ? member.dateOfBirth
+                        : member.type === 'anniversary'
+                        ? member.marriageDate
+                        : member.joinDate
+                    ).toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                    })}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Stats Cards */}
       <div className="stats-grid">
         <StatsCard
@@ -89,16 +213,18 @@ const Dashboard = () => {
           icon="📅"
           color="#48bb78"
         />
-        <StatsCard
-          title="Total Donations"
-          value={`₹${totalAmount.toLocaleString()}`}
-          subtitle={`₹${monthlyTotal.toLocaleString()} this month`}
-          icon="💰"
-          color="#ed8936"
-        />
+        {!isEventOrResourceManager && (
+          <StatsCard
+            title="Total Donations"
+            value={`₹${totalAmount.toLocaleString()}`}
+            subtitle={`₹${monthlyTotal.toLocaleString()} this month`}
+            icon="💰"
+            color="#ed8936"
+          />
+        )}
         <StatsCard
           title="Recent Activities"
-          value={donations.length + events.length}
+          value={isEventOrResourceManager ? events.length : donations.length + events.length}
           subtitle="All time"
           icon="📊"
           color="#9f7aea"
@@ -106,16 +232,27 @@ const Dashboard = () => {
       </div>
 
       {/* Charts Section */}
-      <div className="charts-grid">
-        <div className="chart-card">
-          <h3>Donation Trends</h3>
-          <DonationChart donations={donations} />
+      {!isEventOrResourceManager && (
+        <div className="charts-grid">
+          <div className="chart-card">
+            <h3>Donation Trends</h3>
+            <DonationChart donations={donations} />
+          </div>
+          <div className="chart-card">
+            <h3>Member Growth</h3>
+            <MemberGrowthChart members={members} />
+          </div>
         </div>
-        <div className="chart-card">
-          <h3>Member Growth</h3>
-          <MemberGrowthChart members={members} />
+      )}
+
+      {isEventOrResourceManager && (
+        <div className="charts-grid">
+          <div className="chart-card">
+            <h3>Member Growth</h3>
+            <MemberGrowthChart members={members} />
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Activity and Events */}
       <div className="activity-grid">

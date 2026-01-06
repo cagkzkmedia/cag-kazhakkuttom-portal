@@ -75,7 +75,12 @@ const Members = () => {
     try {
       const updatedMember = await generateMemberCredentials(member.id);
       dispatch(updateMember(updatedMember));
-      setCredentials(updatedMember.credentials);
+      setCredentials({
+        ...updatedMember.credentials,
+        phone: updatedMember.phone,
+        name: updatedMember.name || `${updatedMember.firstName || ''} ${updatedMember.lastName || ''}`.trim(),
+        email: updatedMember.email,
+      });
       setShowCredentials(true);
       alert('✅ Credentials generated! Email notification sent to member.');
     } catch (error) {
@@ -88,7 +93,12 @@ const Members = () => {
       try {
         const updatedMember = await resetMemberCredentials(member.id);
         dispatch(updateMember(updatedMember));
-        setCredentials(updatedMember.credentials);
+        setCredentials({
+          ...updatedMember.credentials,
+          phone: updatedMember.phone,
+          name: updatedMember.name || `${updatedMember.firstName || ''} ${updatedMember.lastName || ''}`.trim(),
+          email: updatedMember.email,
+        });
         setShowCredentials(true);
         alert('✅ Password reset! Email notification sent to member.');
       } catch (error) {
@@ -111,7 +121,12 @@ const Members = () => {
 
   const handleViewCredentials = (member) => {
     if (member.credentials) {
-      setCredentials(member.credentials);
+      setCredentials({
+        ...member.credentials,
+        phone: member.phone,
+        name: member.name || `${member.firstName || ''} ${member.lastName || ''}`.trim(),
+        email: member.email,
+      });
       setShowCredentials(true);
     }
   };

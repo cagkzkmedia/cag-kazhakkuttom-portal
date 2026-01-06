@@ -3,11 +3,13 @@
  */
 
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { getMemberProfile, getMemberEvents } from '../../services/memberPortalService';
 import { getAllEvents } from '../../services/eventService.firebase';
 import { formatTo12Hour } from '../../utils/timeFormatter';
 import './MemberPortalDashboard.css';
+import MemberModal from '../members/MemberModal';
 
 const MemberPortalDashboard = () => {
   const { member } = useSelector((state) => state.memberPortal);
@@ -20,6 +22,9 @@ const MemberPortalDashboard = () => {
     loadDashboardData();
     // eslint-disable-next-line
   }, []);
+
+  const navigate = useNavigate();
+  const [showEditModal, setShowEditModal] = useState(false);
 
   const filterCurrentWeekEvents = (allEvents) => {
     const now = new Date();
@@ -40,6 +45,26 @@ const MemberPortalDashboard = () => {
         return eventDate >= startOfWeek && eventDate <= endOfWeek;
       })
       .sort((a, b) => new Date(a.date) - new Date(b.date));
+  };
+
+  const isBirthdayToday = (dateOfBirth) => {
+    if (!dateOfBirth) return false;
+    const today = new Date();
+    const birthDate = new Date(dateOfBirth);
+    return (
+      today.getMonth() === birthDate.getMonth() &&
+      today.getDate() === birthDate.getDate()
+    );
+  };
+
+  const isAnniversaryToday = (marriageDate) => {
+    if (!marriageDate) return false;
+    const today = new Date();
+    const mDate = new Date(marriageDate);
+    return (
+      today.getMonth() === mDate.getMonth() &&
+      today.getDate() === mDate.getDate()
+    );
   };
 
   const loadDashboardData = async () => {
@@ -75,6 +100,42 @@ const MemberPortalDashboard = () => {
         <p>Christ AG Church, Kazhakkuttom - Community Overview</p>
       </div>
 
+      {isBirthdayToday(profile?.dateOfBirth) && (
+        <div className="birthday-card-container">
+          <div className="birthday-card">
+            <div className="birthday-confetti">🎉</div>
+            <div className="birthday-content">
+              <h2>🎂 Happy Birthday, {member?.name}!</h2>
+              <p>Today is your special day! The entire Christ AG Church family wishes you a blessed and joyful birthday. May God's blessings be upon you always!</p>
+              <div className="birthday-wishes">
+                <span className="wish-item">🙏 God's Blessings</span>
+                <span className="wish-item">❤️ Love & Joy</span>
+                <span className="wish-item">✨ Wonderful Year Ahead</span>
+              </div>
+            </div>
+            <div className="birthday-confetti right">🎈</div>
+          </div>
+        </div>
+      )}
+
+      {isAnniversaryToday(profile?.marriageDate) && (
+        <div className="anniversary-card-container">
+          <div className="anniversary-card">
+            <div className="anniversary-icon">💍</div>
+            <div className="anniversary-content">
+              <h2>💖 Happy Anniversary, {member?.name}!</h2>
+              <p>Wishing you many more years of love and blessings. May God continue to strengthen your bond and fill your home with joy.</p>
+              <div className="anniversary-highlights">
+                <span className="highlight-item">🙏 God's Blessings</span>
+                <span className="highlight-item">❤️ Love & Peace</span>
+                <span className="highlight-item">🌟 Many Blessed Years</span>
+              </div>
+            </div>
+            <div className="anniversary-decor">🎉</div>
+          </div>
+        </div>
+      )}
+
       <div className="member-portal-grid">
         {/* Profile Summary */}
         <div className="member-portal-card">
@@ -100,8 +161,24 @@ const MemberPortalDashboard = () => {
               <span className="label">Membership:</span>
               <span className="value badge">{profile?.membershipType}</span>
             </div>
+            <div className="profile-actions">
+              <button
+                className="btn btn-secondary btn-edit-profile"
+                onClick={() => setShowEditModal(true)}
+              >
+                Edit Profile
+              </button>
+            </div>
           </div>
         </div>
+
+        {showEditModal && (
+          <MemberModal
+            member={profile}
+            onClose={() => setShowEditModal(false)}
+            onSuccess={loadDashboardData}
+          />
+        )}
 
         {/* My Events */}
         <div className="member-portal-card weekly-events-card">

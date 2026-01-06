@@ -646,7 +646,7 @@ const HomePage = () => {
             <div className="contact-item">
               <div className="contact-icon">✉️</div>
               <h4>Email</h4>
-              <p>info@christagkazhakkuttom.org<br/>prayer@christagkazhakkuttom.org</p>
+              <p>waytoagkazhakuttom@gmail.com</p>
             </div>
             <div className="contact-item">
               <div className="contact-icon">🌐</div>
