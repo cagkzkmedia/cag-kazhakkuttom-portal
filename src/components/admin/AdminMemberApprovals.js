@@ -13,6 +13,8 @@ const AdminMemberApprovals = () => {
   const [rejectingId, setRejectingId] = useState(null);
   const [showConfirmReject, setShowConfirmReject] = useState(null);
   const [approvalDetails, setApprovalDetails] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     fetchPendingSignups();
@@ -90,6 +92,38 @@ const AdminMemberApprovals = () => {
       hour: '2-digit',
       minute: '2-digit',
     });
+  };
+
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const copyAllCredentials = () => {
+    const text = `Portal URL: ${window.location.origin}/#/login\nUsername: ${approvalDetails.credentials.username}\nPassword: ${approvalDetails.credentials.password}`;
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const sendToWhatsApp = () => {
+    const phone = approvalDetails.member.phone?.replace(/\D/g, '');
+    if (!phone) {
+      alert('No phone number available for this member');
+      return;
+    }
+
+    const message = encodeURIComponent(
+      `Hello ${approvalDetails.member.name},\n\n` +
+      `Your membership has been approved! Here are your login credentials:\n\n` +
+      `Portal URL: ${window.location.origin}/#/login\n` +
+      `Username: ${approvalDetails.credentials.username}\n` +
+      `Password: ${approvalDetails.credentials.password}\n\n` +
+      `Please login and change your password immediately.\n\n` +
+      `Welcome to CAG Kazhakuttom!`
+    );
+    window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
   };
 
   return (
@@ -181,22 +215,32 @@ const AdminMemberApprovals = () => {
               </div>
 
               <div className="credentials-section">
-                <h4>Portal Credentials</h4>
+                <h4>🔑 Portal Access Credentials</h4>
                 <p className="credentials-note">
                   Share these credentials with the member:
                 </p>
 
                 <div className="credential-item">
-                  <label>Username:</label>
+                  <label>Portal URL:</label>
                   <div className="credential-value">
-                    <span>{approvalDetails.credentials.username}</span>
+                    <code>{window.location.origin}/#/login</code>
                     <button
                       className="copy-btn"
-                      onClick={() => {
-                        navigator.clipboard.writeText(
-                          approvalDetails.credentials.username
-                        );
-                      }}
+                      onClick={() => copyToClipboard(`${window.location.origin}/#/login`)}
+                      title="Copy portal URL"
+                    >
+                      📋
+                    </button>
+                  </div>
+                </div>
+
+                <div className="credential-item">
+                  <label>Username:</label>
+                  <div className="credential-value">
+                    <code>{approvalDetails.credentials.username}</code>
+                    <button
+                      className="copy-btn"
+                      onClick={() => copyToClipboard(approvalDetails.credentials.username)}
                       title="Copy username"
                     >
                       📋
@@ -207,14 +251,19 @@ const AdminMemberApprovals = () => {
                 <div className="credential-item">
                   <label>Password:</label>
                   <div className="credential-value">
-                    <span>{approvalDetails.credentials.password}</span>
+                    <code>
+                      {showPassword ? approvalDetails.credentials.password : '••••••••••••'}
+                    </code>
                     <button
                       className="copy-btn"
-                      onClick={() => {
-                        navigator.clipboard.writeText(
-                          approvalDetails.credentials.password
-                        );
-                      }}
+                      onClick={() => setShowPassword(!showPassword)}
+                      title={showPassword ? 'Hide password' : 'Show password'}
+                    >
+                      {showPassword ? '👁️' : '👁️‍🗨️'}
+                    </button>
+                    <button
+                      className="copy-btn"
+                      onClick={() => copyToClipboard(approvalDetails.credentials.password)}
                       title="Copy password"
                     >
                       📋
@@ -223,6 +272,12 @@ const AdminMemberApprovals = () => {
                 </div>
               </div>
 
+              {copied && (
+                <div className="success-message">
+                  ✅ Copied to clipboard!
+                </div>
+              )}
+
               <div className="credentials-warning">
                 <strong>⚠️ Security Note:</strong>
                 <p>
@@ -230,12 +285,33 @@ const AdminMemberApprovals = () => {
                 </p>
               </div>
 
-              <button
-                className="btn btn-primary-large"
-                onClick={() => setApprovalDetails(null)}
-              >
-                Done
-              </button>
+              <div className="modal-actions-buttons">
+                <button
+                  className="btn btn-primary"
+                  onClick={copyAllCredentials}
+                  title="Copy all credentials"
+                >
+                  📋 Copy All Credentials
+                </button>
+                <button
+                  className="btn btn-whatsapp"
+                  onClick={sendToWhatsApp}
+                  disabled={!approvalDetails.member.phone}
+                  title={approvalDetails.member.phone ? 'Send credentials via WhatsApp' : 'No phone number available'}
+                >
+                  Send to WhatsApp
+                </button>
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => {
+                    setApprovalDetails(null);
+                    setShowPassword(false);
+                    setCopied(false);
+                  }}
+                >
+                  Close
+                </button>
+              </div>
             </div>
           </div>
         </div>

@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setEvents } from '../../redux/slices/eventSlice';
 import { getAllEvents } from '../../services/eventService.firebase';
 import { formatTo12Hour } from '../../utils/timeFormatter';
+import ShareableWeeklyEvents from './ShareableWeeklyEvents';
 import './WeeklyEvents.css';
 
 const WeeklyEvents = ({ isOpen, onClose }) => {
@@ -15,6 +16,7 @@ const WeeklyEvents = ({ isOpen, onClose }) => {
   const { events } = useSelector((state) => state.events);
   const [loading, setLoading] = useState(true);
   const [groupedEvents, setGroupedEvents] = useState({});
+  const [showShareable, setShowShareable] = useState(false);
 
   useEffect(() => {
     loadEvents();
@@ -127,6 +129,12 @@ const WeeklyEvents = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
+  const currentWeekEvents = events.filter(event => {
+    const eventDate = new Date(event.date);
+    const { start, end } = getWeekRange();
+    return eventDate >= start && eventDate <= end;
+  });
+
   if (loading) {
     return (
       <div className="weekly-events-modal-overlay" onClick={onClose}>
@@ -144,33 +152,36 @@ const WeeklyEvents = ({ isOpen, onClose }) => {
   }
 
   return (
-    <div className="weekly-events-modal-overlay" onClick={onClose}>
-      <div className="weekly-events-page" onClick={(e) => e.stopPropagation()}>
-        <button className="modal-close-btn" onClick={onClose}>✕</button>
-      <div className="weekly-events-container">
-        <div className="weekly-events-header">
-          <div className="header-content">
-            <h1>📅 This Week's Events</h1>
-            <p className="week-range">{formatDateRange()}</p>
-          </div>
-          <div className="header-decoration">
-            <div className="decoration-circle"></div>
-            <div className="decoration-circle"></div>
-            <div className="decoration-circle"></div>
-          </div>
-        </div>
-
-        <div className="weekly-events-content">
-          {sortedDays.length === 0 ? (
-            <div className="no-events-message">
-              <div className="no-events-icon">📭</div>
-              <h3>No Events This Week</h3>
-              <p>There are no scheduled events for the current week.</p>
+    <>
+      <div className="weekly-events-modal-overlay" onClick={onClose}>
+        <div className="weekly-events-page" onClick={(e) => e.stopPropagation()}>
+          <button className="modal-close-btn" onClick={onClose}>✕</button>
+          <button 
+            className="modal-share-btn" 
+            onClick={() => setShowShareable(true)}
+            title="Share as Image"
+          >
+            📱
+          </button>
+        <div className="weekly-events-container">
+          <div className="weekly-events-header">
+            <div className="header-content">
+              <h1>📅 This Week's Events</h1>
+              <p className="week-range">{formatDateRange()}</p>
             </div>
-          ) : (
-            <div className="days-grid">
-              {sortedDays.map((dayKey) => {
-                const dayData = groupedEvents[dayKey];
+          </div>
+
+          <div className="weekly-events-content">
+            {sortedDays.length === 0 ? (
+              <div className="no-events-message">
+                <div className="no-events-icon">📭</div>
+                <h3>No Events This Week</h3>
+                <p>There are no scheduled events for the current week.</p>
+              </div>
+            ) : (
+              <div className="days-grid">
+                {sortedDays.map((dayKey) => {
+                  const dayData = groupedEvents[dayKey];
                 const isToday = new Date().toDateString() === dayData.date.toDateString();
                 
                 return (
@@ -198,7 +209,7 @@ const WeeklyEvents = ({ isOpen, onClose }) => {
                           </div>
                           
                           <div className="event-details">
-                            <h4 className="event-title">{event.title}</h4>
+                            <h4>{event.title}</h4>
                             {event.location && (
                               <div className="event-location">
                                 <span className="location-icon">📍</span>
@@ -218,6 +229,15 @@ const WeeklyEvents = ({ isOpen, onClose }) => {
       </div>
     </div>
     </div>
+
+      {showShareable && (
+        <ShareableWeeklyEvents
+          events={currentWeekEvents}
+          weekRange={formatDateRange()}
+          onClose={() => setShowShareable(false)}
+        />
+      )}
+    </>
   );
 };
 
