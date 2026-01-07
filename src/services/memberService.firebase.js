@@ -75,7 +75,7 @@ const createMemberSignup = async (signupData) => {
       phone,
       gender,
       dateOfBirth,
-      dateOfJoining,
+      joinDate: dateOfJoining,
       maritalStatus,
       marriageDate: maritalStatus === 'married' ? marriageDate : null,
       status: 'pending',
