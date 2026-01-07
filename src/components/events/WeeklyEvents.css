@@ -431,21 +431,21 @@
 }
 
 .day-events::-webkit-scrollbar {
-  width: 6px;
+  width: 10px;
 }
 
 .day-events::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 10px;
 }
 
 .day-events::-webkit-scrollbar-thumb {
-  background: #667eea;
+  background: rgba(255, 255, 255, 0.3);
   border-radius: 10px;
 }
 
 .day-events::-webkit-scrollbar-thumb:hover {
-  background: #764ba2;
+  background: rgba(255, 255, 255, 0.5);
 }
 
 /* Events Grid - not used in day card layout */
@@ -611,11 +611,7 @@
 
 /* Responsive */
 @media (max-width: 768px) {
-  .weekly-events-page {
-    width: 100vw;
-    height: 100vh;
-    border-radius: 0;
-  }
+ 
 
   .modal-close-btn {
     width: 42px;
@@ -688,5 +684,12 @@
 
   .event-details h4 {
     font-size: 16px;
+  }
+
+  /* Move share button to bottom on mobile */
+  .modal-share-btn {
+    top: auto;
+    bottom: 20px;
+    right: 20px;
   }
 }

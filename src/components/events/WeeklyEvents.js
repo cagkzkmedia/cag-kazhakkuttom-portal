@@ -163,7 +163,6 @@ const WeeklyEvents = ({ isOpen, onClose }) => {
           >
             📱
           </button>
-        <div className="weekly-events-container">
           <div className="weekly-events-header">
             <div className="header-content">
               <h1>📅 This Week's Events</h1>
@@ -227,7 +226,6 @@ const WeeklyEvents = ({ isOpen, onClose }) => {
           )}
         </div>
       </div>
-    </div>
     </div>
 
       {showShareable && (
