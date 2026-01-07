@@ -7,6 +7,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   celebrationsModalOpen: false,
+  weeklyEventsModalOpen: false,
 };
 
 const uiSlice = createSlice({
@@ -19,8 +20,14 @@ const uiSlice = createSlice({
     closeCelebrationsModal: (state) => {
       state.celebrationsModalOpen = false;
     },
+    openWeeklyEventsModal: (state) => {
+      state.weeklyEventsModalOpen = true;
+    },
+    closeWeeklyEventsModal: (state) => {
+      state.weeklyEventsModalOpen = false;
+    },
   },
 });
 
-export const { openCelebrationsModal, closeCelebrationsModal } = uiSlice.actions;
+export const { openCelebrationsModal, closeCelebrationsModal, openWeeklyEventsModal, closeWeeklyEventsModal } = uiSlice.actions;
 export default uiSlice.reducer;

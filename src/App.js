@@ -20,6 +20,7 @@ import Layout from './components/common/Layout';
 import Dashboard from './components/dashboard/Dashboard';
 import Members from './components/members/Members';
 import Events from './components/events/Events';
+import WeeklyEvents from './components/events/WeeklyEvents';
 import Donations from './components/donations/Donations';
 import Settings from './components/settings/Settings';
 import ChangePassword from './components/settings/ChangePassword';
@@ -148,6 +149,14 @@ function App() {
                 element={
                   <RoleGuard allowedRoles={['admin', 'events_manager']}>
                     <Events />
+                  </RoleGuard>
+                } 
+              />
+              <Route 
+                path="weekly-events" 
+                element={
+                  <RoleGuard allowedRoles={['admin', 'events_manager']}>
+                    <WeeklyEvents />
                   </RoleGuard>
                 } 
               />

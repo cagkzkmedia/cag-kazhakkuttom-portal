@@ -6,16 +6,17 @@
 import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { closeCelebrationsModal } from '../../redux/slices/uiSlice';
+import { closeCelebrationsModal, closeWeeklyEventsModal } from '../../redux/slices/uiSlice';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import Celebrations from '../celebrations/Celebrations';
+import WeeklyEvents from '../events/WeeklyEvents';
 import './Layout.css';
 
 const Layout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const dispatch = useDispatch();
-  const { celebrationsModalOpen } = useSelector((state) => state.ui);
+  const { celebrationsModalOpen, weeklyEventsModalOpen } = useSelector((state) => state.ui);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -52,6 +53,12 @@ const Layout = () => {
       <Celebrations 
         isOpen={celebrationsModalOpen} 
         onClose={() => dispatch(closeCelebrationsModal())} 
+      />
+      
+      {/* Global Weekly Events Modal */}
+      <WeeklyEvents 
+        isOpen={weeklyEventsModalOpen} 
+        onClose={() => dispatch(closeWeeklyEventsModal())} 
       />
     </div>
   );

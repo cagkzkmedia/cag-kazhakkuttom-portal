@@ -6,7 +6,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { openCelebrationsModal } from '../../redux/slices/uiSlice';
+import { openCelebrationsModal, openWeeklyEventsModal } from '../../redux/slices/uiSlice';
 import churchLogo from '../../assets/cag-logo.png';
 import agLogo from '../../assets/ag-logo.png';
 import './Sidebar.css';
@@ -27,6 +27,7 @@ const Sidebar = ({ isOpen, onItemClick, onClose }) => {
     { path: '/admin/members', icon: '👥', label: 'Members', roles: ['admin'] },
     { path: '/admin/member-approvals', icon: '✅', label: 'Member Approvals', roles: ['admin'] },
     { path: '/admin/events', icon: '📅', label: 'Events', roles: ['admin', 'events_manager'] },
+    { path: 'weekly-events', icon: '📆', label: 'Weekly Events', roles: ['admin', 'events_manager'], isAction: true },
     { path: '/admin/donations', icon: '💰', label: 'Donations', roles: ['admin', 'finance_manager'] },
     { path: '/admin/resources', icon: '📚', label: 'Resources', roles: ['admin', 'resource_manager'] },
     { path: '/admin/testimonials', icon: '💬', label: 'Testimonials', roles: ['admin', 'content_manager'] },
@@ -67,7 +68,11 @@ const Sidebar = ({ isOpen, onItemClick, onClose }) => {
             <button
               key={item.path}
               onClick={() => {
-                dispatch(openCelebrationsModal());
+                if (item.path === 'celebrations') {
+                  dispatch(openCelebrationsModal());
+                } else if (item.path === 'weekly-events') {
+                  dispatch(openWeeklyEventsModal());
+                }
                 if (onItemClick) onItemClick();
               }}
               className="sidebar-item sidebar-action-item"
