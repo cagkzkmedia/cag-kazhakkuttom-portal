@@ -101,7 +101,7 @@ const AdminMemberApprovals = () => {
   };
 
   const copyAllCredentials = () => {
-    const text = `Portal URL: ${window.location.origin}/#/login\nUsername: ${approvalDetails.credentials.username}\nPassword: ${approvalDetails.credentials.password}`;
+    const text = `Portal URL: ${window.location.origin}/#/member-portal/login\nUsername: ${approvalDetails.credentials.username}\nPassword: ${approvalDetails.credentials.password}`;
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -117,7 +117,7 @@ const AdminMemberApprovals = () => {
     const message = encodeURIComponent(
       `Hello ${approvalDetails.member.name},\n\n` +
       `Your membership has been approved! Here are your login credentials:\n\n` +
-      `Portal URL: ${window.location.origin}/#/login\n` +
+      `Portal URL: ${window.location.origin}/#/member-portal/login\n` +
       `Username: ${approvalDetails.credentials.username}\n` +
       `Password: ${approvalDetails.credentials.password}\n\n` +
       `Please login and change your password immediately.\n\n` +
