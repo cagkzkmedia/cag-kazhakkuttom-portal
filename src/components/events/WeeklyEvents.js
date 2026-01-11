@@ -41,20 +41,22 @@ const WeeklyEvents = ({ isOpen, onClose }) => {
   };
 
   const getWeekRange = () => {
-    const now = new Date();
-    const currentDay = now.getDay();
-    const diff = currentDay === 0 ? -6 : 1 - currentDay;
-    
-    const monday = new Date(now);
-    monday.setDate(now.getDate() + diff);
-    monday.setHours(0, 0, 0, 0);
-    
-    const sunday = new Date(monday);
-    sunday.setDate(monday.getDate() + 6);
-    sunday.setHours(23, 59, 59, 999);
-    
-    return { start: monday, end: sunday };
-  };
+  const now = new Date();
+  const currentDay = now.getDay(); // Sunday = 0, Monday = 1, ... Saturday = 6
+
+  // Find Sunday of the current week
+  const sunday = new Date(now);
+  sunday.setDate(now.getDate() - currentDay);
+  sunday.setHours(0, 0, 0, 0);
+
+  // Find Saturday of the current week
+  const saturday = new Date(sunday);
+  saturday.setDate(sunday.getDate() + 6);
+  saturday.setHours(23, 59, 59, 999);
+
+  return { start: sunday, end: saturday };
+};
+
 
   const isInCurrentWeek = (date) => {
     const eventDate = new Date(date);
