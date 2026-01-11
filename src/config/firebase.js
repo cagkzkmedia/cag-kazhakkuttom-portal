@@ -27,3 +27,4 @@ export const storage = getStorage(app);
 console.log('Firebase Storage Bucket:', firebaseConfig.storageBucket);
 
 export default app;
+// Testing public commit
