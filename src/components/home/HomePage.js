@@ -471,7 +471,10 @@ const HomePage = () => {
       {/* YouTube Feed Section */}
       <section className="youtube-section">
         <div className="youtube-content">
-          <YouTubeFeed channelId="UCanJ6BQMS461u5VTREGR6WA" apiKey="AIzaSyD6hF0HaNLmf97zOpj0nMb82fIoSKAon6w" />
+          <YouTubeFeed 
+            channelId={process.env.REACT_APP_YOUTUBE_CHANNEL_ID} 
+            apiKey={process.env.REACT_APP_YOUTUBE_API_KEY} 
+          />
         </div>
       </section>
 
