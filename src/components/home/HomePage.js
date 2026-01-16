@@ -17,7 +17,7 @@ import { getAllEvents } from '../../services/eventService.firebase';
 import { getAllArticles } from '../../services/articlesService.firebase';
 import { getAllTestimonials } from '../../services/testimonialService.firebase';
 import { formatTo12Hour } from '../../utils/timeFormatter';
-
+import YouTubeFeed from '../common/youtubeFeed';
 // Mock articles for demonstration
 const MOCK_ARTICLES = [
   {
@@ -465,6 +465,13 @@ const HomePage = () => {
               </div>
             </div>
           )}
+        </div>
+      </section>
+
+      {/* YouTube Feed Section */}
+      <section className="youtube-section">
+        <div className="youtube-content">
+          <YouTubeFeed channelId="UCanJ6BQMS461u5VTREGR6WA" apiKey="AIzaSyD6hF0HaNLmf97zOpj0nMb82fIoSKAon6w" />
         </div>
       </section>
 

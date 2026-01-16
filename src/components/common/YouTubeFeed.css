@@ -1,0 +1,79 @@
+/* YouTubeFeed.css */
+.youtube-feed {
+  margin: 2rem 0;
+}
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.video-card {
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.video-card:hover {
+  transform: scale(1.03);
+}
+
+.video-card img {
+  width: 100%;
+  display: block;
+}
+
+.video-card h4 {
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+.video-card p {
+  padding: 0 0.5rem 0.5rem;
+  font-size: 0.875rem;
+  color: #555;
+}
+/* Responsive */
+@media (max-width: 600px) {
+  .video-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.video-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}   
+.video-item {
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+.video-item:hover {
+  transform: scale(1.05);
+}
+.video-thumbnail {
+  width: 100%;
+  display: block;
+}
+.video-title {
+  padding: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+.video-description {
+  padding: 0 8px 8px;
+  font-size: 12px;
+  color: #666;
+}   
+/* Responsive */
+@media (max-width: 600px) {
+  .video-gallery {
+    grid-template-columns: 1fr;
+  }
+}   
