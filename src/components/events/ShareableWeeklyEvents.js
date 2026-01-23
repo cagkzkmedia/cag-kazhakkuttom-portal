@@ -144,9 +144,7 @@ const ShareableWeeklyEvents = ({ events, weekRange, onClose }) => {
           <div className="shareable-preview" ref={shareableRef}>
             <div className="shareable-content">
               <div className="shareable-header-section">
-                <div className="shareable-header-top">
-                  <img src={cagLogo} alt="CAG Logo" className="cag-logo-shareable" />
-                </div>
+              
                 
                 <div className="shareable-title-section">
                   <h1 className="cag-main-title">Christ AG Weekly Gathering</h1>
