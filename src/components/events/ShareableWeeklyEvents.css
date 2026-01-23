@@ -82,7 +82,7 @@
 }
 
 .shareable-preview {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #0284c7;
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
@@ -90,92 +90,75 @@
 
 /* Shareable Content */
 .shareable-content {
-  padding: 12px 15px;
+  padding: 25px 20px;
   color: white;
+}
+
+.shareable-header-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 15px;
 }
 
 .shareable-header-top {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 8px;
+  flex-shrink: 0;
 }
 
 .cag-logo-shareable {
-  width: 35px;
+  width: 120px;
   height: auto;
   display: block;
-  filter: brightness(0) invert(1) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
-  flex-shrink: 0;
-  -webkit-filter: brightness(0) invert(1) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+  filter: brightness(0) invert(1) drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+  -webkit-filter: brightness(0) invert(1) drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
 }
 
-.church-title {
-  font-size: 20px;
-  font-weight: 800;
-  color: white;
+.cag-main-title {
+  font-size: 16px;
+  font-weight: 900;
+  color: #fbbf24;
   margin: 0;
-  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  letter-spacing: -0.5px;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  letter-spacing: 1.5px;
+  line-height: 1.2;
+  word-wrap: break-word;
+}
+
+.events-main-heading {
+  font-size: 18px;
+  font-weight: 900;
+  color: white;
+  margin: 4px 0 6px 0;
+  text-shadow: 0 3px 15px rgba(0, 0, 0, 0.3);
+  letter-spacing: 1.5px;
+  line-height: 1.2;
 }
 
 .shareable-title-section {
-  text-align: center;
-  margin-bottom: 12px;
-}
-
-.church-branding {
+  text-align: right;
   flex: 1;
-  text-align: center;
-}
-
-.church-branding h1 {
-  font-size: 16px;
-  font-weight: 800;
-  color: white;
-  margin: 0 0 4px 0;
-  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  letter-spacing: -0.5px;
-}
-
-.title-decoration {
-  width: 40px;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, white, transparent);
-  margin: 0 auto 6px;
-  border-radius: 2px;
-}
-
-.events-heading {
-  font-size: 15px;
-  font-weight: 700;
-  color: white;
-  margin: 0 0 4px 0;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  text-align: center;
-  letter-spacing: 0.5px;
 }
 
 .week-date-range {
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.9);
+  font-size: 14px !important;
+  color: white !important;
   margin: 0;
-  font-weight: 600;
-  background: rgba(255, 255, 255, 0.15);
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 20px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  text-align: center;
+  font-weight: 800 !important;
+  display: block !important;
+  letter-spacing: 1px;
+  text-shadow: 0 3px 15px rgba(0, 0, 0, 0.4);
+  text-transform: uppercase;
+  line-height: 1.4;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 /* Events List */
 .shareable-events-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 15px;
   min-height: 50px;
 }
 
@@ -189,147 +172,156 @@
 
 .no-events-message-shareable p {
   font-size: 16px;
-  color: #667eea;
+  color: #0284c7;
   font-weight: 600;
   margin: 0;
 }
 
 .shareable-day-section {
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 10px;
+  position: relative;
+}
+
+.day-section-wrapper {
+  display: flex;
+  align-items: stretch;
+  border-radius: 0 50px 50px 0;
   overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  min-height: 100px;
+  position: relative;
+  padding-left: 15px;
 }
 
-.day-header-bar {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
-  padding: 6px 12px;
-  border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+.day-date-badge {
+  background: white !important;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: auto 0 auto -10px;
+  padding: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
+  z-index: 2;
+  position: relative;
 }
 
-.day-header-bar h3 {
-  font-size: 14px;
-  font-weight: 700;
-  color: #667eea;
-  margin: 0;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  letter-spacing: 0.3px;
+.day-number {
+  font-size: 32px !important;
+  font-weight: 900 !important;
+  color: #10b981 !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
-.shareable-events {
-  padding: 8px;
+.day-name {
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  color: #1f2937 !important;
+  margin-top: 4px !important;
+  letter-spacing: 0.5px;
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.day-events-content {
+  flex: 1;
+  padding: 15px 25px 15px 35px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-}
-
-.shareable-event-item {
-  display: flex;
+  justify-content: center;
   gap: 8px;
-  align-items: center;
-  padding: 6px 10px;
-  background: white;
-  border-radius: 6px;
-  border-left: 3px solid #8b5cf6;
-  transition: all 0.2s ease;
-  font-size: 12px;
-  color: #2d3748;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
 }
 
-.event-time-text {
-  font-weight: 700;
-  color: #667eea;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.pipe-separator {
-  color: #cbd5e0;
-  font-weight: 300;
-  flex-shrink: 0;
-}
-
-.event-title-text {
-  font-weight: 600;
-  color: #2d3748;
-  flex: 1;
-}
-
-.event-location-text {
-  font-weight: 500;
-  color: #718096;
-  font-size: 11px;
-}
-
-.event-time-badge {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 11px;
-  font-weight: 700;
-  white-space: nowrap;
-  min-width: 60px;
-  text-align: center;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
-}
-
-.event-info {
-  flex: 1;
+.event-line {
   display: flex;
   flex-direction: column;
+  gap: 2px;
 }
 
-.event-info h4 {
-  font-size: 13px;
-  font-weight: 700;
-  color: #2d3748;
-  margin: 0 0 2px 0;
+.event-title-main {
+  font-size: 16px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   line-height: 1.3;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-.event-location {
-  font-size: 13px;
-  color: #718096;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 4px;
+.event-time-main {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Event color variations matching template */
+.event-primary .event-title-main {
+  color: #fbbf24; /* Orange/Amber */
+}
+
+.event-primary .event-time-main {
+  color: white;
+}
+
+.event-secondary .event-title-main {
+  color: #84cc16; /* Bright Lime */
+}
+
+.event-secondary .event-time-main {
+  color: white;
+}
+
+.event-tertiary .event-title-main {
+  color: #06b6d4; /* Cyan */
+}
+
+.event-tertiary .event-time-main {
+  color: white;
 }
 
 /* Contact Card */
 .contact-card-shareable {
-  margin-top: 12px;
-  padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.25);
+  margin-top: 20px;
+  padding: 15px 20px;
+  background: linear-gradient(90deg, #22c55e, #16a34a);
   border-radius: 12px;
   text-align: center;
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(12px) saturate(180%);
-  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   position: relative;
   overflow: hidden;
 }
 
-.contact-card-shareable::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+.contact-badge {
+  background: white;
+  color: #16a34a;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 6px 16px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .contact-card-shareable p {
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 800;
   color: #ffffff;
   margin: 0;
   line-height: 1.5;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  letter-spacing: 0.2px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.5px;
 }
 
 /* Footer */
@@ -418,86 +410,145 @@
   }
 
   .shareable-preview-container {
-    padding: 20px;
+    padding: 15px;
   }
 
   .shareable-content {
-    padding: 30px 20px;
+    padding: 25px 20px;
   }
 
   .cag-logo-shareable {
-    width: 60px;
+    width: 120px;
   }
 
-  .church-branding h1 {
+  .cag-main-title {
+    font-size: 17px;
+    letter-spacing: 1.5px;
+  }
+
+  .events-main-heading {
     font-size: 26px;
+    letter-spacing: 1.5px;
   }
 
-  .events-heading {
-    font-size: 22px;
+  .week-date-range {
+    font-size: 20px;
+    letter-spacing: 1.5px;
   }
 
-  .contact-info {
-    gap: 8px;
+  .shareable-events-list {
+    gap: 12px;
   }
 
-  .contact-item {
+  .day-date-badge {
+    width: 70px;
+    height: 70px;
+    padding: 8px;
+  }
+
+  .day-number {
+    font-size: 28px !important;
+  }
+
+  .day-name {
+    font-size: 11px !important;
+  }
+
+  .day-events-content {
+    padding: 12px 20px 12px 25px;
+    gap: 6px;
+  }
+
+  .event-title-main {
+    font-size: 15px;
+  }
+
+  .event-time-main {
     font-size: 13px;
+  }
+
+  .contact-card-shareable p {
+    font-size: 14px;
   }
 
   .shareable-actions {
     flex-direction: column;
     gap: 10px;
+    padding: 15px 20px;
   }
 }
 
-/* Desktop/Default: Show badge layout, hide pipe format */
-.event-time-text,
-.pipe-separator,
-.event-title-text,
-.event-location-text {
-  display: none;
-}
-
-.event-time-badge {
-  display: block;
-}
-
-.event-info {
-  display: flex;
-}
-
-/* Mobile: Show pipe format, hide badge layout */
 @media (max-width: 480px) {
   .shareable-content {
-    padding: 25px 15px;
+    padding: 20px 15px;
   }
 
-  .shareable-event-item {
-    flex-direction: row;
-    align-items: center;
-    gap: 8px;
+  .cag-logo-shareable {
+    width: 120px;
   }
 
-  .event-time-badge,
-  .event-info {
-    display: none;
+  .cag-main-title {
+    font-size: 17px;
+    letter-spacing: 1.5px;
   }
 
-  .event-time-text,
-  .pipe-separator,
-  .event-title-text,
-  .event-location-text {
-    display: inline;
+  .events-main-heading {
+    font-size: 20px;
+    letter-spacing: 1px;
   }
 
-  .event-time-text {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
-    padding: 3px 8px;
-    border-radius: 6px;
+  .week-date-range {
+    font-size: 16px;
+    letter-spacing: 1px;
+  }
+
+  .shareable-events-list {
+    gap: 10px;
+  }
+
+  .day-section-wrapper {
+    min-height: 80px;
+  }
+
+  .day-date-badge {
+    width: 60px;
+    height: 60px;
+    margin-left: -8px;
+    padding: 6px;
+  }
+
+  .day-number {
+    font-size: 24px !important;
+  }
+
+  .day-name {
+    font-size: 9px !important;
+  }
+
+  .day-events-content {
+    padding: 10px 15px 10px 20px;
+    gap: 5px;
+  }
+
+  .event-title-main {
+    font-size: 13px;
+  }
+
+  .event-time-main {
     font-size: 11px;
-    font-weight: 700;
-    white-space: nowrap;
+  }
+
+  .contact-badge {
+    font-size: 10px;
+    padding: 5px 12px;
+  }
+
+  .contact-card-shareable {
+    padding: 12px 15px;
+    margin-top: 15px;
+  }
+
+  .contact-card-shareable p {
+    font-size: 12px;
   }
 }
