@@ -361,6 +361,13 @@ const HomePage = () => {
                 <p>4:00 PM - 5:30 PM</p>
               </div>
             </div>
+              <div className="service-item">
+              <div className="service-day">Sunday</div>
+              <div className="service-details">
+                <h4>🙏 Tamil Service</h4>
+                <p>6:30 PM - 8:00 PM</p>
+              </div>
+            </div>
             
             {/* Weekday Services */}
             <div className="service-item">
