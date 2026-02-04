@@ -307,6 +307,54 @@
   }
 }
 
+/* Today's Celebration - Special Highlight */
+.celebration-card.today {
+  position: relative;
+  border: 3px solid rgba(255, 215, 0, 0.8) !important;
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.6), 0 8px 24px rgba(0, 0, 0, 0.2) !important;
+  animation: cardFadeIn 0.5s ease-out, gradientShift 3s ease infinite, todayPulse 2s ease-in-out infinite !important;
+}
+
+.celebration-card.today::after {
+  content: '⭐ TODAY ⭐';
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+  color: #1a202c;
+  font-weight: bold;
+  font-size: 11px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.6);
+  animation: badgeBounce 2s ease-in-out infinite;
+  z-index: 10;
+  letter-spacing: 0.5px;
+}
+
+@keyframes todayPulse {
+  0%, 100% {
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.6), 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.8), 0 12px 32px rgba(0, 0, 0, 0.25);
+  }
+}
+
+@keyframes badgeBounce {
+  0%, 100% {
+    transform: scale(1) rotate(-5deg);
+  }
+  50% {
+    transform: scale(1.1) rotate(-5deg);
+  }
+}
+
+.celebration-card.today:hover {
+  transform: translateY(-16px) scale(1.08) !important;
+  box-shadow: 0 0 50px rgba(255, 215, 0, 0.9), 0 20px 60px rgba(0, 0, 0, 0.3) !important;
+}
+
 /* Celebration Display */
 .celebration-display {
   text-align: center;

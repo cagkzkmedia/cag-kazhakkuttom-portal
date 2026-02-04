@@ -93,6 +93,14 @@ const CelebrationsPage = () => {
     return false;
   };
 
+  // Check if a date (month/day only) is today
+  const isToday = (monthDay) => {
+    if (!monthDay) return false;
+    const today = new Date();
+    const dateObj = new Date(monthDay);
+    return today.getMonth() === dateObj.getMonth() && today.getDate() === dateObj.getDate();
+  };
+
   // Get members celebrating birthdays this week
   const birthdayMembers = members.filter(
     (m) => m.dateOfBirth && isInCurrentWeek(m.dateOfBirth)
@@ -126,6 +134,7 @@ const CelebrationsPage = () => {
       celebrationDate: new Date(m.dateOfBirth),
       icon: '🎂',
       week: 'this',
+      isToday: isToday(m.dateOfBirth),
     })),
     ...nextWeekBirthdayMembers.map((m) => ({
       ...m,
@@ -133,6 +142,7 @@ const CelebrationsPage = () => {
       celebrationDate: new Date(m.dateOfBirth),
       icon: '🎂',
       week: 'next',
+      isToday: isToday(m.dateOfBirth),
     })),
     ...anniversaryMembers.map((m) => ({
       ...m,
@@ -141,6 +151,7 @@ const CelebrationsPage = () => {
       icon: '❤️',
       years: new Date().getFullYear() - new Date(m.marriageDate).getFullYear(),
       week: 'this',
+      isToday: isToday(m.marriageDate),
     })),
     ...nextWeekAnniversaryMembers.map((m) => ({
       ...m,
@@ -149,6 +160,7 @@ const CelebrationsPage = () => {
       icon: '❤️',
       years: new Date().getFullYear() - new Date(m.marriageDate).getFullYear(),
       week: 'next',
+      isToday: isToday(m.marriageDate),
     })),
     ...churchJoinAnniversaryMembers.map((m) => ({
       ...m,
@@ -157,6 +169,7 @@ const CelebrationsPage = () => {
       icon: '⛪',
       years: new Date().getFullYear() - new Date(m.joinDate).getFullYear(),
       week: 'this',
+      isToday: isToday(m.joinDate),
     })),
   ].sort((a, b) => a.celebrationDate.getDate() - b.celebrationDate.getDate());
 
@@ -227,7 +240,7 @@ const CelebrationsPage = () => {
                           .map((member) => (
                             <div
                               key={`${member.id}-${member.type}-this`}
-                              className="celebration-card birthday"
+                              className={`celebration-card birthday${member.isToday ? ' today' : ''}`}
                             >
                               <div className="celebration-display">
                                 <div className="celebration-icon">{member.icon}</div>
@@ -261,7 +274,7 @@ const CelebrationsPage = () => {
                           .map((member) => (
                             <div
                               key={`${member.id}-${member.type}-next`}
-                              className="celebration-card birthday"
+                              className={`celebration-card birthday${member.isToday ? ' today' : ''}`}
                             >
                               <div className="celebration-display">
                                 <div className="celebration-icon">{member.icon}</div>
@@ -305,7 +318,7 @@ const CelebrationsPage = () => {
                           .map((member) => (
                             <div
                               key={`${member.id}-${member.type}-this`}
-                              className="celebration-card anniversary"
+                              className={`celebration-card anniversary${member.isToday ? ' today' : ''}`}
                             >
                               <div className="celebration-display">
                                 <div className="celebration-icon">{member.icon}</div>
@@ -343,7 +356,7 @@ const CelebrationsPage = () => {
                           .map((member) => (
                             <div
                               key={`${member.id}-${member.type}-next`}
-                              className="celebration-card anniversary"
+                              className={`celebration-card anniversary${member.isToday ? ' today' : ''}`}
                             >
                               <div className="celebration-display">
                                 <div className="celebration-icon">{member.icon}</div>
@@ -386,7 +399,7 @@ const CelebrationsPage = () => {
                       .map((member) => (
                         <div
                           key={`${member.id}-${member.type}`}
-                          className="celebration-card churchJoinAnniversary"
+                          className={`celebration-card churchJoinAnniversary${member.isToday ? ' today' : ''}`}
                         >
                           <div className="celebration-display">
                             <div className="celebration-icon">{member.icon}</div>
