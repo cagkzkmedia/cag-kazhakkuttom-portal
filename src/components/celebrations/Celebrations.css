@@ -162,6 +162,35 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+/* Toggle Next Week Button */
+.toggle-next-week-btn {
+  position: absolute;
+  top: 24px;
+  right: 80px;
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: none;
+}
+
+.toggle-next-week-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.toggle-next-week-btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
 /* Content Section */
 .celebrations-content {
   position: relative;
@@ -222,6 +251,17 @@
 .category-icon {
   font-size: 32px;
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2));
+}
+
+/* Week Subtitle */
+.week-subtitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0 0 16px 0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  padding-left: 8px;
+  border-left: 4px solid rgba(255, 255, 255, 0.4);
 }
 
 /* Celebrations Grid */

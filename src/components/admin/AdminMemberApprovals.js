@@ -101,17 +101,30 @@ const AdminMemberApprovals = () => {
   };
 
   const copyAllCredentials = () => {
-    const text = `Portal URL: ${window.location.origin}/#/member-portal/login\nUsername: ${approvalDetails.credentials.username}\nPassword: ${approvalDetails.credentials.password}`;
+    const text = `Hello ${approvalDetails.member.name},\n\n` +
+      `Your membership has been approved! Here are your login credentials:\n\n` +
+      `Portal URL: ${window.location.origin}/#/member-portal/login\n` +
+      `Username: ${approvalDetails.credentials.username}\n` +
+      `Password: ${approvalDetails.credentials.password}\n\n` +
+      `Please login and change your password immediately.\n\n` +
+      `Welcome to CAG Kazhakuttom!`;
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
   const sendToWhatsApp = () => {
-    const phone = approvalDetails.member.phone?.replace(/\D/g, '');
+    let phone = approvalDetails.member.phone?.replace(/\D/g, '');
     if (!phone) {
       alert('No phone number available for this member');
       return;
+    }
+
+    // Add country code if not present (assuming India +91)
+    if (phone.length === 10) {
+      phone = '91' + phone;
+    } else if (phone.startsWith('0') && phone.length === 11) {
+      phone = '91' + phone.substring(1);
     }
 
     const message = encodeURIComponent(
@@ -223,10 +236,10 @@ const AdminMemberApprovals = () => {
                 <div className="credential-item">
                   <label>Portal URL:</label>
                   <div className="credential-value">
-                    <code>{window.location.origin}/#/login</code>
+                    <code>{window.location.origin}/#/member-portal/login</code>
                     <button
                       className="copy-btn"
-                      onClick={() => copyToClipboard(`${window.location.origin}/#/login`)}
+                      onClick={() => copyToClipboard(`${window.location.origin}/#/member-portal/login`)}
                       title="Copy portal URL"
                     >
                       📋

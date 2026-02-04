@@ -706,6 +706,7 @@ const HomePage = () => {
               <button onClick={() => window.scrollTo({ top: document.querySelector('.about-section').offsetTop, behavior: 'smooth' })} className="footer-link">About Us</button>
               <button onClick={() => window.scrollTo({ top: document.querySelector('.services-section').offsetTop, behavior: 'smooth' })} className="footer-link">Services</button>
               <button onClick={() => window.scrollTo({ top: document.querySelector('.ministries-section').offsetTop, behavior: 'smooth' })} className="footer-link">Ministries</button>
+              <button onClick={() => navigate('/celebrations')} className="footer-link">🎉 Celebrations</button>
             </div>
             <div className="footer-section">
               <h4>Portal Access</h4>

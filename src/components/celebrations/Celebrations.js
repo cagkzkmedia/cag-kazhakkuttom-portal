@@ -13,6 +13,7 @@ const Celebrations = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
   const { members } = useSelector((state) => state.members);
   const [loading, setLoading] = useState(true);
+  const [showNextWeek, setShowNextWeek] = useState(false);
 
   // Close on Escape key
   useEffect(() => {
@@ -67,10 +68,40 @@ const Celebrations = ({ isOpen, onClose }) => {
     return { startOfWeek, endOfWeek };
   };
 
+  // Get next week range (Sunday to Saturday)
+  const getNextWeekRange = () => {
+    const { startOfWeek, endOfWeek } = getWeekRange();
+    const nextWeekStart = new Date(startOfWeek);
+    nextWeekStart.setDate(startOfWeek.getDate() + 7);
+    
+    const nextWeekEnd = new Date(endOfWeek);
+    nextWeekEnd.setDate(endOfWeek.getDate() + 7);
+    
+    return { startOfWeek: nextWeekStart, endOfWeek: nextWeekEnd };
+  };
+
   // Check if a date (month/day only) falls within current week
   const isInCurrentWeek = (monthDay) => {
     if (!monthDay) return false;
     const { startOfWeek, endOfWeek } = getWeekRange();
+    const dateObj = new Date(monthDay);
+    const month = dateObj.getMonth();
+    const day = dateObj.getDate();
+
+    let checkDate = new Date(startOfWeek);
+    while (checkDate <= endOfWeek) {
+      if (checkDate.getMonth() === month && checkDate.getDate() === day) {
+        return true;
+      }
+      checkDate.setDate(checkDate.getDate() + 1);
+    }
+    return false;
+  };
+
+  // Check if a date (month/day only) falls within next week
+  const isInNextWeek = (monthDay) => {
+    if (!monthDay) return false;
+    const { startOfWeek, endOfWeek } = getNextWeekRange();
     const dateObj = new Date(monthDay);
     const month = dateObj.getMonth();
     const day = dateObj.getDate();
@@ -90,9 +121,19 @@ const Celebrations = ({ isOpen, onClose }) => {
     (m) => m.dateOfBirth && isInCurrentWeek(m.dateOfBirth)
   );
 
+  // Get members celebrating birthdays next week
+  const nextWeekBirthdayMembers = members.filter(
+    (m) => m.dateOfBirth && isInNextWeek(m.dateOfBirth)
+  );
+
   // Get members celebrating anniversaries this week
   const anniversaryMembers = members.filter(
     (m) => m.marriageDate && isInCurrentWeek(m.marriageDate)
+  );
+
+  // Get members celebrating anniversaries next week
+  const nextWeekAnniversaryMembers = members.filter(
+    (m) => m.marriageDate && isInNextWeek(m.marriageDate)
   );
 
   // Get members celebrating church joining anniversaries this week
@@ -107,6 +148,14 @@ const Celebrations = ({ isOpen, onClose }) => {
       type: 'birthday',
       celebrationDate: new Date(m.dateOfBirth),
       icon: '🎂',
+      week: 'this',
+    })),
+    ...nextWeekBirthdayMembers.map((m) => ({
+      ...m,
+      type: 'birthday',
+      celebrationDate: new Date(m.dateOfBirth),
+      icon: '🎂',
+      week: 'next',
     })),
     ...anniversaryMembers.map((m) => ({
       ...m,
@@ -114,6 +163,15 @@ const Celebrations = ({ isOpen, onClose }) => {
       celebrationDate: new Date(m.marriageDate),
       icon: '❤️',
       years: new Date().getFullYear() - new Date(m.marriageDate).getFullYear(),
+      week: 'this',
+    })),
+    ...nextWeekAnniversaryMembers.map((m) => ({
+      ...m,
+      type: 'anniversary',
+      celebrationDate: new Date(m.marriageDate),
+      icon: '❤️',
+      years: new Date().getFullYear() - new Date(m.marriageDate).getFullYear(),
+      week: 'next',
     })),
     ...churchJoinAnniversaryMembers.map((m) => ({
       ...m,
@@ -121,6 +179,7 @@ const Celebrations = ({ isOpen, onClose }) => {
       celebrationDate: new Date(m.joinDate),
       icon: '⛪',
       years: new Date().getFullYear() - new Date(m.joinDate).getFullYear(),
+      week: 'this',
     })),
   ].sort((a, b) => a.celebrationDate.getDate() - b.celebrationDate.getDate());
 
@@ -162,6 +221,14 @@ const Celebrations = ({ isOpen, onClose }) => {
           <p className="celebrations-subtitle">Celebrating life's special moments together</p>
           <p className="celebrations-week-range">{weekRangeText}</p>
         </div>
+        {(nextWeekBirthdayMembers.length > 0 || nextWeekAnniversaryMembers.length > 0) && (
+          <button 
+            className="toggle-next-week-btn"
+            onClick={() => setShowNextWeek(!showNextWeek)}
+          >
+            {showNextWeek ? '👁️ Hide' : '👀 Show'} Next Week
+          </button>
+        )}
       </div>
 
       <div className="celebrations-content">
@@ -174,80 +241,166 @@ const Celebrations = ({ isOpen, onClose }) => {
         ) : (
           <>
             {/* Birthday Section */}
-            {birthdayMembers.length > 0 && (
+            {(birthdayMembers.length > 0 || nextWeekBirthdayMembers.length > 0) && (
               <div className="celebration-category">
                 <h2 className="category-title">
                   <span className="category-icon">🎂</span>
-                  Birthdays ({birthdayMembers.length})
+                  Birthdays ({showNextWeek ? birthdayMembers.length + nextWeekBirthdayMembers.length : birthdayMembers.length})
                 </h2>
-                <div className="celebrations-grid">
-                  {weekCelebrations
-                    .filter((c) => c.type === 'birthday')
-                    .map((member) => (
-                      <div
-                        key={`${member.id}-${member.type}`}
-                        className="celebration-card birthday"
-                      >
-                        <div className="celebration-display">
-                          <div className="celebration-icon">{member.icon}</div>
-                        </div>
-                        <div className="celebration-info">
-                          <h4>{member.name}</h4>
-                          <p className="celebration-type">Birthday</p>
-                          <p className="celebration-date">
-                            {new Date(member.dateOfBirth).toLocaleDateString('en-US', {
-                              month: 'short',
-                              day: 'numeric',
-                            })}
-                          </p>
-                        </div>
-                        <div className="celebration-wish">
-                          🎈 Happy Birthday!
-                        </div>
-                      </div>
-                    ))}
-                </div>
+                
+                {/* This Week's Birthdays */}
+                {birthdayMembers.length > 0 && (
+                  <>
+                    <h3 className="week-subtitle">This Week</h3>
+                    <div className="celebrations-grid">
+                      {weekCelebrations
+                        .filter((c) => c.type === 'birthday' && c.week === 'this')
+                        .map((member) => (
+                          <div
+                            key={`${member.id}-${member.type}-this`}
+                            className="celebration-card birthday"
+                          >
+                            <div className="celebration-display">
+                              <div className="celebration-icon">{member.icon}</div>
+                            </div>
+                            <div className="celebration-info">
+                              <h4>{member.name}</h4>
+                              <p className="celebration-type">Birthday</p>
+                              <p className="celebration-date">
+                                {new Date(member.dateOfBirth).toLocaleDateString('en-US', {
+                                  month: 'short',
+                                  day: 'numeric',
+                                })}
+                              </p>
+                            </div>
+                            <div className="celebration-wish">
+                              🎈 Happy Birthday!
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  </>
+                )}
+
+                {/* Next Week's Birthdays */}
+                {showNextWeek && nextWeekBirthdayMembers.length > 0 && (
+                  <>
+                    <h3 className="week-subtitle">Next Week</h3>
+                    <div className="celebrations-grid">
+                      {weekCelebrations
+                        .filter((c) => c.type === 'birthday' && c.week === 'next')
+                        .map((member) => (
+                          <div
+                            key={`${member.id}-${member.type}-next`}
+                            className="celebration-card birthday"
+                          >
+                            <div className="celebration-display">
+                              <div className="celebration-icon">{member.icon}</div>
+                            </div>
+                            <div className="celebration-info">
+                              <h4>{member.name}</h4>
+                              <p className="celebration-type">Birthday</p>
+                              <p className="celebration-date">
+                                {new Date(member.dateOfBirth).toLocaleDateString('en-US', {
+                                  month: 'short',
+                                  day: 'numeric',
+                                })}
+                              </p>
+                            </div>
+                            <div className="celebration-wish">
+                              🎈 Happy Birthday!
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  </>
+                )}
               </div>
             )}
 
             {/* Anniversary Section */}
-            {anniversaryMembers.length > 0 && (
+            {(anniversaryMembers.length > 0 || nextWeekAnniversaryMembers.length > 0) && (
               <div className="celebration-category">
                 <h2 className="category-title">
                   <span className="category-icon">❤️</span>
-                  Wedding Anniversaries ({anniversaryMembers.length})
+                  Wedding Anniversaries ({showNextWeek ? anniversaryMembers.length + nextWeekAnniversaryMembers.length : anniversaryMembers.length})
                 </h2>
-                <div className="celebrations-grid">
-                  {weekCelebrations
-                    .filter((c) => c.type === 'anniversary')
-                    .map((member) => (
-                      <div
-                        key={`${member.id}-${member.type}`}
-                        className="celebration-card anniversary"
-                      >
-                        <div className="celebration-display">
-                          <div className="celebration-icon">{member.icon}</div>
-                          <div className="anniversary-badge">
-                            <span className="years-number">{member.years}</span>
-                            <span className="years-text">years</span>
+                
+                {/* This Week's Anniversaries */}
+                {anniversaryMembers.length > 0 && (
+                  <>
+                    <h3 className="week-subtitle">This Week</h3>
+                    <div className="celebrations-grid">
+                      {weekCelebrations
+                        .filter((c) => c.type === 'anniversary' && c.week === 'this')
+                        .map((member) => (
+                          <div
+                            key={`${member.id}-${member.type}-this`}
+                            className="celebration-card anniversary"
+                          >
+                            <div className="celebration-display">
+                              <div className="celebration-icon">{member.icon}</div>
+                              <div className="anniversary-badge">
+                                <span className="years-number">{member.years}</span>
+                                <span className="years-text">years</span>
+                              </div>
+                            </div>
+                            <div className="celebration-info">
+                              <h4>{member.name}</h4>
+                              <p className="celebration-type">Wedding Anniversary</p>
+                              <p className="celebration-date">
+                                {new Date(member.marriageDate).toLocaleDateString('en-US', {
+                                  month: 'short',
+                                  day: 'numeric',
+                                })}
+                              </p>
+                            </div>
+                            <div className="celebration-wish">
+                              💕 Happy Anniversary!
+                            </div>
                           </div>
-                        </div>
-                        <div className="celebration-info">
-                          <h4>{member.name}</h4>
-                          <p className="celebration-type">Wedding Anniversary</p>
-                          <p className="celebration-date">
-                            {new Date(member.marriageDate).toLocaleDateString('en-US', {
-                              month: 'short',
-                              day: 'numeric',
-                            })}
-                          </p>
-                        </div>
-                        <div className="celebration-wish">
-                          💕 Happy Anniversary!
-                        </div>
-                      </div>
-                    ))}
-                </div>
+                        ))}
+                    </div>
+                  </>
+                )}
+
+                {/* Next Week's Anniversaries */}
+                {showNextWeek && nextWeekAnniversaryMembers.length > 0 && (
+                  <>
+                    <h3 className="week-subtitle">Next Week</h3>
+                    <div className="celebrations-grid">
+                      {weekCelebrations
+                        .filter((c) => c.type === 'anniversary' && c.week === 'next')
+                        .map((member) => (
+                          <div
+                            key={`${member.id}-${member.type}-next`}
+                            className="celebration-card anniversary"
+                          >
+                            <div className="celebration-display">
+                              <div className="celebration-icon">{member.icon}</div>
+                              <div className="anniversary-badge">
+                                <span className="years-number">{member.years}</span>
+                                <span className="years-text">years</span>
+                              </div>
+                            </div>
+                            <div className="celebration-info">
+                              <h4>{member.name}</h4>
+                              <p className="celebration-type">Wedding Anniversary</p>
+                              <p className="celebration-date">
+                                {new Date(member.marriageDate).toLocaleDateString('en-US', {
+                                  month: 'short',
+                                  day: 'numeric',
+                                })}
+                              </p>
+                            </div>
+                            <div className="celebration-wish">
+                              💕 Happy Anniversary!
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  </>
+                )}
               </div>
             )}
 

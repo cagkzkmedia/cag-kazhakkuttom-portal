@@ -29,6 +29,7 @@ import ResourcesManager from './components/resources/ResourcesManager';
 import ArticleDetailPage from './components/articles/ArticleDetailPage';
 import TestimonialsManagement from './components/testimonials/TestimonialsManagement';
 import TestimonialForm from './components/testimonials/TestimonialForm';
+import CelebrationsPage from './components/celebrations/CelebrationsPage';
 
 // Member Portal Components
 import MemberPortalLogin from './components/member-portal/MemberPortalLogin';
@@ -88,6 +89,9 @@ function App() {
           <Routes>
             {/* Home Page */}
             <Route path="/" element={<HomePage />} />
+            
+            {/* Public Pages */}
+            <Route path="/celebrations" element={<CelebrationsPage />} />
             
             {/* Article Detail Page */}
             <Route path="/article/:id" element={<ArticleDetailPage />} />

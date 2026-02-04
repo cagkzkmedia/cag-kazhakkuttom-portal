@@ -17,24 +17,44 @@ const CredentialsModal = ({ credentials, onClose }) => {
   };
 
   const copyAllCredentials = () => {
-    const text = `Username: ${credentials.username}\nPassword: ${credentials.password}\nLogin URL: ${window.location.origin}/#/member-portal/login`;
+    const displayName = credentials.name || credentials.email || '';
+    const text = `Hello ${displayName},\n\n` +
+      `Your membership has been approved! Here are your login credentials:\n\n` +
+      `Portal URL: ${window.location.origin}/#/member-portal/login\n` +
+      `Username: ${credentials.username}\n` +
+      `Password: ${credentials.password}\n\n` +
+      `Please login and change your password immediately.\n\n` +
+      `Welcome to CAG Kazhakuttom!`;
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
   const sendToWhatsApp = () => {
-    const phone = (credentials.phone || '').replace(/\D/g, '');
+    let phone = (credentials.phone || '').replace(/\D/g, '');
     if (!phone) {
       alert('No phone number available for this member');
       return;
     }
 
-    const displayName = credentials.name || credentials.email || '';
-    const message = `Hello ${displayName},%0A%0AHere are your portal login details:%0AUsername: ${credentials.username}%0APassword: ${credentials.password}%0A%0ALogin: ${window.location.origin}/#/member-portal/login`;
+    // Add country code if not present (assuming India +91)
+    if (phone.length === 10) {
+      phone = '91' + phone;
+    } else if (phone.startsWith('0') && phone.length === 11) {
+      phone = '91' + phone.substring(1);
+    }
 
-    const url = `https://wa.me/${phone}?text=${message}`;
-    window.open(url, '_blank');
+    const displayName = credentials.name || credentials.email || '';
+    const message = encodeURIComponent(
+      `Hello ${displayName},\n\n` +
+      `Your membership has been approved! Here are your login credentials:\n\n` +
+      `Portal URL: ${window.location.origin}/#/member-portal/login\n` +
+      `Username: ${credentials.username}\n` +
+      `Password: ${credentials.password}\n\n` +
+      `Please login and change your password immediately.\n\n` +
+      `Welcome to CAG Kazhakuttom!`
+    );
+    window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
   };
 
   return (
