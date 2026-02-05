@@ -48,6 +48,23 @@ Christ AG Church Kazhakkuttom Family 💙`;
   const handleShareImage = async () => {
     if (!cardRef.current) return;
 
+    const phoneNumber = member.phone?.replace(/\D/g, '');
+    
+    if (!phoneNumber) {
+      alert('Phone number not available for this member.');
+      return;
+    }
+    
+    // Open WhatsApp with a message
+    const yearsText = years > 0 ? `${years}${years === 1 ? 'st' : years === 2 ? 'nd' : years === 3 ? 'rd' : 'th'} ` : '';
+    const message = `💕 Happy ${yearsText}Wedding Anniversary! 💕\n\n❤️ Dear ${formattedName},\n\nMay your love continue to grow stronger with each passing day. May God bless your union with endless joy, peace, and harmony.\n\nWith love and prayers,\nChrist AG Church Kazhakkuttom Family 💙`;
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
+  const handleDownloadImage = async () => {
+    if (!cardRef.current) return;
+
     try {
       const canvas = await html2canvas(cardRef.current, {
         backgroundColor: null,
@@ -59,29 +76,9 @@ Christ AG Church Kazhakkuttom Family 💙`;
         },
       });
 
-      canvas.toBlob(async (blob) => {
+      canvas.toBlob((blob) => {
         const fileName = `anniversary-${memberName.replace(/\s+/g, '-')}.png`;
-        
-        // Try Web Share API first (works on mobile and some desktop browsers)
-        if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([blob], fileName, { type: 'image/png' })] })) {
-          try {
-            const file = new File([blob], fileName, { type: 'image/png' });
-            await navigator.share({
-              files: [file],
-              title: `Happy Anniversary ${formattedName}!`,
-              text: '💕 Anniversary Wishes from Christ AG Church Kazhakkuttom Family 💙'
-            });
-          } catch (shareError) {
-            if (shareError.name !== 'AbortError') {
-              // If share was cancelled, don't show error
-              console.error('Share failed:', shareError);
-              downloadImage(blob, fileName);
-            }
-          }
-        } else {
-          // Fallback: download the image
-          downloadImage(blob, fileName);
-        }
+        downloadImage(blob, fileName);
       });
     } catch (error) {
       console.error('Error generating image:', error);
@@ -106,14 +103,13 @@ Christ AG Church Kazhakkuttom Family 💙`;
           <div className="anniversary-card-header">
             <div className="anniversary-card-icon">💑</div>
             <h2>Happy Anniversary!</h2>
-            {years > 0 && <div className="anniversary-years-badge">{years} {years === 1 ? 'Year' : 'Years'}</div>}
           </div>
           
           <div className="anniversary-card-body">
             <div className="anniversary-card-name">{formattedName}</div>
             
             <div className="anniversary-card-message">
-              <p>❤️ May your love continue to grow stronger with each passing day. May God bless your union with endless joy, peace, and harmony. Celebrating the beautiful journey you've shared together and wishing you many more wonderful years ahead! May the Lord continue to guide and bless your marriage abundantly. 🙏</p>
+              <p>💕 Celebrating your beautiful journey together! May God continue to bless your marriage with love, joy, and peace. Wishing you many more blessed years as husband and wife. 🙏</p>
             </div>
             
             <div className="anniversary-card-footer">
@@ -123,10 +119,13 @@ Christ AG Church Kazhakkuttom Family 💙`;
           </div>
           
           <div className="anniversary-card-actions">
+            <button className="anniversary-download-image-btn" onClick={handleDownloadImage}>
+              <span>💾</span>
+              <span>Download Card</span>
+            </button>
             <button className="anniversary-share-image-btn" onClick={handleShareImage}>
-              <span>📤</span>
-              <span className="anniversary-btn-text-desktop">Download Image</span>
-              <span className="anniversary-btn-text-mobile">Share Image</span>
+              <span>📲</span>
+              <span>Send to WhatsApp</span>
             </button>
           </div>
         </div>

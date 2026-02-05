@@ -235,8 +235,10 @@
   width: 100%;
   position: relative;
   z-index: 10;
+  gap: 12px;
 }
 
+.anniversary-card .anniversary-download-image-btn,
 .anniversary-card .anniversary-share-image-btn {
   width: 100%;
   padding: 16px 24px;
@@ -250,28 +252,39 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   position: relative;
   z-index: 10;
   color: white;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.anniversary-card .anniversary-download-image-btn {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  box-shadow: 0 4px 12px rgba(240, 147, 251, 0.4);
+}
+
+.anniversary-card .anniversary-download-image-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(240, 147, 251, 0.6);
+}
+
+.anniversary-card .anniversary-share-image-btn {
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
 }
 
 .anniversary-card .anniversary-share-image-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
 }
 
+.anniversary-card .anniversary-download-image-btn:active,
 .anniversary-card .anniversary-share-image-btn:active {
   transform: translateY(0);
 }
 
+.anniversary-card .anniversary-download-image-btn span,
 .anniversary-card .anniversary-share-image-btn span {
-  font-size: 22px;
-}
-
-.anniversary-card .anniversary-btn-text-mobile {
-  display: none;
+  font-size: 20px;
 }
 
 .anniversary-card .anniversary-btn-text-desktop {

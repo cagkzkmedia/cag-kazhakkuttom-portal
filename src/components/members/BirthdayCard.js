@@ -44,6 +44,22 @@ Christ AG Church Kazhakkuttom Family 💙`;
   const handleShareImage = async () => {
     if (!cardRef.current) return;
 
+    const phoneNumber = member.phone?.replace(/\D/g, '');
+    
+    if (!phoneNumber) {
+      alert('Phone number not available for this member.');
+      return;
+    }
+    
+    // Open WhatsApp with a message
+    const message = `🎉 Happy Birthday ${formattedName}! 🎉\n\nMay this special day bring you endless joy, blessings, and cherished moments.\n\nWith love and prayers,\nChrist AG Church Kazhakkuttom Family 💙`;
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
+  const handleDownloadImage = async () => {
+    if (!cardRef.current) return;
+
     try {
       const canvas = await html2canvas(cardRef.current, {
         backgroundColor: null,
@@ -55,29 +71,9 @@ Christ AG Church Kazhakkuttom Family 💙`;
         },
       });
 
-      canvas.toBlob(async (blob) => {
+      canvas.toBlob((blob) => {
         const fileName = `birthday-${memberName.replace(/\s+/g, '-')}.png`;
-        
-        // Try Web Share API first (works on mobile and some desktop browsers)
-        if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([blob], fileName, { type: 'image/png' })] })) {
-          try {
-            const file = new File([blob], fileName, { type: 'image/png' });
-            await navigator.share({
-              files: [file],
-              title: `Happy Birthday ${formattedName}!`,
-              text: '🎉 Birthday Wishes from Christ AG Church Kazhakkuttom Family 💙'
-            });
-          } catch (shareError) {
-            if (shareError.name !== 'AbortError') {
-              // If share was cancelled, don't show error
-              console.error('Share failed:', shareError);
-              downloadImage(blob, fileName);
-            }
-          }
-        } else {
-          // Fallback: download the image
-          downloadImage(blob, fileName);
-        }
+        downloadImage(blob, fileName);
       });
     } catch (error) {
       console.error('Error generating image:', error);
@@ -118,10 +114,13 @@ Christ AG Church Kazhakkuttom Family 💙`;
           </div>
           
           <div className="birthday-card-actions">
+            <button className="birthday-download-image-btn" onClick={handleDownloadImage}>
+              <span>💾</span>
+              <span>Download Card</span>
+            </button>
             <button className="birthday-share-image-btn" onClick={handleShareImage}>
-              <span>📤</span>
-              <span className="birthday-btn-text-desktop">Download Image</span>
-              <span className="birthday-btn-text-mobile">Share Image</span>
+              <span>📲</span>
+              <span>Send to WhatsApp</span>
             </button>
           </div>
         </div>
