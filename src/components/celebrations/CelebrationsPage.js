@@ -6,12 +6,17 @@
 
 import React, { useEffect, useState } from 'react';
 import { getAllMembers } from '../../services/memberService.firebase';
+import BirthdayCard from '../members/BirthdayCard';
+import AnniversaryCard from '../members/AnniversaryCard';
 import './CelebrationsPage.css';
 
 const CelebrationsPage = () => {
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showNextWeek, setShowNextWeek] = useState(false);
+  const [showBirthdayCard, setShowBirthdayCard] = useState(false);
+  const [showAnniversaryCard, setShowAnniversaryCard] = useState(false);
+  const [selectedMember, setSelectedMember] = useState(null);
 
   useEffect(() => {
     loadMembersData();
@@ -258,6 +263,16 @@ const CelebrationsPage = () => {
                               <div className="celebration-wish">
                                 🎈 Happy Birthday!
                               </div>
+                              <button
+                                className="celebration-whatsapp-btn"
+                                onClick={() => {
+                                  setSelectedMember(member);
+                                  setShowBirthdayCard(true);
+                                }}
+                                title="Send Birthday Wishes"
+                              >
+                                  📤
+                              </button>
                             </div>
                           ))}
                       </div>
@@ -292,6 +307,16 @@ const CelebrationsPage = () => {
                               <div className="celebration-wish">
                                 🎈 Happy Birthday!
                               </div>
+                              <button
+                                className="celebration-whatsapp-btn"
+                                onClick={() => {
+                                  setSelectedMember(member);
+                                  setShowBirthdayCard(true);
+                                }}
+                                title="Send Birthday Wishes"
+                              >
+                                📤
+                              </button>
                             </div>
                           ))}
                       </div>
@@ -340,6 +365,16 @@ const CelebrationsPage = () => {
                               <div className="celebration-wish">
                                 💕 Happy Anniversary!
                               </div>
+                              <button
+                                className="celebration-whatsapp-btn"
+                                onClick={() => {
+                                  setSelectedMember(member);
+                                  setShowAnniversaryCard(true);
+                                }}
+                                title="Send Anniversary Wishes"
+                              >
+                                  📤
+                              </button>
                             </div>
                           ))}
                       </div>
@@ -378,6 +413,16 @@ const CelebrationsPage = () => {
                               <div className="celebration-wish">
                                 💕 Happy Anniversary!
                               </div>
+                              <button
+                                className="celebration-whatsapp-btn"
+                                onClick={() => {
+                                  setSelectedMember(member);
+                                  setShowAnniversaryCard(true);
+                                }}
+                                title="Send Anniversary Wishes"
+                              >
+                                📤
+                              </button>
                             </div>
                           ))}
                       </div>
@@ -430,6 +475,26 @@ const CelebrationsPage = () => {
           )}
         </div>
       </div>
+
+      {showBirthdayCard && selectedMember && (
+        <BirthdayCard
+          member={selectedMember}
+          onClose={() => {
+            setShowBirthdayCard(false);
+            setSelectedMember(null);
+          }}
+        />
+      )}
+
+      {showAnniversaryCard && selectedMember && (
+        <AnniversaryCard
+          member={selectedMember}
+          onClose={() => {
+            setShowAnniversaryCard(false);
+            setSelectedMember(null);
+          }}
+        />
+      )}
     </div>
   );
 };

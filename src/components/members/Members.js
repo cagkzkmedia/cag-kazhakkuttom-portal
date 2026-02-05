@@ -15,6 +15,8 @@ import {
 } from '../../services/memberService.firebase';
 import MemberModal from './MemberModal';
 import CredentialsModal from './CredentialsModal';
+import BirthdayCard from './BirthdayCard';
+import AnniversaryCard from './AnniversaryCard';
 import './Members.css';
 
 const Members = () => {
@@ -25,6 +27,9 @@ const Members = () => {
   const [loading, setLoading] = useState(true);
   const [showCredentials, setShowCredentials] = useState(false);
   const [credentials, setCredentials] = useState(null);
+  const [showBirthdayCard, setShowBirthdayCard] = useState(false);
+  const [showAnniversaryCard, setShowAnniversaryCard] = useState(false);
+  const [cardMember, setCardMember] = useState(null);
 
   useEffect(() => {
     loadMembers();
@@ -139,7 +144,7 @@ const Members = () => {
     <div className="members-container">
       <div className="members-header">
         <h2>Members Management</h2>
-        <button onClick={handleAddMember} className="btn-primary">
+        <button onClick={handleAddMember} className="members-btn-primary">
           ➕ Add Member
         </button>
       </div>
@@ -178,50 +183,169 @@ const Members = () => {
           <thead>
             <tr>
               <th>Name</th>
-              <th>Email</th>
               <th>Phone</th>
               <th>Status</th>
               <th>Type</th>
-              <th>Join Date</th>
+              <th>Date of Birth</th>
               <th>Portal Access</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {filteredMembers.length > 0 ? (
-              filteredMembers.map((member) => (
-                <tr key={member.id}>
-                  <td>{member.firstName} {member.lastName}</td>
-                  <td>{member.email}</td>
+              (() => {
+                const today = new Date();
+                const dayOfWeek = today.getDay();
+                const startOfWeek = new Date(today);
+                startOfWeek.setDate(today.getDate() - dayOfWeek);
+                startOfWeek.setHours(0, 0, 0, 0);
+                
+                const endOfWeek = new Date(startOfWeek);
+                endOfWeek.setDate(startOfWeek.getDate() + 6);
+                endOfWeek.setHours(23, 59, 59, 999);
+                
+                const startOfNextWeek = new Date(startOfWeek);
+                startOfNextWeek.setDate(startOfWeek.getDate() + 7);
+                
+                const endOfNextWeek = new Date(endOfWeek);
+                endOfNextWeek.setDate(endOfWeek.getDate() + 7);
+                
+                // Helper function to check birthday type
+                const getBirthdayType = (member) => {
+                  const dob = member.dateOfBirth ? new Date(member.dateOfBirth) : null;
+                  if (!dob) return 0;
+                  
+                  // Check if birthday is today
+                  if (today.getMonth() === dob.getMonth() && today.getDate() === dob.getDate()) {
+                    return 3; // Today
+                  }
+                  
+                  // Check if birthday falls in current week
+                  let checkDate = new Date(startOfWeek);
+                  while (checkDate <= endOfWeek) {
+                    if (checkDate.getMonth() === dob.getMonth() && checkDate.getDate() === dob.getDate()) {
+                      return 2; // This week
+                    }
+                    checkDate.setDate(checkDate.getDate() + 1);
+                  }
+                  
+                  // Check if birthday falls in next week
+                  checkDate = new Date(startOfNextWeek);
+                  while (checkDate <= endOfNextWeek) {
+                    if (checkDate.getMonth() === dob.getMonth() && checkDate.getDate() === dob.getDate()) {
+                      return 1; // Next week
+                    }
+                    checkDate.setDate(checkDate.getDate() + 1);
+                  }
+                  
+                  return 0; // No upcoming birthday
+                };
+                
+                // Sort members by birthday priority
+                const sortedMembers = [...filteredMembers].sort((a, b) => {
+                  return getBirthdayType(b) - getBirthdayType(a);
+                });
+                
+                return sortedMembers.map((member) => {
+                const dob = member.dateOfBirth ? new Date(member.dateOfBirth) : null;
+                
+                // Check if birthday is today
+                const isBirthday = dob && 
+                  today.getMonth() === dob.getMonth() && 
+                  today.getDate() === dob.getDate();
+                
+                // Check if birthday falls in current week or next week
+                const isInCurrentWeek = dob && !isBirthday && (() => {
+                  let checkDate = new Date(startOfWeek);
+                  while (checkDate <= endOfWeek) {
+                    if (checkDate.getMonth() === dob.getMonth() && checkDate.getDate() === dob.getDate()) {
+                      return true;
+                    }
+                    checkDate.setDate(checkDate.getDate() + 1);
+                  }
+                  return false;
+                })();
+                
+                const isInNextWeek = dob && !isBirthday && (() => {
+                  let checkDate = new Date(startOfNextWeek);
+                  while (checkDate <= endOfNextWeek) {
+                    if (checkDate.getMonth() === dob.getMonth() && checkDate.getDate() === dob.getDate()) {
+                      return true;
+                    }
+                    checkDate.setDate(checkDate.getDate() + 1);
+                  }
+                  return false;
+                })();
+
+                // Check for anniversary
+                const marriageDate = member.marriageDate ? new Date(member.marriageDate) : null;
+                const isAnniversary = marriageDate && 
+                  today.getMonth() === marriageDate.getMonth() && 
+                  today.getDate() === marriageDate.getDate();
+                
+                const isAnniversaryInCurrentWeek = marriageDate && !isAnniversary && (() => {
+                  let checkDate = new Date(startOfWeek);
+                  while (checkDate <= endOfWeek) {
+                    if (checkDate.getMonth() === marriageDate.getMonth() && checkDate.getDate() === marriageDate.getDate()) {
+                      return true;
+                    }
+                    checkDate.setDate(checkDate.getDate() + 1);
+                  }
+                  return false;
+                })();
+                
+                const isAnniversaryInNextWeek = marriageDate && !isAnniversary && (() => {
+                  let checkDate = new Date(startOfNextWeek);
+                  while (checkDate <= endOfNextWeek) {
+                    if (checkDate.getMonth() === marriageDate.getMonth() && checkDate.getDate() === marriageDate.getDate()) {
+                      return true;
+                    }
+                    checkDate.setDate(checkDate.getDate() + 1);
+                  }
+                  return false;
+                })();
+                
+                const rowClass = isBirthday ? 'birthday-row' : 
+                                isInCurrentWeek ? 'birthday-this-week' : 
+                                isInNextWeek ? 'birthday-next-week' : '';
+                
+                return (
+                <tr key={member.id} className={rowClass}>
+                  <td>{member.name || `${member.firstName || ''} ${member.lastName || ''}`.trim()}</td>
                   <td>{member.phone}</td>
                   <td>
-                    <span className={`status-badge ${member.status.toLowerCase()}`}>
+                    <span className={`members-status-badge ${member.status.toLowerCase()}`}>
                       {member.status}
                     </span>
                   </td>
                   <td>{member.membershipType}</td>
-                  <td>{new Date(member.joinDate).toLocaleDateString()}</td>
+                  <td>
+                    {member.dateOfBirth ? new Date(member.dateOfBirth).toLocaleDateString() : '-'}
+                    {isBirthday && <span className="birthday-indicator"> 🎂</span>}
+                    {isInCurrentWeek && <span className="birthday-indicator"> 🎉</span>}
+                    {isInNextWeek && <span className="birthday-indicator" style={{opacity: 0.6}}> 🎈</span>}
+                  </td>
                   <td>
                     {member.hasPortalAccess ? (
                       <>
-                        <span className="portal-access-yes">✓ Yes</span>
+                        <span className="members-portal-access-yes">✓ Yes</span>
                         <button 
                           onClick={() => handleViewCredentials(member)}
-                          className="btn-icon"
+                          className="members-btn-icon"
                           title="View Credentials"
                         >
                           🔑
                         </button>
                         <button 
                           onClick={() => handleResetCredentials(member)}
-                          className="btn-icon"
+                          className="members-btn-icon"
                           title="Reset Password"
                         >
                           🔄
                         </button>
                         <button 
                           onClick={() => handleRevokeAccess(member)}
-                          className="btn-icon btn-danger"
+                          className="members-btn-icon members-btn-danger"
                           title="Revoke Access"
                         >
                           🚫
@@ -229,10 +353,10 @@ const Members = () => {
                       </>
                     ) : (
                       <>
-                        <span className="portal-access-no">✗ No</span>
+                        <span className="members-portal-access-no">✗ No</span>
                         <button 
                           onClick={() => handleGenerateCredentials(member)}
-                          className="btn-icon btn-success"
+                          className="members-btn-icon members-btn-success"
                           title="Generate Credentials"
                         >
                           ➕
@@ -241,24 +365,50 @@ const Members = () => {
                     )}
                   </td>
                   <td>
+                    {(isBirthday || isInCurrentWeek || isInNextWeek) && (
+                      <button
+                        onClick={() => {
+                          setCardMember(member);
+                          setShowBirthdayCard(true);
+                        }}
+                        className="members-btn-action members-btn-whatsapp"
+                        title="Send Birthday Wishes"
+                      >
+                        🎂 Birthday
+                      </button>
+                    )}
+                    {(isAnniversary || isAnniversaryInCurrentWeek || isAnniversaryInNextWeek) && (
+                      <button
+                        onClick={() => {
+                          setCardMember(member);
+                          setShowAnniversaryCard(true);
+                        }}
+                        className="members-btn-action members-btn-whatsapp members-btn-anniversary"
+                        title="Send Anniversary Wishes"
+                      >
+                        💕 Anniversary
+                      </button>
+                    )}
                     <button
                       onClick={() => handleEditMember(member)}
-                      className="btn-action btn-edit"
+                      className="members-btn-action members-btn-edit"
                     >
                       ✏️ Edit
                     </button>
                     <button
                       onClick={() => handleDeleteMember(member.id)}
-                      className="btn-action btn-delete"
+                      className="members-btn-action members-btn-delete"
                     >
                       🗑️ Delete
                     </button>
                   </td>
                 </tr>
-              ))
+                );
+              });
+              })()
             ) : (
               <tr>
-                <td colSpan="8" className="no-data">
+                <td colSpan="7" className="no-data">
                   No members found
                 </td>
               </tr>
@@ -281,6 +431,26 @@ const Members = () => {
           onClose={() => {
             setShowCredentials(false);
             setCredentials(null);
+          }}
+        />
+      )}
+
+      {showBirthdayCard && cardMember && (
+        <BirthdayCard
+          member={cardMember}
+          onClose={() => {
+            setShowBirthdayCard(false);
+            setCardMember(null);
+          }}
+        />
+      )}
+
+      {showAnniversaryCard && cardMember && (
+        <AnniversaryCard
+          member={cardMember}
+          onClose={() => {
+            setShowAnniversaryCard(false);
+            setCardMember(null);
           }}
         />
       )}

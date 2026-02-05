@@ -7,6 +7,8 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setMembers } from '../../redux/slices/memberSlice';
 import { getAllMembers } from '../../services/memberService.firebase';
+import BirthdayCard from '../members/BirthdayCard';
+import AnniversaryCard from '../members/AnniversaryCard';
 import './Celebrations.css';
 
 const Celebrations = ({ isOpen, onClose }) => {
@@ -14,6 +16,9 @@ const Celebrations = ({ isOpen, onClose }) => {
   const { members } = useSelector((state) => state.members);
   const [loading, setLoading] = useState(true);
   const [showNextWeek, setShowNextWeek] = useState(false);
+  const [showBirthdayCard, setShowBirthdayCard] = useState(false);
+  const [showAnniversaryCard, setShowAnniversaryCard] = useState(false);
+  const [selectedMember, setSelectedMember] = useState(null);
 
   // Close on Escape key
   useEffect(() => {
@@ -276,6 +281,16 @@ const Celebrations = ({ isOpen, onClose }) => {
                             <div className="celebration-wish">
                               🎈 Happy Birthday!
                             </div>
+                            <button
+                              className="celebration-whatsapp-btn"
+                              onClick={() => {
+                                setSelectedMember(member);
+                                setShowBirthdayCard(true);
+                              }}
+                              title="Send Birthday Wishes"
+                            >
+                                📤
+                            </button>
                           </div>
                         ))}
                     </div>
@@ -310,6 +325,16 @@ const Celebrations = ({ isOpen, onClose }) => {
                             <div className="celebration-wish">
                               🎈 Happy Birthday!
                             </div>
+                            <button
+                              className="celebration-whatsapp-btn"
+                              onClick={() => {
+                                setSelectedMember(member);
+                                setShowBirthdayCard(true);
+                              }}
+                              title="Send Birthday Wishes"
+                            >
+                              📤
+                            </button>
                           </div>
                         ))}
                     </div>
@@ -358,6 +383,16 @@ const Celebrations = ({ isOpen, onClose }) => {
                             <div className="celebration-wish">
                               💕 Happy Anniversary!
                             </div>
+                            <button
+                              className="celebration-whatsapp-btn"
+                              onClick={() => {
+                                setSelectedMember(member);
+                                setShowAnniversaryCard(true);
+                              }}
+                              title="Send Anniversary Wishes"
+                            >
+                                📤
+                            </button>
                           </div>
                         ))}
                     </div>
@@ -396,6 +431,16 @@ const Celebrations = ({ isOpen, onClose }) => {
                             <div className="celebration-wish">
                               💕 Happy Anniversary!
                             </div>
+                            <button
+                              className="celebration-whatsapp-btn"
+                              onClick={() => {
+                                setSelectedMember(member);
+                                setShowAnniversaryCard(true);
+                              }}
+                              title="Send Anniversary Wishes"
+                            >
+                              📤
+                            </button>
                           </div>
                         ))}
                     </div>
@@ -448,6 +493,26 @@ const Celebrations = ({ isOpen, onClose }) => {
         )}
       </div>
       </div>
+
+      {showBirthdayCard && selectedMember && (
+        <BirthdayCard
+          member={selectedMember}
+          onClose={() => {
+            setShowBirthdayCard(false);
+            setSelectedMember(null);
+          }}
+        />
+      )}
+
+      {showAnniversaryCard && selectedMember && (
+        <AnniversaryCard
+          member={selectedMember}
+          onClose={() => {
+            setShowAnniversaryCard(false);
+            setSelectedMember(null);
+          }}
+        />
+      )}
     </div>
   );
 };
