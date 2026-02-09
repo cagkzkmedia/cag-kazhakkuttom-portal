@@ -1,3 +1,20 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Disallow: /admin/
+Disallow: /member-portal/dashboard
+Disallow: /member-portal/donate
+Disallow: /member-portal/donation-history
+Disallow: /member-portal/events
+Disallow: /member-portal/change-password
+
+# Allow public pages
+Allow: /
+Allow: /celebrations
+Allow: /login
+Allow: /register
+Allow: /member-portal/login
+Allow: /member-portal/signup
+Allow: /article/
+
+# Sitemap
+Sitemap: https://christagkazhakkuttom.in/sitemap.xml
