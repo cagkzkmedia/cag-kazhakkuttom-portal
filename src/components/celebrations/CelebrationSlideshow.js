@@ -230,6 +230,20 @@ const CelebrationSlideshow = () => {
 
   return (
     <div className="celebration-slideshow-container">
+      {/* Floating Celebration Emojis */}
+      <div className="celebration-balloon">🎈</div>
+      <div className="celebration-balloon">🎂</div>
+      <div className="celebration-balloon">🎉</div>
+      <div className="celebration-balloon">💝</div>
+      <div className="celebration-balloon">🎁</div>
+      <div className="celebration-balloon">🎊</div>
+      <div className="celebration-balloon">🎈</div>
+      <div className="celebration-balloon">💕</div>
+      <div className="celebration-balloon">🎂</div>
+      <div className="celebration-balloon">🎉</div>
+      <div className="celebration-balloon">🎁</div>
+      <div className="celebration-balloon">✨</div>
+      
       <div className="celebration-slideshow-header">
         <h1 className="celebration-slideshow-title">
           <span className="celebration-title-icon">✨</span>
