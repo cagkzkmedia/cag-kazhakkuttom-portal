@@ -53,6 +53,23 @@
   gap: 16px;
 }
 
+.profile-picture-section {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.profile-picture {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #667eea;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
 .profile-item {
   display: flex;
   flex-direction: column;

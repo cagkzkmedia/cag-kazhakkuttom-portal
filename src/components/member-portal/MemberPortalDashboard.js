@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { getMemberProfile, getMemberEvents } from '../../services/memberPortalService';
 import { getAllEvents } from '../../services/eventService.firebase';
 import { formatTo12Hour } from '../../utils/timeFormatter';
+import { getProfileImageUrl } from '../../utils/imageUtils';
 import './MemberPortalDashboard.css';
 import MemberModal from '../members/MemberModal';
 
@@ -141,6 +142,13 @@ const MemberPortalDashboard = () => {
         <div className="member-portal-card">
           <h3>👤 My Profile</h3>
           <div className="profile-info">
+            <div className="profile-picture-section">
+              <img 
+                src={getProfileImageUrl(profile?.profileImage, profile?.gender, profile?.name)} 
+                alt={profile?.name} 
+                className="profile-picture"
+              />
+            </div>
             <div className="profile-item">
               <span className="label">Name:</span>
               <span className="value">{profile?.name}</span>

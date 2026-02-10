@@ -6,6 +6,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createMemberSignup } from '../../services/memberService.firebase';
+import { convertImageToBase64, validateImageFile } from '../../utils/imageUtils';
 import './MemberSignup.css';
 
 const MemberSignup = () => {
@@ -18,11 +19,13 @@ const MemberSignup = () => {
     dateOfJoining: '',
     maritalStatus: '',
     marriageDate: '',
+    profileImage: '',
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showApprovalPopup, setShowApprovalPopup] = useState(false);
   const [signupEmail, setSignupEmail] = useState('');
+  const [imagePreview, setImagePreview] = useState(null);
 
   const navigate = useNavigate();
 
@@ -32,6 +35,37 @@ const MemberSignup = () => {
       [e.target.name]: e.target.value,
     });
     setError(null);
+  };
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const validation = validateImageFile(file);
+    if (!validation.valid) {
+      setError(validation.error);
+      return;
+    }
+
+    try {
+      const base64Image = await convertImageToBase64(file);
+      setFormData({
+        ...formData,
+        profileImage: base64Image,
+      });
+      setImagePreview(base64Image);
+      setError(null);
+    } catch (err) {
+      setError(err.message || 'Failed to process image');
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setFormData({
+      ...formData,
+      profileImage: '',
+    });
+    setImagePreview(null);
   };
 
   const validateForm = () => {
@@ -98,6 +132,7 @@ const MemberSignup = () => {
         dateOfJoining: formData.dateOfJoining.trim(),
         maritalStatus: formData.maritalStatus.trim(),
         marriageDate: formData.maritalStatus === 'married' ? formData.marriageDate.trim() : null,
+        profileImage: formData.profileImage || '',
       });
 
       setSignupEmail(formData.email);
@@ -110,7 +145,9 @@ const MemberSignup = () => {
         dateOfJoining: '',
         maritalStatus: '',
         marriageDate: '',
+        profileImage: '',
       });
+      setImagePreview(null);
       setShowApprovalPopup(true);
     } catch (err) {
       setError(err.message || 'Failed to sign up. Please try again.');
@@ -250,6 +287,41 @@ const MemberSignup = () => {
               />
             </div>
           )}
+
+          <div className="form-group profile-image-upload">
+            <label>Profile Picture (Optional)</label>
+            <div className="image-upload-container">
+              {imagePreview ? (
+                <div className="image-preview">
+                  <img src={imagePreview} alt="Profile preview" />
+                  <button
+                    type="button"
+                    onClick={handleRemoveImage}
+                    className="remove-image-btn"
+                    disabled={loading}
+                  >
+                    ✕ Remove
+                  </button>
+                </div>
+              ) : (
+                <div className="image-upload-placeholder">
+                  <input
+                    type="file"
+                    id="profileImage"
+                    accept="image/jpeg,image/png,image/jpg,image/gif,image/webp"
+                    onChange={handleImageChange}
+                    disabled={loading}
+                    style={{ display: 'none' }}
+                  />
+                  <label htmlFor="profileImage" className="upload-label">
+                    <span className="upload-icon">📷</span>
+                    <span>Upload Photo</span>
+                    <span className="upload-hint">Max 2MB • JPG, PNG, GIF, WebP</span>
+                  </label>
+                </div>
+              )}
+            </div>
+          </div>
 
           <button type="submit" className="btn-signup" disabled={loading}>
             {loading ? 'Registering...' : 'Register'}

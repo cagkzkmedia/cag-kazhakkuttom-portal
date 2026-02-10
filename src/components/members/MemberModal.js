@@ -7,6 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { addMember, updateMember } from '../../redux/slices/memberSlice';
 import { createMember, updateMember as updateMemberService } from '../../services/memberService.firebase';
+import { convertImageToBase64, validateImageFile } from '../../utils/imageUtils';
 import './MemberModal.css';
 
 const MemberModal = ({ member, onClose, onSuccess, onRefresh }) => {
@@ -24,12 +25,17 @@ const MemberModal = ({ member, onClose, onSuccess, onRefresh }) => {
     maritalStatus: '',
     marriageDate: '',
     hasPortalAccess: false,
+    profileImage: '',
   });
   const [loading, setLoading] = useState(false);
+  const [imagePreview, setImagePreview] = useState(null);
 
   useEffect(() => {
     if (member) {
       setFormData(member);
+      if (member.profileImage) {
+        setImagePreview(member.profileImage);
+      }
     }
   }, [member]);
 
@@ -38,6 +44,36 @@ const MemberModal = ({ member, onClose, onSuccess, onRefresh }) => {
       ...formData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const validation = validateImageFile(file);
+    if (!validation.valid) {
+      alert(validation.error);
+      return;
+    }
+
+    try {
+      const base64Image = await convertImageToBase64(file);
+      setFormData({
+        ...formData,
+        profileImage: base64Image,
+      });
+      setImagePreview(base64Image);
+    } catch (err) {
+      alert(err.message || 'Failed to process image');
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setFormData({
+      ...formData,
+      profileImage: '',
+    });
+    setImagePreview(null);
   };
 
   const handleCheckboxChange = (e) => {
@@ -216,6 +252,41 @@ const MemberModal = ({ member, onClose, onSuccess, onRefresh }) => {
                 />
               </div>
             )}
+          </div>
+
+          <div className="form-group profile-image-upload">
+            <label>Profile Picture (Optional)</label>
+            <div className="image-upload-container">
+              {imagePreview ? (
+                <div className="image-preview">
+                  <img src={imagePreview} alt="Profile preview" />
+                  <button
+                    type="button"
+                    onClick={handleRemoveImage}
+                    className="remove-image-btn"
+                    disabled={loading}
+                  >
+                    ✕ Remove
+                  </button>
+                </div>
+              ) : (
+                <div className="image-upload-placeholder">
+                  <input
+                    type="file"
+                    id="profileImage"
+                    accept="image/jpeg,image/png,image/jpg,image/gif,image/webp"
+                    onChange={handleImageChange}
+                    disabled={loading}
+                    style={{ display: 'none' }}
+                  />
+                  <label htmlFor="profileImage" className="upload-label">
+                    <span className="upload-icon">📷</span>
+                    <span>Upload Photo</span>
+                    <span className="upload-hint">Max 2MB • JPG, PNG, GIF, WebP</span>
+                  </label>
+                </div>
+              )}
+            </div>
           </div>
 
           {!member && (

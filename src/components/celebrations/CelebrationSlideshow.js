@@ -6,6 +6,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { collection, query, getDocs } from 'firebase/firestore';
 import { db } from '../../config/firebase';
+import { getProfileImageUrl } from '../../utils/imageUtils';
 import './CelebrationSlideshow.css';
 
 const CelebrationSlideshow = () => {
@@ -290,12 +291,15 @@ const CelebrationSlideshow = () => {
                   className="celebration-image"
                 />
               ) : (
-                <div className="celebration-image-placeholder">
-                  <div className="celebration-placeholder-icon">
-                    {currentCelebration.type === 'birthday' ? '🎂' : '💑'}
-                  </div>
-                  <p className="celebration-placeholder-text">Click to upload image</p>
-                </div>
+                <img 
+                  src={getProfileImageUrl(
+                    currentCelebration.member?.profileImage, 
+                    currentCelebration.member?.gender, 
+                    currentCelebration.name
+                  )}
+                  alt={currentCelebration.name}
+                  className="celebration-image"
+                />
               )}
             </div>
             <input
