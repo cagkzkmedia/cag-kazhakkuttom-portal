@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/cag-kazhakkuttom-portal/static/css/main.edbaa31e.css",
+    "main.css": "/cag-kazhakkuttom-portal/static/css/main.0a3acc4c.css",
     "main.js": "/cag-kazhakkuttom-portal/static/js/main.806f7db5.js",
     "static/js/453.6e792eca.chunk.js": "/cag-kazhakkuttom-portal/static/js/453.6e792eca.chunk.js",
     "static/media/pr-family.jpg": "/cag-kazhakkuttom-portal/static/media/pr-family.145d9f3e36a49f43678e.jpg",
@@ -12,12 +12,12 @@
     "static/media/cag-logo.png": "/cag-kazhakkuttom-portal/static/media/cag-logo.a24ac5af93b74e872167.png",
     "static/media/ag-logo.png": "/cag-kazhakkuttom-portal/static/media/ag-logo.d6a578666391e736bf66.png",
     "index.html": "/cag-kazhakkuttom-portal/index.html",
-    "main.edbaa31e.css.map": "/cag-kazhakkuttom-portal/static/css/main.edbaa31e.css.map",
+    "main.0a3acc4c.css.map": "/cag-kazhakkuttom-portal/static/css/main.0a3acc4c.css.map",
     "main.806f7db5.js.map": "/cag-kazhakkuttom-portal/static/js/main.806f7db5.js.map",
     "453.6e792eca.chunk.js.map": "/cag-kazhakkuttom-portal/static/js/453.6e792eca.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.edbaa31e.css",
+    "static/css/main.0a3acc4c.css",
     "static/js/main.806f7db5.js"
   ]
 }
