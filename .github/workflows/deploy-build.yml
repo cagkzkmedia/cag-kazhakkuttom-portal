@@ -1,0 +1,59 @@
+name: Deploy Build to Another Repository
+
+on:
+  push:
+    branches:
+      - main  # Change this to your default branch if different
+  workflow_dispatch:  # Allows manual trigger from GitHub Actions tab
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout source repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'  # Adjust to your Node version
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build project
+        run: npm run deploy
+      
+      - name: Deploy build folder to target repository
+        env:
+          TARGET_REPO: ${{ secrets.TARGET_REPO }}  # Format: username/repo-name
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}  # Personal Access Token with repo permissions
+        run: |
+          # Configure git
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+          
+          # Clone the target repository
+          git clone https://${GITHUB_TOKEN}@github.com/${TARGET_REPO}.git target-repo
+          
+          # Remove old files from target repo (except .git)
+          cd target-repo
+          find . -maxdepth 1 ! -name '.git' ! -name '.' ! -name '..' -exec rm -rf {} +
+          
+          # Copy build files to target repo
+          cp -r ../build/* .
+          
+          # Create .nojekyll file for GitHub Pages (if needed)
+          touch .nojekyll
+          
+          # Commit and push changes
+          git add .
+          git commit -m "Deploy build from source repo - $(date +'%Y-%m-%d %H:%M:%S')" || echo "No changes to commit"
+          git push origin main  # Change 'main' to target repo's default branch if different
+      
+      - name: Deployment complete
+        run: echo "Build folder successfully deployed to ${{ secrets.TARGET_REPO }}"
