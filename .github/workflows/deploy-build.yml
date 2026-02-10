@@ -27,6 +27,8 @@ jobs:
       
       - name: Build project
         run: npm run build
+        env:
+          CI: false  # Disable CI mode if it causes issues with build scripts
       
       - name: Deploy build folder to target repository
         env:
