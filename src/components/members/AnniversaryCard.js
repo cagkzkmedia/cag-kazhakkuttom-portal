@@ -37,7 +37,7 @@ Celebrating the beautiful journey you've shared together and wishing you many mo
 🙏 May the Lord continue to guide and bless your marriage abundantly.
 
 With love and prayers,
-Christ AG Church Kazhakkuttom Family 💙`;
+Christ AG Church Kazhakkoottam Family 💙`;
 
     const whatsappUrl = `https://wa.me/${member.phone?.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
@@ -57,7 +57,7 @@ Christ AG Church Kazhakkuttom Family 💙`;
     
     // Open WhatsApp with a message
     const yearsText = years > 0 ? `${years}${years === 1 ? 'st' : years === 2 ? 'nd' : years === 3 ? 'rd' : 'th'} ` : '';
-    const message = `💕 Happy ${yearsText}Wedding Anniversary! 💕\n\n❤️ Dear ${formattedName},\n\nMay your love continue to grow stronger with each passing day. May God bless your union with endless joy, peace, and harmony.\n\nWith love and prayers,\nChrist AG Church Kazhakkuttom Family 💙`;
+    const message = `💕 Happy ${yearsText}Wedding Anniversary! 💕\n\n❤️ Dear ${formattedName},\n\nMay your love continue to grow stronger with each passing day. May God bless your union with endless joy, peace, and harmony.\n\nWith love and prayers,\nChrist AG Church Kazhakkoottam Family 💙`;
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   };
@@ -114,7 +114,7 @@ Christ AG Church Kazhakkuttom Family 💙`;
             
             <div className="anniversary-card-footer">
               <p>With love and prayers,</p>
-              <p className="anniversary-card-church-name">Christ AG Church Kazhakkuttom Family 💙</p>
+              <p className="anniversary-card-church-name">Christ AG Church Kazhakkoottam Family 💙</p>
             </div>
           </div>
           

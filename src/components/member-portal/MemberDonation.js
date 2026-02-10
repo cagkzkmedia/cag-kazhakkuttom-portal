@@ -346,7 +346,7 @@ const MemberDonation = () => {
                 </div>
                 <div className="detail-row">
                   <span className="detail-label">Branch:</span>
-                  <span className="detail-value">Kazhakkuttom, Trivandrum</span>
+                  <span className="detail-value">Kazhakkoottam, Trivandrum</span>
                 </div>
               </div>
               <p className="info-note">💡 Please use your name as reference when transferring.</p>
@@ -493,7 +493,7 @@ const MemberDonation = () => {
               <h4>💵 Mail Your Check To:</h4>
               <address>
                 Christ AG Church<br />
-                Kazhakkuttom<br />
+                Kazhakkoottam<br />
                 Trivandrum, Kerala
               </address>
               <p className="info-note">Make checks payable to "Christ AG Church"</p>

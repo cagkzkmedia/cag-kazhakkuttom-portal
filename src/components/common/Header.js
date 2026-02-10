@@ -33,7 +33,7 @@ const Header = ({ toggleSidebar }) => {
         <button className="menu-button" onClick={toggleSidebar}>
           ☰
         </button>
-        <h1 className="header-title">Christ AG Church, Kazhakkuttom</h1>
+        <h1 className="header-title">Christ AG Church, Kazhakkoottam</h1>
       </div>
 
       <div className="header-right">

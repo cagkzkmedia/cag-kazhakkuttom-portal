@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Home Page -->
   <url>
-    <loc>https://christagkazhakkuttom.in/</loc>
+    <loc>https://christagKazhakkoottam.in/</loc>
     <lastmod>2026-02-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
@@ -10,7 +10,7 @@
   
   <!-- Public Pages -->
   <url>
-    <loc>https://christagkazhakkuttom.in/#/celebrations</loc>
+    <loc>https://christagKazhakkoottam.in/#/celebrations</loc>
     <lastmod>2026-02-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -18,14 +18,14 @@
   
   <!-- Authentication Pages -->
   <url>
-    <loc>https://christagkazhakkuttom.in/#/login</loc>
+    <loc>https://christagKazhakkoottam.in/#/login</loc>
     <lastmod>2026-02-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://christagkazhakkuttom.in/#/register</loc>
+    <loc>https://christagKazhakkoottam.in/#/register</loc>
     <lastmod>2026-02-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -33,14 +33,14 @@
   
   <!-- Member Portal -->
   <url>
-    <loc>https://christagkazhakkuttom.in/#/member-portal/login</loc>
+    <loc>https://christagKazhakkoottam.in/#/member-portal/login</loc>
     <lastmod>2026-02-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>https://christagkazhakkuttom.in/#/member-portal/signup</loc>
+    <loc>https://christagKazhakkoottam.in/#/member-portal/signup</loc>
     <lastmod>2026-02-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -48,7 +48,7 @@
   
   <!-- Admin Dashboard (for crawlers that authenticate) -->
   <url>
-    <loc>https://christagkazhakkuttom.in/#/admin/dashboard</loc>
+    <loc>https://christagKazhakkoottam.in/#/admin/dashboard</loc>
     <lastmod>2026-02-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>

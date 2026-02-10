@@ -67,7 +67,7 @@ const Register = () => {
     <div className="auth-container">
       <div className="auth-card">
         <div className="auth-header">
-          <h1>Christ AG Church, Kazhakkuttom</h1>
+          <h1>Christ AG Church, Kazhakkoottam</h1>
           <h2>Create Account</h2>
           <p>Register as an administrator</p>
         </div>

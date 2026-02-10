@@ -30,7 +30,7 @@ export const sendWelcomeEmail = async (memberData, username, password) => {
         username: username,
         password: password,
         portalUrl: window.location.origin + '/member-portal',
-        churchName: 'Christ AG Church, Kazhakkuttom',
+        churchName: 'Christ AG Church, Kazhakkoottam',
       },
     };
 

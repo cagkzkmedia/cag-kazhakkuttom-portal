@@ -508,5 +508,5 @@ You now have:
 
 ---
 
-Made with ❤️ for Christ AG Church, Kazhakkuttom  
+Made with ❤️ for Christ AG Church, Kazhakkoottam  
 Pastor: Pr. Jobin Alisha

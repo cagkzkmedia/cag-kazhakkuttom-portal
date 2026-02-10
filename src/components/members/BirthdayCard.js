@@ -33,7 +33,7 @@ May God's grace shine upon you today and always. Wishing you a year filled with 
 🙏 God bless you abundantly!
 
 With love and prayers,
-Christ AG Church Kazhakkuttom Family 💙`;
+Christ AG Church Kazhakkoottam Family 💙`;
 
     const whatsappUrl = `https://wa.me/${member.phone?.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
@@ -52,7 +52,7 @@ Christ AG Church Kazhakkuttom Family 💙`;
     }
     
     // Open WhatsApp with a message
-    const message = `🎉 Happy Birthday ${formattedName}! 🎉\n\nMay this special day bring you endless joy, blessings, and cherished moments.\n\nWith love and prayers,\nChrist AG Church Kazhakkuttom Family 💙`;
+    const message = `🎉 Happy Birthday ${formattedName}! 🎉\n\nMay this special day bring you endless joy, blessings, and cherished moments.\n\nWith love and prayers,\nChrist AG Church Kazhakkoottam Family 💙`;
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   };
@@ -109,7 +109,7 @@ Christ AG Church Kazhakkuttom Family 💙`;
             
             <div className="birthday-card-footer">
               <p>With love and prayers,</p>
-              <p className="birthday-card-church-name">Christ AG Church Kazhakkuttom Family 💙</p>
+              <p className="birthday-card-church-name">Christ AG Church Kazhakkoottam Family 💙</p>
             </div>
           </div>
           

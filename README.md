@@ -1,8 +1,8 @@
-# Christ AG Church, Kazhakkuttom - Admin Dashboard
+# Christ AG Church, Kazhakkoottam - Admin Dashboard
 
 A professional React-based admin dashboard for managing church operations including members, events, donations, and more.
 
-**Church:** Christ AG Church, Kazhakkuttom  
+**Church:** Christ AG Church, Kazhakkoottam  
 **Pastor:** Pr. Jobin Alisha
 
 ## Features

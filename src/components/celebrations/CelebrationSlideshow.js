@@ -341,7 +341,7 @@ const CelebrationSlideshow = () => {
             
             <div className="celebration-message-body">
               <p className="celebration-message-text">{message.message}</p>
-              <p className="celebration-church-name">Christ AG Church Kazhakkuttom 💙</p>
+              <p className="celebration-church-name">Christ AG Church Kazhakkoottam 💙</p>
             </div>
 
             <div className="celebration-date-info">

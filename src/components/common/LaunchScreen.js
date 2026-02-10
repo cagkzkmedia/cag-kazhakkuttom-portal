@@ -81,7 +81,7 @@ const LaunchScreen = ({ onLaunchComplete }) => {
         </div>
 
         <h1 className="launch-title">Christ AG Church</h1>
-        <p className="launch-subtitle">Kazhakkuttom, Thiruvananthapuram</p>
+        <p className="launch-subtitle">Kazhakkoottam, Thiruvananthapuram</p>
 
         {/* Bible Verse Display */}
         <div className="bible-verse-display">

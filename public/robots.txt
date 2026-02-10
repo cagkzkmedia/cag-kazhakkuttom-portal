@@ -17,4 +17,4 @@ Allow: /member-portal/signup
 Allow: /article/
 
 # Sitemap
-Sitemap: https://christagkazhakkuttom.in/sitemap.xml
+Sitemap: https://christagKazhakkoottam.in/sitemap.xml

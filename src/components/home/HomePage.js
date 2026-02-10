@@ -1,5 +1,5 @@
 /**
- * Christ AG Kazhakkuttom Home Page Component
+ * Christ AG Kazhakkoottam Home Page Component
  */
 
 import React, { useEffect, useState } from 'react';
@@ -290,7 +290,7 @@ const HomePage = () => {
               <img src={churchLogo} alt="Christ AG Church Logo" className="hero-logo church-logo" />
             </div>
             <h1 className="church-name">Christ AG Church</h1>
-            <p className="church-location">Kazhakkuttom, Thiruvananthapuram</p>
+            <p className="church-location">Kazhakkoottam, Thiruvananthapuram</p>
           </div>
           <p className="church-tagline">
             "For where two or three gather in my name, there am I with them." - Matthew 18:20
@@ -403,7 +403,7 @@ const HomePage = () => {
             <div className="about-card">
               <div className="about-icon">⛪</div>
               <h3>Our Mission</h3>
-              <p>To spread the love of Christ and build a community of faith, hope, and love in Kazhakkuttom and beyond.</p>
+              <p>To spread the love of Christ and build a community of faith, hope, and love in Kazhakkoottam and beyond.</p>
             </div>
             <div className="about-card">
               <div className="about-icon">📖</div>
@@ -732,7 +732,7 @@ const HomePage = () => {
             <div className="contact-item">
               <div className="contact-icon">📍</div>
               <h4>Address</h4>
-              <p>2nd Floor, Mak Tower, 5705/4<br/>National Highway<br/>Near Kartika Park Hotel, Kazhakuttam<br/>Thiruvananthapuram, Kerala 695582</p>
+              <p>2nd Floor, Mak Tower, 5705/4<br/>National Highway<br/>Near Kartika Park Hotel, Kazhakkoottam<br/>Thiruvananthapuram, Kerala 695582</p>
               <a href="https://maps.app.goo.gl/Wx4TuyxxA675yHzW7" target="_blank" rel="noopener noreferrer" className="map-link">
                 🗺️ Open in Google Maps
               </a>
@@ -789,7 +789,7 @@ const HomePage = () => {
               <img src={agLogo} alt="Assemblies of God" className="ag-logo" />
               <img src={churchLogo} alt="Christ AG Church" className="church-logo" />
             </div>
-            <p>Christ AG Church, Kazhakkuttom</p>
+            <p>Christ AG Church, Kazhakkoottam</p>
           </div>
           <div className="footer-nav">
             <div className="footer-section">
@@ -811,7 +811,7 @@ const HomePage = () => {
             </div>
           </div>
           <p className="footer-copyright">
-            © 2025 Christ AG Church Kazhakkuttom. All rights reserved. | Built with ❤️ for God's Glory
+            © 2025 Christ AG Church Kazhakkoottam. All rights reserved. | Built with ❤️ for God's Glory
           </p>
           </div>
       </footer>

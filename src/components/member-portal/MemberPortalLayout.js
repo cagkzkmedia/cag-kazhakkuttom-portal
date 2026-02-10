@@ -88,7 +88,7 @@ const MemberPortalLayout = () => {
         <div className="member-portal-nav-left">
           <div className="member-portal-logo">
             <img src={churchLogo} alt="Christ AG Church" className="logo-image" />
-            <h2>Christ AG Church, Kazhakkuttom</h2>
+            <h2>Christ AG Church, Kazhakkoottam</h2>
           </div>
           <nav className="member-nav-links">
             <button onClick={() => navigateTo('/member-portal/dashboard')} className="nav-link">

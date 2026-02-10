@@ -29,7 +29,7 @@ const DonationReceipt = ({ donation, member, onClose }) => {
             <h1>Christ AG Church</h1>
             <p className="church-address">
               2nd Floor, Mak Tower, 5705/4, National Highway<br />
-              Near Kartika Park Hotel, Kazhakuttam<br />
+              Near Kartika Park Hotel, Kazhakkoottam<br />
               Vadakkumbhagam, Kazhakkoottam<br />
               Thiruvananthapuram, Kerala 695582
             </p>

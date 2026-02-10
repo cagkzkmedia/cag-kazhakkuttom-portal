@@ -98,7 +98,7 @@ const MemberPortalDashboard = () => {
     <div className="member-portal-dashboard">
       <div className="member-portal-header-section">
         <h1>Welcome back, {member?.name || 'Member'}!</h1>
-        <p>Christ AG Church, Kazhakkuttom - Community Overview</p>
+        <p>Christ AG Church, Kazhakkoottam - Community Overview</p>
       </div>
 
       {isBirthdayToday(profile?.dateOfBirth) && (
@@ -274,7 +274,7 @@ const MemberPortalDashboard = () => {
             </div>
             <div className="profile-item">
               <span className="label">Location:</span>
-              <span className="value">Kazhakkuttom, Trivandrum</span>
+              <span className="value">Kazhakkoottam, Trivandrum</span>
             </div>
             <div className="profile-item">
               <span className="label">Contact:</span>

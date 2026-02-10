@@ -339,4 +339,4 @@ Consider adding:
 
 ---
 
-Made with ❤️ for Christ AG Church, Kazhakkuttom
+Made with ❤️ for Christ AG Church, Kazhakkoottam
