@@ -2,7 +2,7 @@
  * Member Portal Login Component
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { loginStart, loginSuccess, loginFailure } from '../../redux/slices/memberPortalSlice';
@@ -18,7 +18,14 @@ const MemberPortalLogin = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, error } = useSelector((state) => state.memberPortal);
+  const { loading, error, member, isAuthenticated } = useSelector((state) => state.memberPortal);
+
+  // Redirect to dashboard if already logged in
+  useEffect(() => {
+    if (isAuthenticated && member) {
+      navigate('/member-portal/dashboard', { replace: true });
+    }
+  }, [isAuthenticated, member, navigate]);
 
   const handleChange = (e) => {
     setFormData({
