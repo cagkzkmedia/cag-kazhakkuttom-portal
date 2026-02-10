@@ -43,6 +43,8 @@ jobs:
         env:
           TARGET_REPO: ${{ secrets.TARGET_REPO }}  # Format: username/repo-name
           GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}  # Personal Access Token with repo permissions
+          CUSTOM_DOMAIN: ${{ secrets.CUSTOM_DOMAIN }}  # Your custom domain (optional)
+
         run: |
           # Configure git
           git config --global user.name "GitHub Actions Bot"
@@ -60,6 +62,12 @@ jobs:
           
           # Create .nojekyll file for GitHub Pages (if needed)
           touch .nojekyll
+
+          # Create CNAME file for custom domain (if CUSTOM_DOMAIN secret is set)
+          if [ ! -z "$CUSTOM_DOMAIN" ]; then
+            echo "$CUSTOM_DOMAIN" > CNAME
+            echo "Created CNAME file with domain: $CUSTOM_DOMAIN"
+          fi
           
           # Commit and push changes
           git add .
