@@ -5,6 +5,7 @@
  */
 
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { getAllMembers } from '../../services/memberService.firebase';
 import BirthdayCard from '../members/BirthdayCard';
 import AnniversaryCard from '../members/AnniversaryCard';
@@ -208,14 +209,20 @@ const CelebrationsPage = () => {
             <p className="celebrations-subtitle">Celebrating life's special moments together</p>
             <p className="celebrations-week-range">{weekRangeText}</p>
           </div>
-          {(nextWeekBirthdayMembers.length > 0 || nextWeekAnniversaryMembers.length > 0) && (
-            <button 
-              className="toggle-next-week-btn"
-              onClick={() => setShowNextWeek(!showNextWeek)}
-            >
-              {showNextWeek ? '👁️ Hide' : '👀 Show'} Next Week
-            </button>
-          )}
+          <div className="celebrations-header-actions">
+            {(nextWeekBirthdayMembers.length > 0 || nextWeekAnniversaryMembers.length > 0) && (
+              <button 
+                className="toggle-next-week-btn"
+                onClick={() => setShowNextWeek(!showNextWeek)}
+              >
+                {showNextWeek ? '👁️ Hide' : '👀 Show'} Next Week
+              </button>
+            )}
+            <Link to="/celebrations/slideshow" className="celebration-slideshow-link">
+              <span className="slideshow-icon">🎬</span>
+              <span className="slideshow-text">View Slideshow</span>
+            </Link>
+          </div>
         </div>
 
         <div className="celebrations-content">

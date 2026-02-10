@@ -229,15 +229,16 @@
 }
 
 .anniversary-card .anniversary-card-actions {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
   margin-top: 24px;
   width: 100%;
   position: relative;
   z-index: 10;
-  gap: 12px;
 }
 
+.anniversary-card .anniversary-upload-image-btn,
 .anniversary-card .anniversary-download-image-btn,
 .anniversary-card .anniversary-share-image-btn {
   width: 100%;
@@ -335,7 +336,6 @@
   .anniversary-card {
     padding: 24px 20px;
   }
-  
   .anniversary-card .anniversary-card-header h2 {
     font-size: 36px;
   }
@@ -353,6 +353,12 @@
     font-size: 14px;
   }
   
+  .anniversary-card .anniversary-card-actions {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .anniversary-card .anniversary-download-image-btn,
   .anniversary-card .anniversary-share-image-btn {
     padding: 14px;
     font-size: 15px;

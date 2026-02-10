@@ -22,8 +22,9 @@ const Sidebar = ({ isOpen, onItemClick, onClose }) => {
   console.log('User role (normalized):', userRole);
 
   const allMenuItems = [
-    { path: '/admin/dashboard', icon: '📊', label: 'Dashboard', roles: ['admin', 'events_manager', 'finance_manager', 'resource_manager'] },
-    { path: 'celebrations', icon: '🎉', label: 'Celebrations', roles: ['admin', 'events_manager', 'finance_manager', 'resource_manager'], isAction: true },
+    { path: '/admin/dashboard', icon: '📊', label: 'Dashboard', roles: ['admin', 'events_manager', 'finance_manager', 'resource_manager', 'content_manager'] },
+    { path: 'celebrations', icon: '🎉', label: 'Celebrations', roles: ['admin', 'events_manager', 'finance_manager', 'resource_manager', 'content_manager'], isAction: true },
+    { path: '/celebrations/slideshow', icon: '🎬', label: 'Celebration Slideshow', roles: ['admin', 'events_manager', 'finance_manager', 'resource_manager', 'content_manager'] },
     { path: '/admin/members', icon: '👥', label: 'Members', roles: ['admin'] },
     { path: '/admin/member-approvals', icon: '✅', label: 'Member Approvals', roles: ['admin'] },
     { path: '/admin/events', icon: '📅', label: 'Events', roles: ['admin', 'events_manager'] },
@@ -31,10 +32,11 @@ const Sidebar = ({ isOpen, onItemClick, onClose }) => {
     { path: '/admin/donations', icon: '💰', label: 'Donations', roles: ['admin', 'finance_manager'] },
     { path: '/admin/resources', icon: '📚', label: 'Resources', roles: ['admin', 'resource_manager'] },
     { path: '/admin/testimonials', icon: '💬', label: 'Testimonials', roles: ['admin', 'content_manager'] },
-    { path: '/admin/notifications', icon: '🔔', label: 'Notifications', roles: ['admin', 'events_manager', 'finance_manager', 'resource_manager'] },
+    { path: '/admin/announcements', icon: '📢', label: 'Announcements', roles: ['admin', 'content_manager'] },
+    { path: '/admin/notifications', icon: '🔔', label: 'Notifications', roles: ['admin', 'events_manager', 'finance_manager', 'resource_manager', 'content_manager'] },
     { path: '/admin/users', icon: '👤', label: 'User Management', roles: ['admin'] },
-    { path: '/admin/settings', icon: '⚙️', label: 'Settings', roles: ['admin', 'events_manager', 'finance_manager', 'resource_manager'] },
-    { path: '/admin/change-password', icon: '🔐', label: 'Change Password', roles: ['admin', 'events_manager', 'finance_manager', 'resource_manager'] },
+    { path: '/admin/settings', icon: '⚙️', label: 'Settings', roles: ['admin', 'events_manager', 'finance_manager', 'resource_manager', 'content_manager'] },
+    { path: '/admin/change-password', icon: '🔐', label: 'Change Password', roles: ['admin', 'events_manager', 'finance_manager', 'resource_manager', 'content_manager'] },
   ];
 
   // Filter menu items based on user role

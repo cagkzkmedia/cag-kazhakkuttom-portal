@@ -30,6 +30,7 @@ import ArticleDetailPage from './components/articles/ArticleDetailPage';
 import TestimonialsManagement from './components/testimonials/TestimonialsManagement';
 import TestimonialForm from './components/testimonials/TestimonialForm';
 import CelebrationsPage from './components/celebrations/CelebrationsPage';
+import CelebrationSlideshow from './components/celebrations/CelebrationSlideshow';
 
 // Member Portal Components
 import MemberPortalLogin from './components/member-portal/MemberPortalLogin';
@@ -44,6 +45,7 @@ import MemberSignup from './components/member-portal/MemberSignup';
 
 // Admin Components
 import AdminMemberApprovals from './components/admin/AdminMemberApprovals';
+import AnnouncementManagement from './components/announcements/AnnouncementManagement';
 
 import './App.css';
 
@@ -92,6 +94,7 @@ function App() {
             
             {/* Public Pages */}
             <Route path="/celebrations" element={<CelebrationsPage />} />
+            <Route path="/celebrations/slideshow" element={<CelebrationSlideshow />} />
             
             {/* Article Detail Page */}
             <Route path="/article/:id" element={<ArticleDetailPage />} />
@@ -193,6 +196,14 @@ function App() {
                 element={
                   <RoleGuard allowedRoles={['admin', 'content_manager']}>
                     <TestimonialsManagement />
+                  </RoleGuard>
+                } 
+              />
+              <Route 
+                path="announcements" 
+                element={
+                  <RoleGuard allowedRoles={['admin', 'content_manager']}>
+                    <AnnouncementManagement />
                   </RoleGuard>
                 } 
               />

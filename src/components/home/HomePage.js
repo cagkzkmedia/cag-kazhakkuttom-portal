@@ -16,6 +16,7 @@ import './HomePage.css';
 import { getAllEvents } from '../../services/eventService.firebase';
 import { getAllArticles } from '../../services/articlesService.firebase';
 import { getAllTestimonials } from '../../services/testimonialService.firebase';
+import { getActiveAnnouncements } from '../../services/announcementService.firebase';
 import { formatTo12Hour } from '../../utils/timeFormatter';
 import YouTubeFeed from '../common/youtubeFeed';
 // Mock articles for demonstration
@@ -55,16 +56,55 @@ const MOCK_ARTICLES = [
   },
 ];
 
+const GALLERY_PHOTOS = [
+  { id: 1, title: 'Youth Camp', url: gallery1 },
+  { id: 2, title: 'Sunday Service', url: gallery2 },
+  { id: 3, title: 'Sunday Schhol', url: gallery3 },
+  { id: 4, title: 'Parenting sessions', url: gallery4 },
+  { id: 5, title: 'Church Group', url: churchGroupImage },
+];
+
 const HomePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [weeklyEvents, setWeeklyEvents] = useState([]);
   const [articles, setArticles] = useState(MOCK_ARTICLES);
   const [testimonials, setTestimonials] = useState([]);
+  const [announcements, setAnnouncements] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
+  const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
+  const [isAnnouncementModalOpen, setIsAnnouncementModalOpen] = useState(false);
+
+  // Gallery navigation handlers
+  const handleNextPhoto = () => {
+    if (!selectedPhoto) return;
+    const currentIndex = GALLERY_PHOTOS.findIndex(p => p.id === selectedPhoto.id);
+    const nextIndex = (currentIndex + 1) % GALLERY_PHOTOS.length;
+    setSelectedPhoto(GALLERY_PHOTOS[nextIndex]);
+  };
+
+  const handlePrevPhoto = () => {
+    if (!selectedPhoto) return;
+    const currentIndex = GALLERY_PHOTOS.findIndex(p => p.id === selectedPhoto.id);
+    const prevIndex = (currentIndex - 1 + GALLERY_PHOTOS.length) % GALLERY_PHOTOS.length;
+    setSelectedPhoto(GALLERY_PHOTOS[prevIndex]);
+  };
+
+  // Keyboard navigation for gallery
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (!isPhotoModalOpen) return;
+      if (e.key === 'ArrowRight') handleNextPhoto();
+      if (e.key === 'ArrowLeft') handlePrevPhoto();
+      if (e.key === 'Escape') setIsPhotoModalOpen(false);
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isPhotoModalOpen, selectedPhoto]);
 
   // Scroll to resources section if coming from article detail page
   useEffect(() => {
@@ -190,6 +230,25 @@ const HomePage = () => {
     console.log('Testimonials state updated:', testimonials);
   }, [testimonials]);
 
+  // Load active announcements from Firebase
+  useEffect(() => {
+    let mounted = true;
+    const loadAnnouncements = async () => {
+      try {
+        const activeAnnouncements = await getActiveAnnouncements();
+        if (mounted) {
+          setAnnouncements(activeAnnouncements);
+        }
+      } catch (err) {
+        console.error('Failed to load announcements:', err);
+        if (mounted) setAnnouncements([]);
+      }
+    };
+
+    loadAnnouncements();
+    return () => { mounted = false; };
+  }, []);
+
   // Scroll to top button visibility and parallax effect
   useEffect(() => {
     const handleScroll = () => {
@@ -281,6 +340,39 @@ const HomePage = () => {
           </div>
         </div>
       </section>
+
+      {/* Major Announcements Section */}
+      {announcements.length > 0 && (
+        <section className="announcements-section">
+          <div className="announcements-content">
+            <h2>📢 Important Announcements</h2>
+            <div className="announcements-carousel">
+              {announcements.map(announcement => (
+                <div 
+                  key={announcement.id} 
+                  className="announcement-banner"
+                  onClick={() => {
+                    setSelectedAnnouncement(announcement);
+                    setIsAnnouncementModalOpen(true);
+                  }}
+                >
+                  {announcement.imageBase64 && (
+                    <div className="announcement-poster">
+                      <img src={announcement.imageBase64} alt={announcement.title} />
+                      <div className="announcement-overlay">
+                        <div className="announcement-overlay-content">
+                          <h3>{announcement.title}</h3>
+                          <p>{announcement.description}</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* About Section */}
       <section className="about-section">
@@ -555,14 +647,7 @@ const HomePage = () => {
           <h2>📸 Church Photo Gallery</h2>
           <p className="section-subtitle">Moments of worship, fellowship, and service in our community</p>
           <div className="gallery-grid">
-            {[
-              { id: 1, title: 'Youth Camp', url: gallery1 },
-              { id: 2, title: 'Sunday Service', url: gallery2 },
-              { id: 3, title: 'Sunday Schhol', url: gallery3 },
-              { id: 4, title: 'Parenting sessions', url: gallery4 },
-              { id: 5, title: 'Church Group', url: churchGroupImage },
-            
-            ].map(photo => (
+            {GALLERY_PHOTOS.map(photo => (
               <div 
                 key={photo.id} 
                 className="gallery-item"
@@ -799,6 +884,31 @@ const HomePage = () => {
         <div className="photo-modal-overlay" onClick={() => setIsPhotoModalOpen(false)}>
           <div className="photo-modal-content" onClick={e => e.stopPropagation()}>
             <button className="photo-modal-close-btn" onClick={() => setIsPhotoModalOpen(false)}>✕</button>
+            
+            {/* Previous Button */}
+            <button 
+              className="photo-modal-nav-btn photo-modal-prev-btn" 
+              onClick={(e) => {
+                e.stopPropagation();
+                handlePrevPhoto();
+              }}
+              aria-label="Previous photo"
+            >
+              ‹
+            </button>
+            
+            {/* Next Button */}
+            <button 
+              className="photo-modal-nav-btn photo-modal-next-btn" 
+              onClick={(e) => {
+                e.stopPropagation();
+                handleNextPhoto();
+              }}
+              aria-label="Next photo"
+            >
+              ›
+            </button>
+            
             <div className="photo-modal-body">
               <img 
                 src={selectedPhoto.url} 
@@ -807,6 +917,29 @@ const HomePage = () => {
               />
               <div className="photo-modal-info">
                 <h3>{selectedPhoto.title}</h3>
+                <p className="photo-counter">
+                  {GALLERY_PHOTOS.findIndex(p => p.id === selectedPhoto.id) + 1} / {GALLERY_PHOTOS.length}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Announcement Detail Modal */}
+      {isAnnouncementModalOpen && selectedAnnouncement && (
+        <div className="announcement-modal-overlay" onClick={() => setIsAnnouncementModalOpen(false)}>
+          <div className="announcement-modal-content" onClick={e => e.stopPropagation()}>
+            <button className="announcement-modal-close-btn" onClick={() => setIsAnnouncementModalOpen(false)}>✕</button>
+            <div className="announcement-modal-body">
+              {selectedAnnouncement.imageBase64 && (
+                <div className="announcement-modal-image">
+                  <img src={selectedAnnouncement.imageBase64} alt={selectedAnnouncement.title} />
+                </div>
+              )}
+              <div className="announcement-modal-info">
+                <h2>{selectedAnnouncement.title}</h2>
+                <p className="announcement-modal-description">{selectedAnnouncement.description}</p>
               </div>
             </div>
           </div>

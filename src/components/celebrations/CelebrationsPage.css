@@ -108,11 +108,18 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Toggle Next Week Button */
-.toggle-next-week-btn {
+/* Header Actions Container */
+.celebrations-header-actions {
   position: absolute;
   top: 24px;
   right: 40px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Toggle Next Week Button */
+.toggle-next-week-btn {
   padding: 8px 18px;
   font-size: 13px;
   font-weight: 500;
@@ -571,6 +578,49 @@
   }
 }
 
+/* Celebration Slideshow Link */
+.celebration-slideshow-link-container {
+  margin-top: 60px;
+  padding: 40px 20px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.celebration-slideshow-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #667eea;
+  text-decoration: none;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  white-space: nowrap;
+}
+
+.celebration-slideshow-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  background: white;
+}
+
+.slideshow-icon {
+  font-size: 18px;
+}
+
+.slideshow-text {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  letter-spacing: 0.3px;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .celebrations-page-wrapper {
@@ -603,6 +653,13 @@
     padding: 0 20px 30px;
   }
 
+  .celebrations-header-actions {
+    position: static;
+    margin-top: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
   .category-title {
     font-size: 22px;
   }
@@ -614,6 +671,16 @@
 
   .celebration-card {
     padding: 20px;
+  }
+
+  .celebration-slideshow-link {
+    font-size: 13px;
+    padding: 8px 16px;
+    gap: 6px;
+  }
+
+  .slideshow-icon {
+    font-size: 16px;
   }
 }
 
@@ -643,5 +710,15 @@
 
   .week-subtitle {
     font-size: 18px;
+  }
+
+  .celebration-slideshow-link {
+    font-size: 12px;
+    padding: 7px 14px;
+    gap: 5px;
+  }
+
+  .slideshow-icon {
+    font-size: 14px;
   }
 }
