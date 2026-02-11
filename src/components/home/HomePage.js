@@ -7,6 +7,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import churchLogo from '../../assets/cag-logo.png';
 import agLogo from '../../assets/ag-logo.png';
 import pastorImage from '../../assets/pr-family.jpg';
+import pastorSelvinImage from '../../assets/pastor-selvin.jpg';
+import pastorGladvinImage from '../../assets/pastor-gladvin.jpg';
 import churchGroupImage from '../../assets/church-group.jpg';
 import gallery1 from '../../assets/gallery1.jpg';
 import gallery2 from '../../assets/gallery2.jpg';
@@ -381,7 +383,9 @@ const HomePage = () => {
           
           {/* Pastor Introduction */}
           <div className="pastor-section">
-            <div className="pastor-card">
+            
+            {/* Senior Pastor - Featured */}
+            <div className="pastor-card senior-pastor">
               <div className="pastor-image-container">
                 <img 
                   src={pastorImage} 
@@ -390,12 +394,55 @@ const HomePage = () => {
                 />
                 <div className="pastor-icon-badge">✝️</div>
               </div>
-              <h3>Pastor Jobin Elisha</h3>
-              <p className="pastor-title">Senior Pastor</p>
-              <p className="pastor-message">
-                "Welcome to Christ AG Church! We are a family united in faith, committed to worshiping God, 
-                growing together, and serving our community with Christ's love."
-              </p>
+              <div className="pastor-content">
+                <h3>Pastor Jobin Elisha</h3>
+                <p className="pastor-title">Senior Pastor</p>
+                <p className="pastor-message">
+                  "Welcome to Christ AG Church! We are a family united in faith, committed to worshiping God, 
+                  growing together, and serving our community with Christ's love."
+                </p>
+              </div>
+            </div>
+
+            {/* Associate Pastors Grid */}
+            <div className="associate-pastors-grid">
+              {/* Associate Pastor - Tamil Service */}
+              <div className="pastor-card associate-pastor">
+                <div className="pastor-image-container associate-pastor-image">
+                  <img 
+                    src={pastorSelvinImage} 
+                    alt="Pastor Selvin" 
+                    className="pastor-image"
+                  />
+                  <div className="pastor-icon-badge">✝️</div>
+                </div>
+                <div className="pastor-content">
+                  <h3>Pastor Selvin</h3>
+                  <p className="pastor-title">Tamil Service Pastor</p>
+                  <p className="pastor-message">
+                    "Serving our Tamil-speaking congregation with dedication and love, bringing the message of Christ to our community."
+                  </p>
+                </div>
+              </div>
+
+              {/* Associate Pastor - Hindi Service */}
+              <div className="pastor-card associate-pastor">
+                <div className="pastor-image-container associate-pastor-image">
+                  <img 
+                    src={pastorGladvinImage} 
+                    alt="Pastor Gladvin" 
+                    className="pastor-image"
+                  />
+                  <div className="pastor-icon-badge">✝️</div>
+                </div>
+                <div className="pastor-content">
+                  <h3>Pastor Gladvin</h3>
+                  <p className="pastor-title">Hindi Service Pastor</p>
+                  <p className="pastor-message">
+                    "Ministering to our Hindi-speaking family with compassion, teaching God's Word and building His kingdom."
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
 
