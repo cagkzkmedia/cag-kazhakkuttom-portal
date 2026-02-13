@@ -436,21 +436,156 @@
 
 @media (max-width: 768px) {
   .admin-chat-panel {
-    padding: 10px;
-  }
-
-  .chat-panel-container {
-    flex-direction: column;
-  }
-
-  .sessions-sidebar {
-    width: 100%;
-    max-height: 300px;
+    padding: 5px;
+    height: 100vh;
   }
 
   .chat-panel-header {
     flex-direction: column;
-    gap: 15px;
+    gap: 10px;
     align-items: flex-start;
+    padding: 15px;
+    margin-bottom: 10px;
+  }
+
+  .chat-panel-header h2 {
+    font-size: 1.3rem;
+  }
+
+  .chat-stats {
+    gap: 10px;
+    width: 100%;
+  }
+
+  .stat-badge {
+    flex: 1;
+    text-align: center;
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
+
+  .chat-panel-container {
+    flex-direction: column;
+    gap: 0;
+    height: calc(100vh - 150px);
+  }
+
+  .sessions-sidebar {
+    width: 100%;
+    max-height: 35vh;
+    margin-bottom: 10px;
+    border-radius: 8px;
+  }
+
+  .sessions-filter {
+    padding: 10px;
+  }
+
+  .sessions-filter button {
+    padding: 6px 8px;
+    font-size: 0.8rem;
+  }
+
+  .session-item {
+    padding: 12px;
+  }
+
+  .chat-area {
+    flex: 1;
+    border-radius: 8px;
+    min-height: 0;
+  }
+
+  .chat-area-header {
+    padding: 15px;
+  }
+
+  .visitor-info h3 {
+    font-size: 1.1rem;
+  }
+
+  .visitor-email {
+    font-size: 0.85rem;
+  }
+
+  .btn-close-session {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+
+  .chat-messages-area {
+    padding: 15px;
+  }
+
+  .message-bubble {
+    max-width: 85%;
+  }
+
+  .chat-input-area {
+    padding: 15px;
+  }
+
+  .admin-chat-input {
+    padding: 10px 14px;
+    font-size: 0.9rem;
+  }
+
+  .btn-send-admin {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+
+  .no-chat-selected .empty-state svg {
+    width: 60px;
+    height: 60px;
+  }
+
+  .no-chat-selected .empty-state h3 {
+    font-size: 1rem;
+  }
+
+  .no-chat-selected .empty-state p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .chat-panel-header h2 {
+    font-size: 1.1rem;
+  }
+
+  .sessions-sidebar {
+    max-height: 30vh;
+  }
+
+  .sessions-filter button {
+    font-size: 0.75rem;
+    padding: 5px 6px;
+  }
+
+  .session-item {
+    padding: 10px;
+  }
+
+  .session-name {
+    font-size: 0.9rem;
+  }
+
+  .session-time {
+    font-size: 0.75rem;
+  }
+
+  .chat-input-area form {
+    gap: 8px;
+  }
+
+  .admin-chat-input {
+    font-size: 0.85rem;
+    padding: 8px 12px;
+  }
+
+  .btn-send-admin {
+    padding: 8px 16px;
+    font-size: 0.85rem;
   }
 }
