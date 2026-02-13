@@ -134,7 +134,6 @@ export const markMessagesAsRead = async (sessionId, readerType) => {
 export const listenToChatSessions = (callback) => {
   const q = query(
     collection(db, 'chatSessions'),
-    where('status', 'in', ['waiting', 'active']),
     orderBy('lastMessageAt', 'desc')
   );
 
@@ -144,7 +143,10 @@ export const listenToChatSessions = (callback) => {
       ...doc.data(),
       createdAt: doc.data().createdAt?.toDate(),
       lastMessageAt: doc.data().lastMessageAt?.toDate()
-    }));
+    }))
+    // Filter waiting and active sessions on client side
+    .filter(session => session.status === 'waiting' || session.status === 'active');
+    
     callback(sessions);
   }, (error) => {
     console.error('Error listening to chat sessions:', error);
