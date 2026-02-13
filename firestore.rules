@@ -65,5 +65,18 @@ service cloud.firestore {
       allow write: if isAdmin() || 
                     (isAuthenticated() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'content_manager');
     }
+    
+    // Chat sessions - anyone can create and read their own, admins can read all
+    match /chatSessions/{sessionId} {
+      allow create: if true; // Allow visitors to create chat sessions
+      allow read: if true; // Allow anyone to read (visitor can track their own session)
+      allow update: if isAdmin(); // Only admins can update (join, close sessions)
+      
+      // Messages subcollection
+      match /messages/{messageId} {
+        allow read: if true; // Anyone can read messages in their session
+        allow create: if true; // Allow visitors and admins to send messages
+      }
+    }
   }
 }

@@ -21,6 +21,7 @@ import { getAllTestimonials } from '../../services/testimonialService.firebase';
 import { getActiveAnnouncements } from '../../services/announcementService.firebase';
 import { formatTo12Hour } from '../../utils/timeFormatter';
 import YouTubeFeed from '../common/youtubeFeed';
+import ChatWidget from '../chat/ChatWidget';
 // Mock articles for demonstration
 const MOCK_ARTICLES = [
   {
@@ -992,6 +993,9 @@ const HomePage = () => {
           </div>
         </div>
       )}
+      
+      {/* Chat Widget */}
+      <ChatWidget />
     </div>
   );
 }

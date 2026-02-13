@@ -31,6 +31,8 @@ import TestimonialsManagement from './components/testimonials/TestimonialsManage
 import TestimonialForm from './components/testimonials/TestimonialForm';
 import CelebrationsPage from './components/celebrations/CelebrationsPage';
 import CelebrationSlideshow from './components/celebrations/CelebrationSlideshow';
+import YouTubeThumbnailCreator from './components/youtube-thumbnail/YouTubeThumbnailCreator';
+import AdminChatPanel from './components/chat/AdminChatPanel';
 
 // Member Portal Components
 import MemberPortalLogin from './components/member-portal/MemberPortalLogin';
@@ -95,6 +97,7 @@ function App() {
             {/* Public Pages */}
             <Route path="/celebrations" element={<CelebrationsPage />} />
             <Route path="/celebrations/slideshow" element={<CelebrationSlideshow />} />
+            <Route path="/youtube-thumbnail-creator" element={<YouTubeThumbnailCreator />} />
             
             {/* Article Detail Page */}
             <Route path="/article/:id" element={<ArticleDetailPage />} />
@@ -204,6 +207,14 @@ function App() {
                 element={
                   <RoleGuard allowedRoles={['admin', 'content_manager']}>
                     <AnnouncementManagement />
+                  </RoleGuard>
+                } 
+              />
+              <Route 
+                path="chat" 
+                element={
+                  <RoleGuard allowedRoles={['admin']}>
+                    <AdminChatPanel />
                   </RoleGuard>
                 } 
               />
