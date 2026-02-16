@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import { getAllArticles } from '../../services/articlesService.firebase';
 import './AllArticlesPage.css';
 
@@ -46,6 +47,26 @@ const AllArticlesPage = () => {
 
   return (
     <div className="all-articles-page">
+      <Helmet>
+        <title>Resources & Articles | Christ AG Church Kazhakkoottam</title>
+        <meta name="description" content="Explore our collection of spiritual resources and inspiring articles. Discover faith-building content, devotionals, and biblical teachings from Christ AG Church Kazhakkoottam." />
+        <meta name="keywords" content="christian articles, faith resources, devotionals, bible study, spiritual growth, Christ AG Church, Kazhakkoottam, church resources" />
+        
+        {/* Open Graph tags */}
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Resources & Articles | Christ AG Church Kazhakkoottam | Christ AG കഴക്കൂട്ടം ചർച്ചിലെ സന്ദേശങ്ങളുടെ പൂർണ്ണമായ ശേഖരം" />
+        <meta property="og:description" content="Explore our collection of spiritual resources and inspiring articles from Christ AG Church Kazhakkoottam." />
+        <meta property="og:image" content={`${window.location.origin}/logo512.png`} />
+        <meta property="og:url" content={window.location.href} />
+        <meta property="og:site_name" content="Christ AG Church Kazhakkoottam" />
+        
+        {/* Twitter Card tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Resources & Articles | Christ AG Church Kazhakkoottam | Christ AG കഴക്കൂട്ടം ചർച്ചിലെ സന്ദേശങ്ങളുടെ പൂർണ്ണമായ ശേഖരം" />
+        <meta name="twitter:description" content="Explore our collection of spiritual resources and inspiring articles." />
+        <meta name="twitter:image" content={`${window.location.origin}/logo512.png`} />
+      </Helmet>
+      
       <button className="back-button" onClick={() => navigate('/')}>
         ← Back to Home
       </button>

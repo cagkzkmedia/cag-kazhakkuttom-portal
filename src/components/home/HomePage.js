@@ -348,7 +348,15 @@ const HomePage = () => {
       {announcements.length > 0 && (
         <section className="announcements-section">
           <div className="announcements-content">
-            <h2>📢 Latest News and Announcements</h2>
+            <div className="announcements-header">
+              <h2>📢 Latest News and Announcements</h2>
+              <button 
+                className="view-all-announcements-btn"
+                onClick={() => navigate('/announcements')}
+              >
+                View All News →
+              </button>
+            </div>
             <div className="announcements-carousel">
               {announcements.map(announcement => (
                 <div 

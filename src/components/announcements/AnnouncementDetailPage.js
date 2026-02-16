@@ -4,7 +4,7 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { getAllAnnouncements } from '../../services/announcementService.firebase';
 import './AnnouncementDetailPage.css';
@@ -12,8 +12,18 @@ import './AnnouncementDetailPage.css';
 const AnnouncementDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const [announcement, setAnnouncement] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const handleBackClick = () => {
+    // Check if user came from AllAnnouncementsPage
+    if (location.state?.fromAllAnnouncements) {
+      navigate('/announcements');
+    } else {
+      navigate('/');
+    }
+  };
 
   useEffect(() => {
     loadAnnouncement();
@@ -136,10 +146,10 @@ const AnnouncementDetailPage = () => {
         <meta property="og:type" content="article" />
         <meta property="og:title" content={announcement.title} />
         <meta property="og:description" content={announcement.description} />
-        <meta property="og:image" content={`${window.location.origin}/church-photo.jpg`} />
-        <meta property="og:image:secure_url" content={`${window.location.origin}/church-photo.jpg`} />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
+        <meta property="og:image" content={`${window.location.origin}/logo512.png`} />
+        <meta property="og:image:secure_url" content={`${window.location.origin}/logo512.png`} />
+        <meta property="og:image:width" content="512" />
+        <meta property="og:image:height" content="512" />
         <meta property="og:image:alt" content="Christ AG Church Kazhakkoottam" />
         <meta property="og:url" content={window.location.href} />
         <meta property="og:site_name" content="Christ AG Church Kazhakkoottam" />
@@ -148,7 +158,7 @@ const AnnouncementDetailPage = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={announcement.title} />
         <meta name="twitter:description" content={announcement.description} />
-        <meta name="twitter:image" content={`${window.location.origin}/church-photo.jpg`} />
+        <meta name="twitter:image" content={`${window.location.origin}/logo512.png`} />
         <meta name="twitter:image:alt" content="Christ AG Church Kazhakkoottam" />
         
         {/* Structured data */}
@@ -161,10 +171,10 @@ const AnnouncementDetailPage = () => {
         <div className="announcement-detail-header">
           <button 
             className="announcement-back-btn"
-            onClick={() => navigate('/')}
+            onClick={handleBackClick}
             aria-label="Go back"
           >
-            ← Back to Home
+            ← {location.state?.fromAllAnnouncements ? 'Back to Announcements' : 'Back to Home'}
           </button>
         </div>
 
