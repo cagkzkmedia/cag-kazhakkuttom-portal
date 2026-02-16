@@ -56,6 +56,44 @@ const Events = () => {
     }
   };
 
+  const handleCleanupPreviousWeeks = async () => {
+    if (!window.confirm('This will delete all events from previous weeks (keeping current week). Continue?')) {
+      return;
+    }
+
+    try {
+      // Get current week start (Sunday)
+      const today = new Date();
+      const dayOfWeek = today.getDay();
+      const daysFromSunday = -dayOfWeek;
+      const currentWeekStart = new Date(today);
+      currentWeekStart.setDate(today.getDate() + daysFromSunday);
+      currentWeekStart.setHours(0, 0, 0, 0);
+
+      // Filter events from previous weeks
+      const previousWeekEvents = events.filter(event => {
+        const eventDate = new Date(event.eventDate);
+        return eventDate < currentWeekStart;
+      });
+
+      if (previousWeekEvents.length === 0) {
+        alert('No previous week events to clean up.');
+        return;
+      }
+
+      // Delete each event
+      for (const event of previousWeekEvents) {
+        await deleteEventService(event.id);
+        dispatch(deleteEvent(event.id));
+      }
+
+      alert(`Successfully deleted ${previousWeekEvents.length} event(s) from previous weeks.`);
+    } catch (error) {
+      console.error('Error cleaning up events:', error);
+      alert('Failed to cleanup events. Please try again.');
+    }
+  };
+
   if (loading) {
     return <div className="loading">Loading events...</div>;
   }
@@ -65,6 +103,9 @@ const Events = () => {
       <div className="page-header">
         <h1>Event Management</h1>
         <div className="header-actions">
+          <button className="cleanup-btn" onClick={handleCleanupPreviousWeeks}>
+            🗑️ Cleanup Old Events
+          </button>
           <div className="view-toggle">
             <button
               className={view === 'list' ? 'active' : ''}

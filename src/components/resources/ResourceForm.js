@@ -6,6 +6,18 @@
 import React, { useState, useEffect } from 'react';
 import './ResourceForm.css';
 
+// Default images for each category from Unsplash
+const categoryImages = {
+  'Faith': 'https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d?q=80&w=3174&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'Prayer': 'https://images.unsplash.com/photo-1604537466573-5e94508fd243?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'Devotion': 'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'Teaching': 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=2022&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'Testimony': 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'Inspiration': 'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'Bible Study': 'https://images.unsplash.com/photo-1519791883288-dc8bd696e667?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'Other': 'https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2073&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+};
+
 const ResourceForm = ({ resource, onSubmit, onClose, isLoading }) => {
   const [formData, setFormData] = useState({
     title: '',
@@ -13,7 +25,7 @@ const ResourceForm = ({ resource, onSubmit, onClose, isLoading }) => {
     author: '',
     description: '',
     content: '',
-    imageUrl: '',
+    imageUrl: categoryImages['Faith'],
   });
 
   const [errors, setErrors] = useState({});
@@ -67,10 +79,21 @@ const ResourceForm = ({ resource, onSubmit, onClose, isLoading }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    
+    // If category is changed, update image URL to match category
+    if (name === 'category') {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value,
+        imageUrl: categoryImages[value] || categoryImages['Other']
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
+    
     // Clear error for this field when user starts typing
     if (errors[name]) {
       setErrors(prev => ({

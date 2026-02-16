@@ -193,8 +193,8 @@ const HomePage = () => {
         const allArticles = await getAllArticles();
         // Merge Firebase articles with mock articles (if any real articles exist, use them; otherwise use mock)
         const articlesToShow = allArticles.length > 0 ? allArticles : MOCK_ARTICLES;
-        // Get the 3 most recent articles for homepage
-        const recentArticles = articlesToShow.slice(0, 3);
+        // Get the 5 most recent articles for homepage
+        const recentArticles = articlesToShow.slice(0, 5);
         if (mounted) setArticles(recentArticles);
       } catch (err) {
         console.error('Failed to load articles', err);
@@ -732,42 +732,53 @@ const HomePage = () => {
               <p>No articles available at the moment. Check back soon!</p>
             </div>
           ) : (
-            <div className="articles-grid">
-              {articles.slice(0, 10).map(article => (
-                <div key={article.id} className="article-card">
-                  {article.imageUrl && (
-                    <div className="article-image">
-                      <img 
-                        src={article.imageUrl} 
-                        alt={article.title}
-                        onError={(e) => {
-                          e.target.style.display = 'none';
-                        }}
-                      />
-                    </div>
-                  )}
-                  <div className="article-content">
-                    <div className="article-meta">
-                      <span className="article-category">{article.category || 'General'}</span>
-                      <span className="article-date">
-                        {new Date(article.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                      </span>
-                    </div>
-                    <h3 className="article-title">{article.title}</h3>
-                    <p className="article-excerpt">{article.excerpt || article.description}</p>
-                    {article.author && (
-                      <p className="article-author">By {article.author}</p>
+            <>
+              <div className="articles-grid">
+                {articles.slice(0, 10).map(article => (
+                  <div key={article.id} className="article-card">
+                    {article.imageUrl && (
+                      <div className="article-image">
+                        <img 
+                          src={article.imageUrl} 
+                          alt={article.title}
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                          }}
+                        />
+                      </div>
                     )}
-                    <button 
-                      className="read-more-btn"
-                      onClick={() => navigate(`/article/${article.id}`)}
-                    >
-                      Read More →
-                    </button>
+                    <div className="article-content">
+                      <div className="article-meta">
+                        <span className="article-category">{article.category || 'General'}</span>
+                        <span className="article-date">
+                          {new Date(article.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                        </span>
+                      </div>
+                      <h3 className="article-title">{article.title}</h3>
+                      <p className="article-excerpt">{article.excerpt || article.description}</p>
+                      {article.author && (
+                        <p className="article-author">By {article.author}</p>
+                      )}
+                      <button 
+                        className="read-more-btn"
+                        onClick={() => navigate(`/article/${article.id}`)}
+                      >
+                        Read More →
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+              
+              <div className="view-all-articles-section">
+                <button 
+                  className="btn-view-all-articles"
+                  onClick={() => navigate('/articles')}
+                >
+                  View All Articles
+                </button>
+              </div>
+            </>
           )}
         </div>
       </section>

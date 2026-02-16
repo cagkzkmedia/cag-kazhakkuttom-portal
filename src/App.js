@@ -27,6 +27,7 @@ import ChangePassword from './components/settings/ChangePassword';
 import UserManagement from './components/users/UserManagement';
 import ResourcesManager from './components/resources/ResourcesManager';
 import ArticleDetailPage from './components/articles/ArticleDetailPage';
+import AllArticlesPage from './components/articles/AllArticlesPage';
 import TestimonialsManagement from './components/testimonials/TestimonialsManagement';
 import TestimonialForm from './components/testimonials/TestimonialForm';
 import CelebrationsPage from './components/celebrations/CelebrationsPage';
@@ -98,6 +99,7 @@ function App() {
             <Route path="/celebrations" element={<CelebrationsPage />} />
             <Route path="/celebrations/slideshow" element={<CelebrationSlideshow />} />
             <Route path="/youtube-thumbnail-creator" element={<YouTubeThumbnailCreator />} />
+            <Route path="/articles" element={<AllArticlesPage />} />
             
             {/* Article Detail Page */}
             <Route path="/article/:id" element={<ArticleDetailPage />} />

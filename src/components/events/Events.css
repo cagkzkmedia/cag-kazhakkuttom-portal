@@ -11,6 +11,31 @@
   align-items: center;
 }
 
+.cleanup-btn {
+  padding: 10px 18px;
+  background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(245, 101, 101, 0.3);
+  white-space: nowrap;
+}
+
+.cleanup-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 101, 101, 0.4);
+  background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+}
+
+.cleanup-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(245, 101, 101, 0.3);
+}
+
 .view-toggle {
   display: flex;
   gap: 8px;

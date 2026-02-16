@@ -169,10 +169,8 @@ const CelebrationSlideshow = () => {
 
   const formatName = (name) => {
     if (!name) return '';
-    if (name === name.toUpperCase()) {
-      return name.toLowerCase().replace(/\b\w/g, char => char.toUpperCase());
-    }
-    return name;
+    // Always capitalize first letter of each word
+    return name.toLowerCase().replace(/\b\w/g, char => char.toUpperCase());
   };
 
   const getBirthdayMessage = (name) => {
@@ -340,18 +338,17 @@ const CelebrationSlideshow = () => {
             </div>
             
             <div className="celebration-message-body">
+              <div className="celebration-date-display">
+                <div className="celebration-date-day">
+                  {new Date(currentCelebration.date).getDate()}
+                </div>
+                <div className="celebration-date-month">
+                  {new Date(currentCelebration.date).toLocaleDateString('en-US', { month: 'long' })}
+                </div>
+              </div>
+              
               <p className="celebration-message-text">{message.message}</p>
               <p className="celebration-church-name">Christ AG Church Kazhakkoottam 💙</p>
-            </div>
-
-            <div className="celebration-date-info">
-              <div className="celebration-date-icon">📅</div>
-              <div className="celebration-date-text">
-                {new Date(currentCelebration.date).toLocaleDateString('en-US', { 
-                  month: 'long', 
-                  day: 'numeric' 
-                })}
-              </div>
             </div>
           </div>
         </div>

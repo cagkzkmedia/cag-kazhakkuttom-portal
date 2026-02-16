@@ -4,7 +4,7 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { getArticleById } from '../../services/articlesService.firebase';
 import './ArticleDetailPage.css';
 
@@ -125,12 +125,18 @@ As you go through your day, I challenge you to pause and count your blessings. N
 const ArticleDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const handleBackClick = () => {
-    // Navigate to home and scroll to resources section
-    navigate('/', { state: { scrollToResources: true } });
+    // Check if user came from AllArticlesPage
+    if (location.state?.fromAllArticles) {
+      navigate('/articles');
+    } else {
+      // Navigate to home and scroll to resources section
+      navigate('/', { state: { scrollToResources: true } });
+    }
   };
 
   useEffect(() => {

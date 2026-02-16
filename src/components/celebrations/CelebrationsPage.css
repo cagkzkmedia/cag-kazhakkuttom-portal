@@ -579,35 +579,26 @@
 }
 
 /* Celebration Slideshow Link */
-.celebration-slideshow-link-container {
-  margin-top: 60px;
-  padding: 40px 20px;
-  text-align: center;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-}
-
 .celebration-slideshow-link {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 20px;
+  padding: 8px 18px;
   background: rgba(255, 255, 255, 0.95);
   color: #667eea;
   text-decoration: none;
-  border-radius: 25px;
-  font-size: 14px;
+  border-radius: 20px;
+  font-size: 13px;
   font-weight: 600;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   transition: all 0.3s ease;
   border: 1px solid rgba(255, 255, 255, 0.3);
   white-space: nowrap;
+  backdrop-filter: blur(10px);
 }
 
 .celebration-slideshow-link:hover {
-  transform: translateY(-2px);
+  transform: translateY(-1px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
   background: white;
 }
