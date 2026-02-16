@@ -45,26 +45,80 @@ const AllArticlesPage = () => {
     });
   };
 
+  const handleShare = async (platform) => {
+    const url = window.location.href;
+    const title = 'Resources & Articles | Christ AG Church Kazhakkoottam | ക്രൈസ്റ്റ് AG കഴക്കൂട്ടം ചർച്ചിലെ സന്ദേശങ്ങളുടെ പൂർണ്ണമായ ശേഖരം';
+    const text = 'Explore our collection of spiritual resources and inspiring articles from Christ AG Church Kazhakkoottam.';
+
+    // Try native Web Share API first (works on mobile)
+    if (platform === 'native' && navigator.share) {
+      try {
+        await navigator.share({ title, text, url });
+        return;
+      } catch (err) {
+        console.log('Share cancelled');
+      }
+    }
+
+    // Platform-specific sharing
+    let shareUrl = '';
+    switch (platform) {
+      case 'facebook':
+        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+        break;
+      case 'twitter':
+        shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`;
+        break;
+      case 'whatsapp':
+        shareUrl = `https://wa.me/?text=${encodeURIComponent(title + ' ' + url)}`;
+        break;
+      case 'email':
+        shareUrl = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(text + '\n\n' + url)}`;
+        break;
+      case 'copy':
+        try {
+          await navigator.clipboard.writeText(url);
+          alert('Link copied to clipboard!');
+          return;
+        } catch (err) {
+          console.error('Failed to copy:', err);
+          alert('Failed to copy link');
+          return;
+        }
+      default:
+        return;
+    }
+
+    if (shareUrl) {
+      window.open(shareUrl, '_blank', 'noopener,noreferrer,width=600,height=400');
+    }
+  };
+
   return (
     <div className="all-articles-page">
       <Helmet>
-        <title>Resources & Articles | Christ AG Church Kazhakkoottam | Christ AG കഴക്കൂട്ടം ചർച്ചിലെ സന്ദേശങ്ങളുടെ പൂർണ്ണമായ ശേഖരം</title>
+        <title>Resources & Articles | Christ AG Church Kazhakkoottam</title>
         <meta name="description" content="Explore our collection of spiritual resources and inspiring articles. Discover faith-building content, devotionals, and biblical teachings from Christ AG Church Kazhakkoottam." />
         <meta name="keywords" content="christian articles, faith resources, devotionals, bible study, spiritual growth, Christ AG Church, Kazhakkoottam, church resources" />
         
         {/* Open Graph tags */}
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="Resources & Articles | Christ AG Church Kazhakkoottam | Christ AG കഴക്കൂട്ടം ചർച്ചിലെ സന്ദേശങ്ങളുടെ പൂർണ്ണമായ ശേഖരം" />
-        <meta property="og:description" content="Explore our collection of spiritual resources and inspiring articles from Christ AG Church Kazhakkoottam." />
+        <meta property="og:title" content="Resources & Articles | Christ AG Church Kazhakkoottam | ക്രൈസ്റ്റ് എജി കഴക്കൂട്ടം ചർച്ചിലെ സന്ദേശങ്ങളുടെ പൂർണ്ണമായ ശേഖരം" />
+        <meta property="og:description" content="Explore our collection of spiritual resources and inspiring articles from Christ AG Church Kazhakkoottam. | ക്രൈസ്റ്റ് എജി ചർച്ച് കഴക്കൂട്ടത്തിൽ നിന്നുള്ള ആത്മീയ വിഭവങ്ങളുടെയും പ്രചോദനാത്മക ലേഖനങ്ങളുടെയും ശേഖരം പര്യവേക്ഷണം ചെയ്യുക." />
         <meta property="og:image" content={`${window.location.origin}/logo512.png`} />
+        <meta property="og:image:secure_url" content={`${window.location.origin}/logo512.png`} />
+        <meta property="og:image:width" content="512" />
+        <meta property="og:image:height" content="512" />
+        <meta property="og:image:alt" content="Christ AG Church Kazhakkoottam Logo" />
         <meta property="og:url" content={window.location.href} />
         <meta property="og:site_name" content="Christ AG Church Kazhakkoottam" />
         
         {/* Twitter Card tags */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Resources & Articles | Christ AG Church Kazhakkoottam | Christ AG കഴക്കൂട്ടം ചർച്ചിലെ സന്ദേശങ്ങളുടെ പൂർണ്ണമായ ശേഖരം" />
-        <meta name="twitter:description" content="Explore our collection of spiritual resources and inspiring articles." />
+        <meta name="twitter:title" content="Resources & Articles | Christ AG Church Kazhakkoottam | ക്രൈസ്റ്റ് എജി കഴക്കൂട്ടം ചർച്ചിലെ സന്ദേശങ്ങളുടെ പൂർണ്ണമായ ശേഖരം" />
+        <meta name="twitter:description" content="Explore our collection of spiritual resources and inspiring articles. | ക്രൈസ്റ്റ് എജി ചർച്ച് കഴക്കൂട്ടത്തിൽ നിന്നുള്ള ആത്മീയ വിഭവങ്ങളുടെയും പ്രചോദനാത്മക ലേഖനങ്ങളുടെയും ശേഖരം പര്യവേക്ഷണം ചെയ്യുക." />
         <meta name="twitter:image" content={`${window.location.origin}/logo512.png`} />
+        <meta name="twitter:image:alt" content="Christ AG Church Kazhakkoottam Logo" />
       </Helmet>
       
       <button className="back-button" onClick={() => navigate('/')}>
@@ -76,6 +130,28 @@ const AllArticlesPage = () => {
         <div className="articles-paper-header">
           <h1 className="articles-paper-title">Resources & Articles</h1>
           <p className="articles-paper-subtitle">Explore our collection of spiritual resources and inspiring articles</p>
+          
+          {/* Share Buttons */}
+          <div className="share-section">
+            <p className="share-label">Share this page:</p>
+            <div className="share-buttons">
+              <button onClick={() => handleShare('facebook')} className="share-btn facebook" title="Share on Facebook">
+                <span>📘</span> Facebook
+              </button>
+              <button onClick={() => handleShare('twitter')} className="share-btn twitter" title="Share on Twitter">
+                <span>🐦</span> Twitter
+              </button>
+              <button onClick={() => handleShare('whatsapp')} className="share-btn whatsapp" title="Share on WhatsApp">
+                <span>💬</span> WhatsApp
+              </button>
+              <button onClick={() => handleShare('email')} className="share-btn email" title="Share via Email">
+                <span>📧</span> Email
+              </button>
+              <button onClick={() => handleShare('copy')} className="share-btn copy" title="Copy Link">
+                <span>🔗</span> Copy Link
+              </button>
+            </div>
+          </div>
         </div>
 
         {/* Filter Section */}

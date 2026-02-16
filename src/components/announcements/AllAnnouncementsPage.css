@@ -62,6 +62,92 @@
   font-style: italic;
 }
 
+/* Share Section Styles */
+.all-announcements-page .share-section {
+  margin-top: 30px;
+  padding-top: 25px;
+  border-top: 2px solid #e2e8f0;
+}
+
+.all-announcements-page .share-label {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #2d3748;
+}
+
+.all-announcements-page .share-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.all-announcements-page .share-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.all-announcements-page .share-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.all-announcements-page .share-btn:active {
+  transform: translateY(0);
+}
+
+.all-announcements-page .share-btn.facebook {
+  background: linear-gradient(135deg, #1877f2 0%, #0d5ecc 100%);
+}
+
+.all-announcements-page .share-btn.facebook:hover {
+  background: linear-gradient(135deg, #0d5ecc 0%, #0a4da3 100%);
+}
+
+.all-announcements-page .share-btn.twitter {
+  background: linear-gradient(135deg, #1da1f2 0%, #0c85d0 100%);
+}
+
+.all-announcements-page .share-btn.twitter:hover {
+  background: linear-gradient(135deg, #0c85d0 0%, #0a6bb3 100%);
+}
+
+.all-announcements-page .share-btn.whatsapp {
+  background: linear-gradient(135deg, #25d366 0%, #1ebe57 100%);
+}
+
+.all-announcements-page .share-btn.whatsapp:hover {
+  background: linear-gradient(135deg, #1ebe57 0%, #17a347 100%);
+}
+
+.all-announcements-page .share-btn.email {
+  background: linear-gradient(135deg, #ea4335 0%, #c5221f 100%);
+}
+
+.all-announcements-page .share-btn.email:hover {
+  background: linear-gradient(135deg, #c5221f 0%, #a01b1b 100%);
+}
+
+.all-announcements-page .share-btn.copy {
+  background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+}
+
+.all-announcements-page .share-btn.copy:hover {
+  background: linear-gradient(135deg, #495057 0%, #343a40 100%);
+}
+
 .announcements-filter-section {
   padding: 30px 0;
 }

@@ -50,26 +50,80 @@ const AllAnnouncementsPage = () => {
     });
   };
 
+  const handleShare = async (platform) => {
+    const url = window.location.href;
+    const title = 'Latest News & Announcements | Christ AG Church Kazhakkoottam | ഏറ്റവും പുതിയ വാർത്തകളും അറിയിപ്പുകളും';
+    const text = 'Stay updated with the latest news and important announcements from Christ AG Church Kazhakkoottam.';
+
+    // Try native Web Share API first (works on mobile)
+    if (platform === 'native' && navigator.share) {
+      try {
+        await navigator.share({ title, text, url });
+        return;
+      } catch (err) {
+        console.log('Share cancelled');
+      }
+    }
+
+    // Platform-specific sharing
+    let shareUrl = '';
+    switch (platform) {
+      case 'facebook':
+        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+        break;
+      case 'twitter':
+        shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`;
+        break;
+      case 'whatsapp':
+        shareUrl = `https://wa.me/?text=${encodeURIComponent(title + ' ' + url)}`;
+        break;
+      case 'email':
+        shareUrl = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(text + '\n\n' + url)}`;
+        break;
+      case 'copy':
+        try {
+          await navigator.clipboard.writeText(url);
+          alert('Link copied to clipboard!');
+          return;
+        } catch (err) {
+          console.error('Failed to copy:', err);
+          alert('Failed to copy link');
+          return;
+        }
+      default:
+        return;
+    }
+
+    if (shareUrl) {
+      window.open(shareUrl, '_blank', 'noopener,noreferrer,width=600,height=400');
+    }
+  };
+
   return (
     <div className="all-announcements-page">
       <Helmet>
-        <title>Latest News & Announcements | Christ AG Church Kazhakkoottam |  ഏറ്റവും പുതിയ വാർത്തകളും അറിയിപ്പുകളും</title>
+        <title>Latest News & Announcements | Christ AG Church Kazhakkoottam</title>
         <meta name="description" content="Stay updated with the latest news and important announcements from Christ AG Church Kazhakkoottam. Find information about upcoming events, church activities, and community updates." />
         <meta name="keywords" content="church announcements, church news, Christ AG Church, Kazhakkoottam, church events, community updates, church activities" />
         
         {/* Open Graph tags */}
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Latest News & Announcements | Christ AG Church Kazhakkoottam | ഏറ്റവും പുതിയ വാർത്തകളും അറിയിപ്പുകളും" />
-        <meta property="og:description" content="Stay updated with the latest news and important announcements from Christ AG Church Kazhakkoottam." />
+        <meta property="og:description" content="Stay updated with the latest news and important announcements from Christ AG Church Kazhakkoottam. | ക്രൈസ്റ്റ് എജി ചർച്ച് കഴക്കൂട്ടത്തിൽ നിന്നുള്ള ഏറ്റവും പുതിയ വാർത്തകളും പ്രധാന അറിയിപ്പുകളും അറിയുക." />
         <meta property="og:image" content={`${window.location.origin}/logo512.png`} />
+        <meta property="og:image:secure_url" content={`${window.location.origin}/logo512.png`} />
+        <meta property="og:image:width" content="512" />
+        <meta property="og:image:height" content="512" />
+        <meta property="og:image:alt" content="Christ AG Church Kazhakkoottam Logo" />
         <meta property="og:url" content={window.location.href} />
         <meta property="og:site_name" content="Christ AG Church Kazhakkoottam" />
         
         {/* Twitter Card tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Latest News & Announcements | Christ AG Church Kazhakkoottam | ഏറ്റവും പുതിയ വാർത്തകളും അറിയിപ്പുകളും" />
-        <meta name="twitter:description" content="Stay updated with the latest news and important announcements from our church." />
+        <meta name="twitter:description" content="Stay updated with the latest news and important announcements from our church. | ക്രൈസ്റ്റ് എജി ചർച്ച് കഴക്കൂട്ടത്തിൽ നിന്നുള്ള പുതിയ വാർത്തകളും പ്രധാന അറിയിപ്പുകളും അറിയുക." />
         <meta name="twitter:image" content={`${window.location.origin}/logo512.png`} />
+        <meta name="twitter:image:alt" content="Christ AG Church Kazhakkoottam Logo" />
       </Helmet>
       
       <button className="back-button" onClick={() => navigate('/')}>
@@ -81,6 +135,28 @@ const AllAnnouncementsPage = () => {
         <div className="announcements-paper-header">
           <h1 className="announcements-paper-title">Latest News & Announcements</h1>
           <p className="announcements-paper-subtitle">Stay updated with the latest news and important announcements from our church</p>
+          
+          {/* Share Buttons */}
+          <div className="share-section">
+            <p className="share-label">Share this page:</p>
+            <div className="share-buttons">
+              <button onClick={() => handleShare('facebook')} className="share-btn facebook" title="Share on Facebook">
+                <span>📘</span> Facebook
+              </button>
+              <button onClick={() => handleShare('twitter')} className="share-btn twitter" title="Share on Twitter">
+                <span>🐦</span> Twitter
+              </button>
+              <button onClick={() => handleShare('whatsapp')} className="share-btn whatsapp" title="Share on WhatsApp">
+                <span>💬</span> WhatsApp
+              </button>
+              <button onClick={() => handleShare('email')} className="share-btn email" title="Share via Email">
+                <span>📧</span> Email
+              </button>
+              <button onClick={() => handleShare('copy')} className="share-btn copy" title="Copy Link">
+                <span>🔗</span> Copy Link
+              </button>
+            </div>
+          </div>
         </div>
 
         {/* Filter Section */}
