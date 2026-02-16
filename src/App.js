@@ -49,6 +49,7 @@ import MemberSignup from './components/member-portal/MemberSignup';
 // Admin Components
 import AdminMemberApprovals from './components/admin/AdminMemberApprovals';
 import AnnouncementManagement from './components/announcements/AnnouncementManagement';
+import AnnouncementDetailPage from './components/announcements/AnnouncementDetailPage';
 
 import './App.css';
 
@@ -103,6 +104,9 @@ function App() {
             
             {/* Article Detail Page */}
             <Route path="/article/:id" element={<ArticleDetailPage />} />
+            
+            {/* Announcement Detail Page */}
+            <Route path="/announcement/:id" element={<AnnouncementDetailPage />} />
 
             {/* Admin Public Routes */}
             <Route path="/login" element={<Login />} />

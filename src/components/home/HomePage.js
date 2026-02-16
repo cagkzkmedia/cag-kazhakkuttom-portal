@@ -348,16 +348,13 @@ const HomePage = () => {
       {announcements.length > 0 && (
         <section className="announcements-section">
           <div className="announcements-content">
-            <h2>📢 Important Announcements</h2>
+            <h2>📢 Latest News and Announcements</h2>
             <div className="announcements-carousel">
               {announcements.map(announcement => (
                 <div 
                   key={announcement.id} 
                   className="announcement-banner"
-                  onClick={() => {
-                    setSelectedAnnouncement(announcement);
-                    setIsAnnouncementModalOpen(true);
-                  }}
+                  onClick={() => navigate(`/announcement/${announcement.id}`)}
                 >
                   {announcement.imageBase64 && (
                     <div className="announcement-poster">

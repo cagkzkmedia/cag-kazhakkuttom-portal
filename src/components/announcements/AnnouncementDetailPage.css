@@ -1,0 +1,492 @@
+/**
+ * Announcement Detail Page Styles
+ */
+
+.announcement-detail-page {
+  min-height: 100vh;
+  background: #f7fafc;
+}
+
+.announcement-detail-container {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* Header */
+.announcement-detail-header {
+  position: relative;
+  width: 100%;
+  padding: 30px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Back Button */
+.announcement-back-btn {
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #2c3e50;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.announcement-back-btn:hover {
+  background: white;
+  transform: translateX(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Content Area */
+.announcement-detail-content {
+  background: #fefefe;
+  margin: 0 auto;
+  position: relative;
+  max-width: 1000px;
+  padding: 60px 20px 80px;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.08);
+}
+
+.announcement-detail-wrapper {
+  max-width: 100%;
+  background: white;
+  padding: 50px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Expired Banner */
+.announcement-expired-banner {
+  background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+  color: white;
+  padding: 16px 24px;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 32px;
+  box-shadow: 0 4px 12px rgba(245, 101, 101, 0.3);
+}
+
+/* Meta Information */
+.announcement-detail-meta {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e2e8f0;
+  font-family: Arial, sans-serif;
+}
+
+.announcement-detail-date,
+.announcement-detail-expiry {
+  font-size: 13px;
+  color: #4a5568;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Title */
+.announcement-detail-title {
+  font-size: 48px;
+  font-weight: 900;
+  color: #1a202c;
+  margin: 0 0 20px 0;
+  line-height: 1.2;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  text-align: left;
+  border-bottom: 3px solid #1a202c;
+  padding-bottom: 16px;
+}
+
+/* Divider */
+.announcement-detail-divider {
+  width: 100%;
+  height: 2px;
+  background: #cbd5e0;
+  margin-bottom: 30px;
+}
+
+/* Image in Content - Newspaper Style */
+.announcement-detail-image {
+  float: left;
+  width: 45%;
+  margin: 0 30px 20px 0;
+  border: 1px solid #cbd5e0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.announcement-detail-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Body Content */
+.announcement-detail-body {
+  font-size: 17px;
+  line-height: 1.7;
+  color: #2d3748;
+  margin-bottom: 60px;
+  text-align: justify;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  column-count: 1;
+}
+
+.announcement-detail-body::first-letter {
+  font-size: 3.5em;
+  font-weight: bold;
+  float: left;
+  line-height: 0.9;
+  margin: 0.05em 0.1em 0 0;
+  color: #667eea;
+}
+
+/* Share Buttons */
+.announcement-detail-share {
+  margin: 40px 0;
+  padding: 30px 0;
+  border-top: 2px solid #e2e8f0;
+}
+
+.share-title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #2d3748;
+}
+
+.share-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.share-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.share-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.share-btn:active {
+  transform: translateY(0);
+}
+
+.share-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.share-facebook {
+  background: linear-gradient(135deg, #1877f2 0%, #0d5ecc 100%);
+}
+
+.share-facebook:hover {
+  background: linear-gradient(135deg, #0d5ecc 0%, #0a4da3 100%);
+}
+
+.share-twitter {
+  background: linear-gradient(135deg, #1da1f2 0%, #0c85d0 100%);
+}
+
+.share-twitter:hover {
+  background: linear-gradient(135deg, #0c85d0 0%, #0a6bb3 100%);
+}
+
+.share-whatsapp {
+  background: linear-gradient(135deg, #25d366 0%, #1ebe57 100%);
+}
+
+.share-whatsapp:hover {
+  background: linear-gradient(135deg, #1ebe57 0%, #17a347 100%);
+}
+
+.share-email {
+  background: linear-gradient(135deg, #ea4335 0%, #d33426 100%);
+}
+
+.share-email:hover {
+  background: linear-gradient(135deg, #d33426 0%, #b82a1c 100%);
+}
+
+.share-copy {
+  background: linear-gradient(135deg, #667eea 0%, #5568d3 100%);
+}
+
+.share-copy:hover {
+  background: linear-gradient(135deg, #5568d3 0%, #4553bc 100%);
+}
+
+.announcement-detail-body p {
+  margin: 0 0 20px 0;
+  white-space: pre-wrap;
+}
+
+/* Clear floats */
+.announcement-detail-body::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.announcement-detail-body p {
+  margin: 0 0 24px 0;
+  white-space: pre-wrap;
+}
+
+/* Share Buttons */
+.announcement-detail-share {
+  margin: 40px 0;
+  padding: 30px 0;
+  border-top: 2px solid #e2e8f0;
+  clear: both;
+}
+
+.share-title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #2d3748;
+}
+
+.share-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.share-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.share-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.share-btn:active {
+  transform: translateY(0);
+}
+
+.share-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.share-facebook {
+  background: linear-gradient(135deg, #1877f2 0%, #0d5ecc 100%);
+}
+
+.share-facebook:hover {
+  background: linear-gradient(135deg, #0d5ecc 0%, #0a4da3 100%);
+}
+
+.share-twitter {
+  background: linear-gradient(135deg, #1da1f2 0%, #0c85d0 100%);
+}
+
+.share-twitter:hover {
+  background: linear-gradient(135deg, #0c85d0 0%, #0a6bb3 100%);
+}
+
+.share-whatsapp {
+  background: linear-gradient(135deg, #25d366 0%, #1ebe57 100%);
+}
+
+.share-whatsapp:hover {
+  background: linear-gradient(135deg, #1ebe57 0%, #17a347 100%);
+}
+
+.share-email {
+  background: linear-gradient(135deg, #ea4335 0%, #d33426 100%);
+}
+
+.share-email:hover {
+  background: linear-gradient(135deg, #d33426 0%, #b82a1c 100%);
+}
+
+.share-copy {
+  background: linear-gradient(135deg, #667eea 0%, #5568d3 100%);
+}
+
+.share-copy:hover {
+  background: linear-gradient(135deg, #5568d3 0%, #4553bc 100%);
+}
+
+/* Footer */
+.announcement-detail-footer {
+  border-top: 3px double #2d3748;
+  padding-top: 30px;
+  margin-top: 60px;
+  clear: both;
+}
+
+.announcement-church-info {
+  text-align: center;
+  color: #4a5568;
+  font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.announcement-church-info h3 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a202c;
+  margin: 0 0 12px 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.announcement-church-info p {
+  font-size: 14px;
+  margin: 6px 0;
+  line-height: 1.6;
+}
+
+/* Loading State */
+.announcement-detail-loading {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f7fafc;
+}
+
+.announcement-detail-loading .spinner {
+  width: 60px;
+  height: 60px;
+  border: 6px solid #e2e8f0;
+  border-top-color: #667eea;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 20px;
+}
+
+.announcement-detail-loading p {
+  font-size: 18px;
+  color: #718096;
+  font-weight: 500;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .announcement-detail-header {
+    padding: 20px;
+  }
+
+  .announcement-back-btn {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  .announcement-detail-content {
+    padding: 40px 16px 60px;
+  }
+
+  .announcement-detail-wrapper {
+    padding: 30px 20px;
+  }
+
+  .announcement-detail-title {
+    font-size: 36px;
+  }
+
+  .announcement-detail-image {
+    float: none;
+    width: 100%;
+    margin: 0 0 25px 0;
+  }
+
+  .announcement-detail-body {
+    font-size: 16px;
+  }
+
+  .announcement-detail-body::first-letter {
+    font-size: 3em;
+  }
+
+  .announcement-detail-meta {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .announcement-detail-header {
+    padding: 20px;
+  }
+
+  .announcement-back-btn {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+
+  .announcement-detail-content {
+    padding: 32px 12px 40px;
+  }
+
+  .announcement-detail-wrapper {
+    padding: 25px 15px;
+  }
+
+  .announcement-detail-title {
+    font-size: 28px;
+  }
+
+  .announcement-detail-body {
+    font-size: 15px;
+    text-align: left;
+  }
+
+  .announcement-detail-body::first-letter {
+    font-size: 2.5em;
+  }
+
+  .announcement-church-info h3 {
+    font-size: 18px;
+  }
+
+  .announcement-church-info p {
+    font-size: 13px;
+  }
+}
