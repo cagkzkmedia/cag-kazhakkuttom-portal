@@ -53,7 +53,7 @@ const AllAnnouncementsPage = () => {
   return (
     <div className="all-announcements-page">
       <Helmet>
-        <title>Latest News & Announcements | Christ AG Church Kazhakkoottam</title>
+        <title>Latest News & Announcements | Christ AG Church Kazhakkoottam |  ഏറ്റവും പുതിയ വാർത്തകളും അറിയിപ്പുകളും</title>
         <meta name="description" content="Stay updated with the latest news and important announcements from Christ AG Church Kazhakkoottam. Find information about upcoming events, church activities, and community updates." />
         <meta name="keywords" content="church announcements, church news, Christ AG Church, Kazhakkoottam, church events, community updates, church activities" />
         

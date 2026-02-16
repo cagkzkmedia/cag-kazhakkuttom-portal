@@ -48,7 +48,7 @@ const AllArticlesPage = () => {
   return (
     <div className="all-articles-page">
       <Helmet>
-        <title>Resources & Articles | Christ AG Church Kazhakkoottam</title>
+        <title>Resources & Articles | Christ AG Church Kazhakkoottam | Christ AG കഴക്കൂട്ടം ചർച്ചിലെ സന്ദേശങ്ങളുടെ പൂർണ്ണമായ ശേഖരം</title>
         <meta name="description" content="Explore our collection of spiritual resources and inspiring articles. Discover faith-building content, devotionals, and biblical teachings from Christ AG Church Kazhakkoottam." />
         <meta name="keywords" content="christian articles, faith resources, devotionals, bible study, spiritual growth, Christ AG Church, Kazhakkoottam, church resources" />
         
