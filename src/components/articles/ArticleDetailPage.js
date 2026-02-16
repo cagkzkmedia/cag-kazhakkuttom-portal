@@ -267,7 +267,11 @@ const ArticleDetailPage = () => {
         <meta property="og:type" content="article" />
         <meta property="og:title" content={article.title} />
         <meta property="og:description" content={article.description || article.excerpt} />
-        {article.imageUrl && <meta property="og:image" content={article.imageUrl} />}
+        <meta property="og:image" content={`${window.location.origin}/church-photo.jpg`} />
+        <meta property="og:image:secure_url" content={`${window.location.origin}/church-photo.jpg`} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Christ AG Church Kazhakkoottam" />
         <meta property="og:url" content={window.location.href} />
         <meta property="og:site_name" content="Christ AG Church Kazhakkoottam" />
         <meta property="article:published_time" content={article.createdAt} />
@@ -278,7 +282,8 @@ const ArticleDetailPage = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={article.title} />
         <meta name="twitter:description" content={article.description || article.excerpt} />
-        {article.imageUrl && <meta name="twitter:image" content={article.imageUrl} />}
+        <meta name="twitter:image" content={`${window.location.origin}/church-photo.jpg`} />
+        <meta name="twitter:image:alt" content="Christ AG Church Kazhakkoottam" />
         
         {/* Structured data */}
         <script type="application/ld+json">
