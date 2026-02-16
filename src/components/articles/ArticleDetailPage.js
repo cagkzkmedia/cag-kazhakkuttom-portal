@@ -400,9 +400,11 @@ const ArticleDetailPage = () => {
 
         <div className="article-paper-footer">
           <div className="footer-divider"></div>
-          <p className="footer-text">
-            Share this article with your church community to inspire and encourage others in their faith journey.
-          </p>
+          <div className="church-info">
+            <h3>Christ AG Church Kazhakkoottam</h3>
+            <p>2nd Floor, Mak Tower, National Highway, Kazhakkoottam</p>
+            <p>Thiruvananthapuram, Kerala 695582</p>
+          </div>
         </div>
       </article>
     </div>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAllArticles } from '../../services/articlesService.firebase';
-import PageHeader from '../common/PageHeader';
 import './AllArticlesPage.css';
 
 const AllArticlesPage = () => {
@@ -47,16 +46,19 @@ const AllArticlesPage = () => {
 
   return (
     <div className="all-articles-page">
-      {/* Header Section */}
-      <PageHeader 
-        title="Resources & Articles"
-        subtitle="Explore our collection of spiritual resources and inspiring articles"
-        showBackButton={true}
-        backPath="/"
-      />
+      <button className="back-button" onClick={() => navigate('/')}>
+        ← Back to Home
+      </button>
 
-      {/* Filter Section */}
-      <div className="articles-filter-section">
+      <div className="articles-paper">
+        {/* Header Section */}
+        <div className="articles-paper-header">
+          <h1 className="articles-paper-title">Resources & Articles</h1>
+          <p className="articles-paper-subtitle">Explore our collection of spiritual resources and inspiring articles</p>
+        </div>
+
+        {/* Filter Section */}
+        <div className="articles-filter-section">
         <div className="articles-filter-container">
           <h3>Filter by Category:</h3>
           <div className="articles-filter-buttons">
@@ -134,11 +136,15 @@ const AllArticlesPage = () => {
         )}
       </div>
 
-      {/* Back to Home Button */}
-      <div className="articles-back-section">
-        <button className="btn-back-home" onClick={() => navigate('/')}>
-          ← Back to Home
-        </button>
+        {/* Footer */}
+        <div className="articles-paper-footer">
+          <div className="footer-divider"></div>
+          <div className="church-info">
+            <h3>Christ AG Church Kazhakkoottam</h3>
+            <p>2nd Floor, Mak Tower, National Highway, Kazhakkoottam</p>
+            <p>Thiruvananthapuram, Kerala 695582</p>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -269,10 +269,30 @@
 }
 
 .footer-divider {
-  width: 60px;
   height: 3px;
-  background: linear-gradient(90deg, transparent, #667eea, transparent);
-  margin: 0 0 20px 0;
+  background: linear-gradient(90deg, transparent, #cbd5e0, transparent);
+  margin-bottom: 25px;
+}
+
+.church-info {
+  text-align: center;
+  color: #4a5568;
+  font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.church-info h3 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a202c;
+  margin: 0 0 12px 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.church-info p {
+  font-size: 14px;
+  margin: 6px 0;
+  line-height: 1.6;
 }
 
 .footer-text {
