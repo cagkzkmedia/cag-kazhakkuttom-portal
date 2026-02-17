@@ -114,17 +114,17 @@ const AnnouncementManagement = () => {
     try {
       if (editingId) {
         await updateAnnouncement(editingId, formData);
-        alert('Announcement updated successfully!');
+        alert('News updated successfully!');
       } else {
         await createAnnouncement(formData);
-        alert('Announcement created successfully!');
+        alert('News created successfully!');
       }
 
       resetForm();
       loadAnnouncements();
     } catch (error) {
       console.error('Error saving announcement:', error);
-      alert('Failed to save announcement: ' + error.message);
+      alert('Failed to save news: ' + error.message);
     }
   };
 
@@ -142,17 +142,17 @@ const AnnouncementManagement = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this announcement?')) {
+    if (!window.confirm('Are you sure you want to delete this news?')) {
       return;
     }
 
     try {
       await deleteAnnouncement(id);
-      alert('Announcement deleted successfully!');
+      alert('News deleted successfully!');
       loadAnnouncements();
     } catch (error) {
       console.error('Error deleting announcement:', error);
-      alert('Failed to delete announcement');
+      alert('Failed to delete news');
     }
   };
 
@@ -195,13 +195,13 @@ const AnnouncementManagement = () => {
   };
 
   if (isLoading) {
-    return <div className="announcement-loading">Loading announcements...</div>;
+    return <div className="announcement-loading">Loading latest news and announcements...</div>;
   }
 
   return (
     <div className="announcement-management">
       <div className="announcement-header">
-        <h1>📢 Announcement Management</h1>
+        <h1>📢 Latest News and Announcements Management</h1>
         <div className="announcement-header-actions">
           <button
             className="btn-cleanup"
@@ -221,7 +221,7 @@ const AnnouncementManagement = () => {
 
       {isFormVisible && (
         <div className="announcement-form-container">
-          <h2>{editingId ? 'Edit Announcement' : 'Create New Announcement'}</h2>
+          <h2>{editingId ? 'Edit Latest News and Announcements' : 'Create New Latest News and Announcements'}</h2>
           <form onSubmit={handleSubmit} className="announcement-form">
             <div className="form-group">
               <label htmlFor="title">Title *</label>
@@ -297,7 +297,7 @@ const AnnouncementManagement = () => {
 
             <div className="form-actions">
               <button type="submit" className="btn-submit">
-                {editingId ? 'Update Announcement' : 'Create Announcement'}
+                {editingId ? 'Update Latest News and Announcements' : 'Create Latest News and Announcements'}
               </button>
               <button type="button" className="btn-cancel" onClick={resetForm}>
                 Cancel
@@ -308,10 +308,10 @@ const AnnouncementManagement = () => {
       )}
 
       <div className="announcements-list">
-        <h2>All Announcements ({announcements.length})</h2>
+        <h2>All Latest News and Announcements ({announcements.length})</h2>
         {announcements.length === 0 ? (
           <div className="no-announcements">
-            <p>No announcements yet. Create your first announcement!</p>
+            <p>No latest news and announcements yet. Create your first one!</p>
           </div>
         ) : (
           <div className="announcements-grid">

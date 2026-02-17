@@ -133,7 +133,7 @@ const AllAnnouncementsPage = () => {
       <div className="announcements-paper">
         {/* Header Section */}
         <div className="announcements-paper-header">
-          <h1 className="announcements-paper-title">Latest News & Announcements</h1>
+          <h1 className="announcements-paper-title">Latest News and Announcements</h1>
           <p className="announcements-paper-subtitle">Stay updated with the latest news and important announcements from our church</p>
           
           {/* Share Buttons */}
@@ -168,7 +168,7 @@ const AllAnnouncementsPage = () => {
                 className={`filter-btn ${filter === 'all' ? 'active' : ''}`}
                 onClick={() => setFilter('all')}
               >
-                All Announcements
+                All Latest News and Announcements
               </button>
               <button
                 className={`filter-btn ${filter === 'active' ? 'active' : ''}`}
@@ -191,11 +191,11 @@ const AllAnnouncementsPage = () => {
           {loading ? (
             <div className="announcements-loading">
               <div className="spinner"></div>
-              <p>Loading announcements...</p>
+              <p>Loading latest news and announcements...</p>
             </div>
           ) : filteredAnnouncements.length === 0 ? (
             <div className="announcements-empty">
-              <h3>No announcements found</h3>
+              <h3>No latest news and announcements found</h3>
               <p>Check back later for new updates!</p>
             </div>
           ) : (

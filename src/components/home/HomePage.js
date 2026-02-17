@@ -858,20 +858,25 @@ const HomePage = () => {
           <div className="footer-nav">
             <div className="footer-section">
               <h4>Quick Links</h4>
-              <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="footer-link">Home</button>
-              <button onClick={() => window.scrollTo({ top: document.querySelector('.about-section').offsetTop, behavior: 'smooth' })} className="footer-link">About Us</button>
-              <button onClick={() => window.scrollTo({ top: document.querySelector('.services-section').offsetTop, behavior: 'smooth' })} className="footer-link">Services</button>
-              <button onClick={() => window.scrollTo({ top: document.querySelector('.ministries-section').offsetTop, behavior: 'smooth' })} className="footer-link">Ministries</button>
+              <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="footer-link">🏠 Home</button>
+              <button onClick={() => window.scrollTo({ top: document.querySelector('.about-section').offsetTop, behavior: 'smooth' })} className="footer-link">ℹ️ About Us</button>
+              <button onClick={() => window.scrollTo({ top: document.querySelector('.services-section').offsetTop, behavior: 'smooth' })} className="footer-link">⛪ Services</button>
+              <button onClick={() => window.scrollTo({ top: document.querySelector('.ministries-section').offsetTop, behavior: 'smooth' })} className="footer-link">🙏 Ministries</button>
               <button onClick={() => navigate('/celebrations')} className="footer-link">🎉 Celebrations</button>
+              <button onClick={() => navigate('/articles')} className="footer-link">📚 All Articles</button>
+              <button onClick={() => navigate('/announcements')} className="footer-link">📢 All News</button>
             </div>
             <div className="footer-section">
               <h4>Portal Access</h4>
-              <button onClick={() => navigate('/login')} className="footer-link">Admin Login</button>
-              <button onClick={() => navigate('/member-portal/login')} className="footer-link">Member Login</button>
+              <button onClick={() => navigate('/login')} className="footer-link">🔐 Admin Login</button>
+              <button onClick={() => navigate('/member-portal/login')} className="footer-link">👤 Member Login</button>
             </div>
             <div className="footer-section">
               <h4>Connect With Us</h4>
-              <p className="footer-text"><a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a> | <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a><br/><a href="https://www.youtube.com/@assembliesofgodkazhakootta4792" target="_blank" rel="noopener noreferrer">YouTube</a> | <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer">Twitter</a></p>
+              <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className="footer-link">📘 Facebook</a>
+              <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className="footer-link">📷 Instagram</a>
+              <a href="https://www.youtube.com/@assembliesofgodkazhakootta4792" target="_blank" rel="noopener noreferrer" className="footer-link">▶️ YouTube</a>
+              <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer" className="footer-link">🐦 Twitter</a>
             </div>
           </div>
           <p className="footer-copyright">

@@ -15,6 +15,7 @@ const AnnouncementDetailPage = () => {
   const location = useLocation();
   const [announcement, setAnnouncement] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [imageOrientation, setImageOrientation] = useState('landscape');
 
   const handleBackClick = () => {
     // Check if user came from AllAnnouncementsPage
@@ -28,6 +29,18 @@ const AnnouncementDetailPage = () => {
   useEffect(() => {
     loadAnnouncement();
   }, [id]);
+
+  useEffect(() => {
+    // Detect image orientation when announcement loads
+    if (announcement?.imageBase64) {
+      const img = new Image();
+      img.onload = () => {
+        const orientation = img.width >= img.height ? 'landscape' : 'portrait';
+        setImageOrientation(orientation);
+      };
+      img.src = announcement.imageBase64;
+    }
+  }, [announcement?.imageBase64]);
 
   const loadAnnouncement = async () => {
     try {
@@ -52,7 +65,7 @@ const AnnouncementDetailPage = () => {
     return (
       <div className="announcement-detail-loading">
         <div className="spinner"></div>
-        <p>Loading announcement...</p>
+        <p>Loading news...</p>
       </div>
     );
   }
@@ -140,7 +153,7 @@ const AnnouncementDetailPage = () => {
       <Helmet>
         <title>{announcement.title} | Christ AG Church Kazhakkoottam</title>
         <meta name="description" content={announcement.description} />
-        <meta name="keywords" content="church announcement, Christ AG Church, Kazhakkoottam, church news, christian community" />
+        <meta name="keywords" content="church news, latest announcements, Christ AG Church, Kazhakkoottam, church news, christian community" />
         
         {/* Open Graph tags for social sharing */}
         <meta property="og:type" content="article" />
@@ -183,7 +196,7 @@ const AnnouncementDetailPage = () => {
           <div className="announcement-detail-wrapper">
             {isExpired && (
               <div className="announcement-expired-banner">
-                ⚠️ This announcement has expired
+                ⚠️ This news has expired
               </div>
             )}
 
@@ -209,19 +222,21 @@ const AnnouncementDetailPage = () => {
 
             <div className="announcement-detail-divider"></div>
 
-            {announcement.imageBase64 && (
-              <div className="announcement-detail-image">
-                <img src={announcement.imageBase64} alt={announcement.title} />
-              </div>
-            )}
+            <div className={`announcement-detail-content-grid ${imageOrientation}`}>
+              {announcement.imageBase64 && (
+                <div className="announcement-detail-image">
+                  <img src={announcement.imageBase64} alt={announcement.title} />
+                </div>
+              )}
 
-            <div className="announcement-detail-body">
-              <p>{announcement.description}</p>
+              <div className="announcement-detail-body">
+                <p>{announcement.description}</p>
+              </div>
             </div>
 
             {/* Share Buttons */}
             <div className="announcement-detail-share">
-              <h3 className="share-title">Share this announcement</h3>
+              <h3 className="share-title">Share this news</h3>
               <div className="share-buttons">
                 <button 
                   className="share-btn share-facebook"

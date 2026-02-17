@@ -508,10 +508,6 @@ background: linear-gradient(to top, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.75) 
   color: white;
   margin: 0 0 6px 0;
   line-height: 1.3;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 .announcement-overlay-content p {
@@ -1415,11 +1411,14 @@ background: linear-gradient(to top, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.75) 
   transition: all 0.2s;
   padding: 8px 16px;
   border-radius: 6px;
+  text-decoration: none;
+  display: block;
 }
 
 .footer-link:hover {
   background: rgba(255, 255, 255, 0.1);
   color: #667eea;
+  text-decoration: none;
 }
 
 .footer-links span {
