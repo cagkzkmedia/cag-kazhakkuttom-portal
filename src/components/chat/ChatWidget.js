@@ -28,13 +28,18 @@ const ChatWidget = () => {
     scrollToBottom();
   }, [messages]);
 
-  // Detect scroll position for shifting chat button
+  // Detect scroll button visibility for shifting chat button position
   useEffect(() => {
     const handleScroll = () => {
-      setScrolledDown(window.pageYOffset > 300);
+      const scrollButton = document.querySelector('.scroll-to-top');
+      const isScrollButtonVisible = scrollButton && scrollButton.classList.contains('visible');
+      setScrolledDown(isScrollButtonVisible);
     };
 
     window.addEventListener('scroll', handleScroll);
+    // Initial check
+    handleScroll();
+    
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 

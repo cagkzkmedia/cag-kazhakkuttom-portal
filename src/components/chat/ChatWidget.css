@@ -1,7 +1,7 @@
 .chat-button {
   position: fixed;
-  bottom: 30px;
-  right: 30px;
+  bottom: 40px;
+  right: 40px;
   width: 60px;
   height: 60px;
   border-radius: 50%;
@@ -17,7 +17,7 @@
 }
 
 .chat-button.shifted {
-  right: 110px;
+  bottom: 116px;
 }
 
 .chat-button:hover {
@@ -48,8 +48,8 @@
 
 .chat-widget {
   position: fixed;
-  bottom: 30px;
-  right: 30px;
+  bottom: 40px;
+  right: 40px;
   width: 380px;
   height: 550px;
   background: white;

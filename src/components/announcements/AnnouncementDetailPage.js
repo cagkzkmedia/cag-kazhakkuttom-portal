@@ -179,21 +179,16 @@ const AnnouncementDetailPage = () => {
           {JSON.stringify(structuredData)}
         </script>
       </Helmet>
-      <div className="announcement-detail-container">
-        {/* Header */}
-        <div className="announcement-detail-header">
-          <button 
-            className="announcement-back-btn"
-            onClick={handleBackClick}
-            aria-label="Go back"
-          >
-            ← {location.state?.fromAllAnnouncements ? 'Back to Announcements' : 'Back to Home'}
-          </button>
-        </div>
+      
+      <button 
+        className="announcement-back-btn"
+        onClick={handleBackClick}
+        aria-label="Go back"
+      >
+        ← {location.state?.fromAllAnnouncements ? 'Back to Announcements' : 'Back to Home'}
+      </button>
 
-        {/* Content */}
-        <div className="announcement-detail-content">
-          <div className="announcement-detail-wrapper">
+      <div className="announcement-detail-wrapper">
             {isExpired && (
               <div className="announcement-expired-banner">
                 ⚠️ This news has expired
@@ -230,7 +225,7 @@ const AnnouncementDetailPage = () => {
               )}
 
               <div className="announcement-detail-body">
-                <p>{announcement.description}</p>
+                <div dangerouslySetInnerHTML={{ __html: announcement.description }} />
               </div>
             </div>
 
@@ -304,8 +299,6 @@ const AnnouncementDetailPage = () => {
                 <p>Thiruvananthapuram, Kerala 695582</p>
               </div>
             </div>
-          </div>
-        </div>
       </div>
     </div>
   );
