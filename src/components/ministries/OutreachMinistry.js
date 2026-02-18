@@ -7,6 +7,9 @@ const OutreachMinistry = () => {
 
   return (
     <div className="ministry-page">
+      <button className="back-to-home-btn" onClick={() => navigate('/')}>
+        ← Back to Home
+      </button>
       <div className="ministry-hero" style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
         <div className="ministry-hero-content">
           <div className="ministry-hero-icon">🌍</div>
@@ -26,9 +29,7 @@ const OutreachMinistry = () => {
             <button className="btn-primary" onClick={() => navigate('/contact')}>
               Join Outreach Team
             </button>
-            <button className="btn-secondary" onClick={() => navigate('/')}>
-              Back to Home
-            </button>
+
           </div>
         </section>
       </div>
@@ -36,7 +37,8 @@ const OutreachMinistry = () => {
       <div className="ministry-footer">
         <div className="ministry-footer-content">
           <h3>Christ AG Church Kazhakkoottam</h3>
-          <p>Thozhuvancode, Kazhakkoottam P.O, Trivandrum - 695582</p>
+          <p>2nd Floor, Mak Tower, National Highway, Kazhakkoottam</p>
+          <p>Thiruvananthapuram, Kerala 695582</p>
         </div>
       </div>
     </div>
