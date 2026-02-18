@@ -635,35 +635,86 @@ const HomePage = () => {
         <div className="ministries-content">
           <h2>Our Ministries</h2>
           <div className="ministries-grid">
-            <div className="ministry-card">
+            <div className="ministry-card" onClick={() => navigate('/ministry/childrens')}>
               <div className="ministry-icon">👶</div>
               <h4>Children's Ministry</h4>
-              <p>Nurturing young hearts with Bible stories, worship, and Christian values in a fun and engaging environment.</p>
+              <p>Nurturing young hearts with Bible stories, worship, and Christian values. Our Sunday School program provides age-appropriate biblical teaching, interactive lessons, and character-building activities for children of all ages.</p>
+              <button className="ministry-btn">Learn More →</button>
             </div>
-            <div className="ministry-card">
+            <div className="ministry-card" onClick={() => navigate('/ministry/youth')}>
               <div className="ministry-icon">🎓</div>
               <h4>Youth Ministry</h4>
-              <p>Empowering young people to grow in faith, build friendships, and discover their purpose in Christ.</p>
+              <p>Empowering young people to grow in faith through Christ Ambassadors program. We provide mentorship, leadership development, biblical training, and fellowship opportunities that help youth discover their purpose in Christ.</p>
+              <button className="ministry-btn">Learn More →</button>
             </div>
-            <div className="ministry-card">
+            <div className="ministry-card" onClick={() => navigate('/ministry/worship')}>
               <div className="ministry-icon">🎵</div>
               <h4>Worship Ministry</h4>
               <p>Leading the congregation in heartfelt praise and worship through music, song, and creative expression.</p>
+              <button className="ministry-btn">Learn More →</button>
             </div>
-            <div className="ministry-card">
+            <div className="ministry-card" onClick={() => navigate('/ministry/family')}>
               <div className="ministry-icon">👨‍👩‍👧‍👦</div>
               <h4>Family Ministry</h4>
-              <p>Strengthening families through biblical teaching, support groups, and community fellowship activities.</p>
+              <p>Strengthening families through special Bible study sessions and professional family counseling. We provide spiritual guidance, marriage enrichment programs, parenting support, and community fellowship activities.</p>
+              <button className="ministry-btn">Learn More →</button>
             </div>
-            <div className="ministry-card">
+            <div className="ministry-card" onClick={() => navigate('/ministry/outreach')}>
               <div className="ministry-icon">🌍</div>
               <h4>Outreach Ministry</h4>
-              <p>Sharing God's love beyond our walls through community service, missions, and evangelism programs.</p>
+              <p>Sharing God's love through Gospel for Kazhakkuttom (GFK) initiative. Our outreach programs include community service, evangelism, humanitarian aid, and mission work to spread Christ's message beyond our walls.</p>
+              <button className="ministry-btn">Learn More →</button>
             </div>
-            <div className="ministry-card">
+            <div className="ministry-card" onClick={() => navigate('/ministry/prayer')}>
               <div className="ministry-icon">🙏</div>
               <h4>Prayer Ministry</h4>
-              <p>Interceding for our church, community, and nation through organized prayer meetings and chains.</p>
+              <p>Interceding for our church, community, and nation through organized prayer chains and special prayer meetings on Zoom. Join us in powerful corporate prayer sessions that bring breakthroughs and blessings.</p>
+              <button className="ministry-btn">Learn More →</button>
+            </div>
+            <div className="ministry-card" onClick={() => navigate('/ministry/ladies')}>
+              <div className="ministry-icon">💐</div>
+              <h4>Ladies Ministry (WMC)</h4>
+              <p>Women's Missionary Council - Empowering women of faith through fellowship, Bible study, prayer meetings, and missionary support. Building a community of strong, godly women who impact their families and communities.</p>
+              <button className="ministry-btn">Learn More →</button>
+            </div>
+            <div className="ministry-card" onClick={() => navigate('/ministry/mission')}>
+              <div className="ministry-icon">✈️</div>
+              <h4>Mission Department</h4>
+              <p>Extending God's kingdom through strategic mission work in Telangana and beyond. Our mission teams establish churches, provide humanitarian aid, and spread the Gospel to unreached regions, transforming communities through Christ's love.</p>
+              <button className="ministry-btn">Learn More →</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Quick Links Section */}
+      <section className="quick-links-section">
+        <div className="quick-links-content">
+          <h2>Quick Access</h2>
+          <div className="quick-links-grid">
+            <div className="quick-link-card" onClick={() => navigate('/celebrations')}>
+              <div className="quick-link-icon">🎉</div>
+              <h4>Celebrations</h4>
+              <p>View upcoming birthdays and anniversaries of our church family members.</p>
+              <button className="quick-link-btn">View Celebrations →</button>
+            </div>
+            <div className="quick-link-card" onClick={() => navigate('/articles')}>
+              <div className="quick-link-icon">📖</div>
+              <h4>All Articles</h4>
+              <p>Explore our collection of inspiring articles, devotionals, and biblical teachings.</p>
+              <button className="quick-link-btn">Read Articles →</button>
+            </div>
+            <div className="quick-link-card" onClick={() => navigate('/announcements')}>
+              <div className="quick-link-icon">📰</div>
+              <h4>All News</h4>
+              <p>Stay updated with the latest news, announcements, and events from our church.</p>
+              <button className="quick-link-btn">View News →</button>
+            </div>
+            <div className="quick-link-card" onClick={() => navigate('/donate')}>
+              <div className="quick-link-icon">💝</div>
+              <h4>Make a Donation</h4>
+              <p>Support our ministry and church activities through your generous contribution.</p>
+              <button className="quick-link-btn">Donate Now →</button>
             </div>
           </div>
         </div>

@@ -53,6 +53,16 @@ import AnnouncementDetailPage from './components/announcements/AnnouncementDetai
 import AllAnnouncementsPage from './components/announcements/AllAnnouncementsPage';
 import DonationPage from './components/donations/DonationPage';
 
+// Ministry Pages
+import ChildrensMinistry from './components/ministries/ChildrensMinistry';
+import YouthMinistry from './components/ministries/YouthMinistry';
+import WorshipMinistry from './components/ministries/WorshipMinistry';
+import FamilyMinistry from './components/ministries/FamilyMinistry';
+import OutreachMinistry from './components/ministries/OutreachMinistry';
+import PrayerMinistry from './components/ministries/PrayerMinistry';
+import LadiesMinistry from './components/ministries/LadiesMinistry';
+import MissionMinistry from './components/ministries/MissionMinistry';
+
 import './App.css';
 
 // App initialization wrapper
@@ -105,6 +115,16 @@ function App() {
             <Route path="/articles" element={<AllArticlesPage />} />
             <Route path="/announcements" element={<AllAnnouncementsPage />} />
             <Route path="/donate" element={<DonationPage />} />
+            
+            {/* Ministry Pages */}
+            <Route path="/ministry/childrens" element={<ChildrensMinistry />} />
+            <Route path="/ministry/youth" element={<YouthMinistry />} />
+            <Route path="/ministry/worship" element={<WorshipMinistry />} />
+            <Route path="/ministry/family" element={<FamilyMinistry />} />
+            <Route path="/ministry/outreach" element={<OutreachMinistry />} />
+            <Route path="/ministry/prayer" element={<PrayerMinistry />} />
+            <Route path="/ministry/ladies" element={<LadiesMinistry />} />
+            <Route path="/ministry/mission" element={<MissionMinistry />} />
             
             {/* Article Detail Page */}
             <Route path="/article/:id" element={<ArticleDetailPage />} />
