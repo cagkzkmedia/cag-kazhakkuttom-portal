@@ -300,8 +300,8 @@ const HomePage = () => {
           </p>
           
           <div className="hero-cta">
-            <button className="primary-cta" onClick={() => navigate('/donate')}>
-              Make a Donation 💝
+           <button className="primary-cta" onClick={() => window.scrollTo({ top: document.querySelector('.services-section').offsetTop, behavior: 'smooth' })}>
+              Explore Our Services
             </button>
             <button className="secondary-cta" onClick={() => window.scrollTo({ top: document.querySelector('.contact-section').offsetTop, behavior: 'smooth' })}>
               Get In Touch
