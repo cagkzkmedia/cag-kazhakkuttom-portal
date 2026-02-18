@@ -107,8 +107,8 @@ const MemberDonation = () => {
       return;
     }
 
-    const upiId = 'jobinelisha@okaxis';
-    const name = 'Christ AG Church';
+    const upiId = 'assemblies49629@fbl';
+    const name = 'ASSEMBLIES OF GOD';
     const amount = parseFloat(finalAmount).toFixed(2);
     const note = `${category} donation - ${member?.name || 'Anonymous'}`;
     
@@ -330,23 +330,19 @@ const MemberDonation = () => {
               <div className="bank-details">
                 <div className="detail-row">
                   <span className="detail-label">Account Name:</span>
-                  <span className="detail-value">Christ AG Church</span>
+                  <span className="detail-value">ASSEMBLIES OF GOD</span>
                 </div>
                 <div className="detail-row">
                   <span className="detail-label">Account Number:</span>
-                  <span className="detail-value">1234567890123</span>
+                  <span className="detail-value">16170100049629</span>
                 </div>
                 <div className="detail-row">
                   <span className="detail-label">IFSC Code:</span>
-                  <span className="detail-value">SBIN0001234</span>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">Bank:</span>
-                  <span className="detail-value">State Bank of India</span>
+                  <span className="detail-value">FDRL0001617</span>
                 </div>
                 <div className="detail-row">
                   <span className="detail-label">Branch:</span>
-                  <span className="detail-value">Kazhakkoottam, Trivandrum</span>
+                  <span className="detail-value">Kazhakootam</span>
                 </div>
               </div>
               <p className="info-note">💡 Please use your name as reference when transferring.</p>
@@ -397,8 +393,8 @@ const MemberDonation = () => {
             <div className="payment-info-box">
               <h4>📱 Church UPI ID:</h4>
               <div className="wallet-address">
-                <code>jobinelisha@okaxis</code>
-                <button type="button" className="copy-btn" onClick={() => navigator.clipboard.writeText('jobinelisha@okaxis')}>
+                <code>assemblies49629@fbl</code>
+                <button type="button" className="copy-btn" onClick={() => navigator.clipboard.writeText('assemblies49629@fbl')}>
                   📋 Copy
                 </button>
               </div>
@@ -492,11 +488,29 @@ const MemberDonation = () => {
             <div className="payment-info-box">
               <h4>💵 Mail Your Check To:</h4>
               <address>
-                Christ AG Church<br />
-                Kazhakkoottam<br />
+                ASSEMBLIES OF GOD<br />
+                Kazhakootam<br />
                 Trivandrum, Kerala
               </address>
-              <p className="info-note">Make checks payable to "Christ AG Church"</p>
+              <div className="bank-details" style={{marginTop: '20px'}}>
+                <div className="detail-row">
+                  <span className="detail-label">Account Name:</span>
+                  <span className="detail-value">ASSEMBLIES OF GOD</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">Account Number:</span>
+                  <span className="detail-value">16170100049629</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">IFSC Code:</span>
+                  <span className="detail-value">FDRL0001617</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">Branch:</span>
+                  <span className="detail-value">Kazhakootam</span>
+                </div>
+              </div>
+              <p className="info-note">Make checks payable to "ASSEMBLIES OF GOD"</p>
               <p>Or visit our office during business hours to donate in person.</p>
             </div>
           </div>

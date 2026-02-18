@@ -300,8 +300,8 @@ const HomePage = () => {
           </p>
           
           <div className="hero-cta">
-            <button className="primary-cta" onClick={() => window.scrollTo({ top: document.querySelector('.services-section').offsetTop, behavior: 'smooth' })}>
-              Explore Our Services
+            <button className="primary-cta" onClick={() => navigate('/donate')}>
+              Make a Donation 💝
             </button>
             <button className="secondary-cta" onClick={() => window.scrollTo({ top: document.querySelector('.contact-section').offsetTop, behavior: 'smooth' })}>
               Get In Touch
@@ -865,6 +865,7 @@ const HomePage = () => {
               <button onClick={() => navigate('/celebrations')} className="footer-link">🎉 Celebrations</button>
               <button onClick={() => navigate('/articles')} className="footer-link">📚 All Articles</button>
               <button onClick={() => navigate('/announcements')} className="footer-link">📢 All News</button>
+              <button onClick={() => navigate('/donate')} className="footer-link">💝 Make a Donation</button>
             </div>
             <div className="footer-section">
               <h4>Portal Access</h4>

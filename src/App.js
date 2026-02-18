@@ -51,6 +51,7 @@ import AdminMemberApprovals from './components/admin/AdminMemberApprovals';
 import AnnouncementManagement from './components/announcements/AnnouncementManagement';
 import AnnouncementDetailPage from './components/announcements/AnnouncementDetailPage';
 import AllAnnouncementsPage from './components/announcements/AllAnnouncementsPage';
+import DonationPage from './components/donations/DonationPage';
 
 import './App.css';
 
@@ -103,6 +104,7 @@ function App() {
             <Route path="/youtube-thumbnail-creator" element={<YouTubeThumbnailCreator />} />
             <Route path="/articles" element={<AllArticlesPage />} />
             <Route path="/announcements" element={<AllAnnouncementsPage />} />
+            <Route path="/donate" element={<DonationPage />} />
             
             {/* Article Detail Page */}
             <Route path="/article/:id" element={<ArticleDetailPage />} />
