@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import './MinistryPages.css';
 
 const YouthMinistry = () => {
@@ -7,6 +8,23 @@ const YouthMinistry = () => {
 
   return (
     <div className="ministry-page">
+      <Helmet>
+        <title>Youth Ministry - Christ Ambassadors | Christ AG Church Kazhakkoottam | യുവജന ശുശ്രൂഷ - ക്രൈസ്റ്റ് അംബാസഡേഴ്‌സ്</title>
+        <meta name="description" content="Join Christ Ambassadors youth ministry at Christ AG Church Kazhakkoottam. Led by Br Lin Noble, empowering the next generation for Christ. | ക്രൈസ്റ്റ് അംബാസഡേഴ്‌സ് യുവജന ശുശ്രൂഷയിൽ ചേരുക." />
+        <meta name="keywords" content="youth ministry, christ ambassadors, young adults, Christ AG Church, Kazhakkoottam, youth fellowship, യുവജന ശുശ്രൂഷ, ക്രൈസ്റ്റ് അംബാസഡേഴ്‌സ്" />
+        
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Youth Ministry - Christ Ambassadors | Christ AG Church Kazhakkoottam | യുവജന ശുശ്രൂഷ" />
+        <meta property="og:description" content="Empowering the next generation for Christ through our vibrant youth ministry program. | അടുത്ത തലമുറയെ ക്രിസ്തുവിനായി ശാക്തീകരിക്കുന്നു." />
+        <meta property="og:image" content={`${window.location.origin}/logo512.png`} />
+        <meta property="og:url" content={window.location.href} />
+        <meta property="og:site_name" content="Christ AG Church Kazhakkoottam" />
+        
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Youth Ministry - Christ Ambassadors | Christ AG Church Kazhakkoottam" />
+        <meta name="twitter:description" content="Empowering the next generation for Christ through our vibrant youth ministry program." />
+        <meta name="twitter:image" content={`${window.location.origin}/logo512.png`} />
+      </Helmet>
       <button className="back-to-home-btn" onClick={() => navigate('/')}>
         ← Back to Home
       </button>
@@ -43,7 +61,15 @@ const YouthMinistry = () => {
             Contact us to learn more about our activities, fellowship meetings, and how you can get connected.
           </p>
           <div className="cta-buttons">
-            <button className="btn-primary" onClick={() => navigate('/contact')}>
+            <button className="btn-primary" onClick={() => {
+              navigate('/');
+              setTimeout(() => {
+                const contactSection = document.querySelector('.contact-section');
+                if (contactSection) {
+                  contactSection.scrollIntoView({ behavior: 'smooth' });
+                }
+              }, 100);
+            }}>
               Get Connected
             </button>
           </div>

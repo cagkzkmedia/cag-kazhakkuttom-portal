@@ -19,6 +19,7 @@ import { getAllEvents } from '../../services/eventService.firebase';
 import { getAllArticles } from '../../services/articlesService.firebase';
 import { getAllTestimonials } from '../../services/testimonialService.firebase';
 import { getActiveAnnouncements } from '../../services/announcementService.firebase';
+import { getAllGalleryPhotos } from '../../services/galleryService.firebase';
 import { formatTo12Hour } from '../../utils/timeFormatter';
 import YouTubeFeed from '../common/youtubeFeed';
 import ChatWidget from '../chat/ChatWidget';
@@ -80,20 +81,22 @@ const HomePage = () => {
   const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
   const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
   const [isAnnouncementModalOpen, setIsAnnouncementModalOpen] = useState(false);
+  const [galleryPhotos, setGalleryPhotos] = useState([]);
+  const [allGalleryPhotos, setAllGalleryPhotos] = useState(GALLERY_PHOTOS);
 
   // Gallery navigation handlers
   const handleNextPhoto = () => {
     if (!selectedPhoto) return;
-    const currentIndex = GALLERY_PHOTOS.findIndex(p => p.id === selectedPhoto.id);
-    const nextIndex = (currentIndex + 1) % GALLERY_PHOTOS.length;
-    setSelectedPhoto(GALLERY_PHOTOS[nextIndex]);
+    const currentIndex = allGalleryPhotos.findIndex(p => p.id === selectedPhoto.id);
+    const nextIndex = (currentIndex + 1) % allGalleryPhotos.length;
+    setSelectedPhoto(allGalleryPhotos[nextIndex]);
   };
 
   const handlePrevPhoto = () => {
     if (!selectedPhoto) return;
-    const currentIndex = GALLERY_PHOTOS.findIndex(p => p.id === selectedPhoto.id);
-    const prevIndex = (currentIndex - 1 + GALLERY_PHOTOS.length) % GALLERY_PHOTOS.length;
-    setSelectedPhoto(GALLERY_PHOTOS[prevIndex]);
+    const currentIndex = allGalleryPhotos.findIndex(p => p.id === selectedPhoto.id);
+    const prevIndex = (currentIndex - 1 + allGalleryPhotos.length) % allGalleryPhotos.length;
+    setSelectedPhoto(allGalleryPhotos[prevIndex]);
   };
 
   // Keyboard navigation for gallery
@@ -249,6 +252,39 @@ const HomePage = () => {
     };
 
     loadAnnouncements();
+    return () => { mounted = false; };
+  }, []);
+
+  // Load gallery photos from Firebase
+  useEffect(() => {
+    let mounted = true;
+    const loadGalleryPhotos = async () => {
+      try {
+        const firebasePhotos = await getAllGalleryPhotos();
+        // Transform Firebase photos to match the expected format
+        const transformedPhotos = firebasePhotos.map(photo => ({
+          id: photo.id,
+          title: photo.title,
+          url: photo.imageBase64,
+          description: photo.description
+        }));
+        
+        // Combine static photos with Firebase photos
+        const combined = [...GALLERY_PHOTOS, ...transformedPhotos];
+        
+        if (mounted) {
+          setGalleryPhotos(transformedPhotos);
+          setAllGalleryPhotos(combined);
+        }
+      } catch (err) {
+        console.error('Failed to load gallery photos:', err);
+        if (mounted) {
+          setAllGalleryPhotos(GALLERY_PHOTOS);
+        }
+      }
+    };
+
+    loadGalleryPhotos();
     return () => { mounted = false; };
   }, []);
 
@@ -751,7 +787,7 @@ const HomePage = () => {
           <h2>📸 Church Photo Gallery</h2>
           <p className="section-subtitle">Moments of worship, fellowship, and service in our community</p>
           <div className="gallery-grid">
-            {GALLERY_PHOTOS.map(photo => (
+            {allGalleryPhotos.map(photo => (
               <div 
                 key={photo.id} 
                 className="gallery-item"
@@ -917,6 +953,7 @@ const HomePage = () => {
               <button onClick={() => navigate('/articles')} className="footer-link">📚 All Articles</button>
               <button onClick={() => navigate('/announcements')} className="footer-link">📢 All News</button>
               <button onClick={() => navigate('/donate')} className="footer-link">💝 Make a Donation</button>
+              <button onClick={() => navigate('/sitemap')} className="footer-link">🗺️ Sitemap</button>
             </div>
             <div className="footer-section">
               <h4>Portal Access</h4>

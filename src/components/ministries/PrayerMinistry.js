@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import './MinistryPages.css';
 
 const PrayerMinistry = () => {
@@ -7,6 +8,23 @@ const PrayerMinistry = () => {
 
   return (
     <div className="ministry-page">
+      <Helmet>
+        <title>Prayer Ministry - Zoom Prayer Meetings | Christ AG Church Kazhakkoottam | പ്രാർത്ഥനാ ശുശ്രൂഷ</title>
+        <meta name="description" content="Join our special prayer meetings on Zoom. Connect with believers worldwide for powerful intercession and worship. | സൂം വഴിയുള്ള പ്രത്യേക പ്രാർത്ഥനാ യോഗങ്ങളിൽ ചേരുക." />
+        <meta name="keywords" content="prayer ministry, prayer meetings, zoom prayer, intercession, Christ AG Church, Kazhakkoottam, online prayer, പ്രാർത്ഥനാ ശുശ്രൂഷ, പ്രാർത്ഥനാ യോഗം" />
+        
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Prayer Ministry - Zoom Prayer Meetings | Christ AG Church Kazhakkoottam | പ്രാർത്ഥനാ ശുശ്രൂഷ" />
+        <meta property="og:description" content="Join our special prayer meetings on Zoom. Connect with believers worldwide for powerful intercession. | സൂം വഴിയുള്ള പ്രാർത്ഥനാ യോഗങ്ങളിൽ ചേരുക." />
+        <meta property="og:image" content={`${window.location.origin}/logo512.png`} />
+        <meta property="og:url" content={window.location.href} />
+        <meta property="og:site_name" content="Christ AG Church Kazhakkoottam" />
+        
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Prayer Ministry - Zoom Prayer Meetings | Christ AG Church Kazhakkoottam" />
+        <meta name="twitter:description" content="Join our special prayer meetings on Zoom. Connect with believers worldwide for powerful intercession." />
+        <meta name="twitter:image" content={`${window.location.origin}/logo512.png`} />
+      </Helmet>
       <button className="back-to-home-btn" onClick={() => navigate('/')}>
         ← Back to Home
       </button>
@@ -26,7 +44,15 @@ const PrayerMinistry = () => {
             and special prayer meetings on Zoom. Please check back soon for updates!
           </p>
           <div className="cta-buttons">
-            <button className="btn-primary" onClick={() => navigate('/contact')}>
+            <button className="btn-primary" onClick={() => {
+              navigate('/');
+              setTimeout(() => {
+                const contactSection = document.querySelector('.contact-section');
+                if (contactSection) {
+                  contactSection.scrollIntoView({ behavior: 'smooth' });
+                }
+              }, 100);
+            }}>
               Get Zoom Link
             </button>
 

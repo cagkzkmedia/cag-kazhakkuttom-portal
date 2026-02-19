@@ -62,6 +62,8 @@ import OutreachMinistry from './components/ministries/OutreachMinistry';
 import PrayerMinistry from './components/ministries/PrayerMinistry';
 import LadiesMinistry from './components/ministries/LadiesMinistry';
 import MissionMinistry from './components/ministries/MissionMinistry';
+import Sitemap from './components/common/Sitemap';
+import GalleryManagement from './components/gallery/GalleryManagement';
 
 import './App.css';
 
@@ -115,6 +117,7 @@ function App() {
             <Route path="/articles" element={<AllArticlesPage />} />
             <Route path="/announcements" element={<AllAnnouncementsPage />} />
             <Route path="/donate" element={<DonationPage />} />
+            <Route path="/sitemap" element={<Sitemap />} />
             
             {/* Ministry Pages */}
             <Route path="/ministry/childrens" element={<ChildrensMinistry />} />
@@ -237,6 +240,14 @@ function App() {
                 element={
                   <RoleGuard allowedRoles={['admin', 'content_manager']}>
                     <AnnouncementManagement />
+                  </RoleGuard>
+                } 
+              />
+              <Route 
+                path="gallery" 
+                element={
+                  <RoleGuard allowedRoles={['admin', 'content_manager']}>
+                    <GalleryManagement />
                   </RoleGuard>
                 } 
               />

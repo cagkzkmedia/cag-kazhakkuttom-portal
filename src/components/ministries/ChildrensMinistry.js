@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import './MinistryPages.css';
 
 const ChildrensMinistry = () => {
@@ -7,6 +8,23 @@ const ChildrensMinistry = () => {
 
   return (
     <div className="ministry-page">
+      <Helmet>
+        <title>Children's Ministry - Sunday School | Christ AG Church Kazhakkoottam | കുട്ടികളുടെ ശുശ്രൂഷ - സൺഡേ സ്‌കൂൾ</title>
+        <meta name="description" content="Join our vibrant Children's Ministry and Sunday School program at Christ AG Church Kazhakkoottam. Led by Br Geo Jacob and dedicated teachers, nurturing young hearts for Christ. | ക്രൈസ്റ്റ് എജി ചർച്ച് കഴക്കൂട്ടത്തിലെ സൺഡേ സ്‌കൂൾ പരിപാടികളിൽ ചേരുക." />
+        <meta name="keywords" content="children's ministry, sunday school, kids ministry, Christ AG Church, Kazhakkoottam, children's program, കുട്ടികളുടെ ശുശ്രൂഷ, സൺഡേ സ്‌കൂൾ" />
+        
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Children's Ministry - Sunday School | Christ AG Church Kazhakkoottam | കുട്ടികളുടെ ശുശ്രൂഷ - സൺഡേ സ്‌കൂൾ" />
+        <meta property="og:description" content="Nurturing young hearts for Christ through our Sunday School program. Led by experienced teachers committed to spiritual growth. | യുവഹൃദയങ്ങളെ ക്രിസ്തുവിനായി വളർത്തുന്നു." />
+        <meta property="og:image" content={`${window.location.origin}/logo512.png`} />
+        <meta property="og:url" content={window.location.href} />
+        <meta property="og:site_name" content="Christ AG Church Kazhakkoottam" />
+        
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Children's Ministry - Sunday School | Christ AG Church Kazhakkoottam | കുട്ടികളുടെ ശുശ്രൂഷ" />
+        <meta name="twitter:description" content="Nurturing young hearts for Christ through our Sunday School program." />
+        <meta name="twitter:image" content={`${window.location.origin}/logo512.png`} />
+      </Helmet>
       <button className="back-to-home-btn" onClick={() => navigate('/')}>
         ← Back to Home
       </button>
@@ -97,7 +115,15 @@ const ChildrensMinistry = () => {
             about class schedules, age groups, and how you can be part of our Children's Ministry.
           </p>
           <div className="cta-buttons">
-            <button className="btn-primary" onClick={() => navigate('/contact')}>
+            <button className="btn-primary" onClick={() => {
+              navigate('/');
+              setTimeout(() => {
+                const contactSection = document.querySelector('.contact-section');
+                if (contactSection) {
+                  contactSection.scrollIntoView({ behavior: 'smooth' });
+                }
+              }, 100);
+            }}>
               Contact Us
             </button>
 

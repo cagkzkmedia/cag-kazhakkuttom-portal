@@ -7,9 +7,9 @@ const YouTubeThumbnailCreator = () => {
   
   const [backgroundImage, setBackgroundImage] = useState(null);
   const [textElements, setTextElements] = useState([
-    { id: 1, text: 'മാനത്തെ ചെമ്പരുന്തേ..', fontSize: 60, x: 400, y: 120, color: '#FFFFFF', fontFamily: 'Arial', fontWeight: 'bold', stroke: true, strokeColor: '#000000' },
-    { id: 2, text: 'VIDEO SONG', fontSize: 20, x: 750, y: 180, color: '#FFFFFF', fontFamily: 'Arial', fontWeight: 'normal', stroke: false, strokeColor: '#000000' },
-    { id: 3, text: 'അർമ്പന്ന്3!', fontSize: 80, x: 400, y: 350, color: '#FFD700', fontFamily: 'Arial', fontWeight: 'bold', stroke: true, strokeColor: '#8B4513' }
+    { id: 1, text: 'സഭയാം തോട്ടമേ', fontSize: 60, x: 400, y: 120, color: '#FFFFFF', fontFamily: 'Arial', fontWeight: 'bold', stroke: true, strokeColor: '#000000' },
+    { id: 2, text: 'Worship Song', fontSize: 20, x: 750, y: 180, color: '#FFFFFF', fontFamily: 'Arial', fontWeight: 'normal', stroke: false, strokeColor: '#000000' },
+    { id: 3, text: 'Pr Jobin Elisha', fontSize: 80, x: 400, y: 350, color: '#FFD700', fontFamily: 'Arial', fontWeight: 'bold', stroke: true, strokeColor: '#8B4513' }
   ]);
   
   const [selectedElement, setSelectedElement] = useState(null);
