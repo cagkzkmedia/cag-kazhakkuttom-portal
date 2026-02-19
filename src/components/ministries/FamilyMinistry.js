@@ -31,7 +31,7 @@ const FamilyMinistry = () => {
       <div className="ministry-hero" style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
         <div className="ministry-hero-content">
           <div className="ministry-hero-icon">👨‍👩‍👧‍👦</div>
-          <h1>Family Ministry</h1>
+          <h1>Family Ministry | Christ AG Kazhakkoottam</h1>
           <p className="ministry-hero-subtitle">Building Strong, God-Centered Families</p>
         </div>
       </div>

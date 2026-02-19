@@ -1,10 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import './MinistryPages.css';
+import prCornelius from '../../assets/pr-cornelius.jpg';
+import prLazarus from '../../assets/pr-Lazerus.jpg';
+import prSimonAndPaul from '../../assets/pr-SimonAndPaul.jpg';
+import prVictor from '../../assets/pr-victor.jpg';
+import prTimothy from '../../assets/pr-timothy.jpg';
 
 const MissionMinistry = () => {
   const navigate = useNavigate();
+  const [enlargedPhoto, setEnlargedPhoto] = useState(null);
+
+  const missionaries = [
+    { name: 'Pr. Cornelius & Family', image: prCornelius, focus: 'Pioneering community outreach and family ministry initiatives' },
+    { name: 'Pr. Lazarus & Family', image: prLazarus, focus: 'Championing rural evangelism and spiritual deliverance ministries' },
+    { name: 'Pr. Simon & Pr. Paul', image: prSimonAndPaul, focus: 'Dedicated to biblical teaching, discipling new converts, and establishing local prayer networks' },
+    { name: 'Pr. Victor & Family', image: prVictor, focus: 'Bringing the light of Christ to unreached neighborhoods' },
+    { name: 'Pr. Timothy & Family', image: prTimothy, focus: 'Mentoring and raising up the next generation of believers' }
+  ];
+
+  const handlePhotoClick = (missionary) => {
+    setEnlargedPhoto(missionary);
+  };
+
+  const closeEnlargedPhoto = () => {
+    setEnlargedPhoto(null);
+  };
+
 
   return (
     <div className="ministry-page">
@@ -31,31 +54,66 @@ const MissionMinistry = () => {
       <div className="ministry-hero" style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
         <div className="ministry-hero-content">
           <div className="ministry-hero-icon">✈️</div>
-          <h1>Mission Department</h1>
+          <h1>Mission Department | Christ AG Kazhakkoottam</h1>
           <p className="ministry-hero-subtitle">Taking the Gospel to Unreached Regions</p>
         </div>
       </div>
 
       <div className="ministry-content">
-        <section className="ministry-section cta-section">
-          <h2>Coming Soon</h2>
+        <section className="ministry-section">
+          <h2>A Season of Grace in Telangana</h2>
+          <div className="scripture-quote">
+            <p className="scripture-text">"How beautiful are the feet of those who bring good news!"</p>
+            <p className="scripture-reference">- Romans 10:15</p>
+          </div>
           <p>
-            We're currently working on building this page with detailed information about our Mission Department 
-            and our mission work in Telangana. Please check back soon for updates!
+            At Christ AG Church Kazhakkoottam, our hearts overflow with joy as we witness the transformative work 
+            unfolding in the mission fields of Telangana. Through your unwavering prayers and generous financial support, 
+            we are privileged to empower six devoted pastoral families who have courageously answered God's call to serve 
+            on the front lines of Gospel ministry.
+          </p>
+          <p>
+            These families are more than leaders—they are spiritual pioneers, establishing vibrant communities of faith 
+            and making disciples in regions where Christ's light is desperately needed. Their dedication to advancing 
+            the Kingdom in challenging territories inspires us all.
+          </p>
+        </section>
+
+        <section className="ministry-section">
+          <h2>Our Mission Partners in Telangana</h2>
+          <p className="section-intro">
+            We are honored to partner with and support these faithful servants who are transforming lives through the Gospel:
+          </p>
+
+          <div className="missionaries-grid">
+            {missionaries.map((missionary, index) => (
+              <div key={index} className="missionary-card">
+                <img 
+                  src={missionary.image} 
+                  alt={missionary.name} 
+                  className="missionary-photo" 
+                  onClick={() => handlePhotoClick(missionary)}
+                  style={{ cursor: 'pointer' }}
+                />
+                <div className="missionary-info">
+                  <h3>{missionary.name}</h3>
+                  <p className="missionary-focus">{missionary.focus}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="ministry-section cta-section">
+          <h2>Partner With Us in Mission</h2>
+          <p>
+            Your prayers and support make an eternal difference. Join us in empowering these faithful servants 
+            as they advance God's Kingdom in Telangana and beyond.
           </p>
           <div className="cta-buttons">
-            <button className="btn-primary" onClick={() => {
-              navigate('/');
-              setTimeout(() => {
-                const contactSection = document.querySelector('.contact-section');
-                if (contactSection) {
-                  contactSection.scrollIntoView({ behavior: 'smooth' });
-                }
-              }, 100);
-            }}>
-              Learn About Missions
+            <button className="btn-primary" onClick={() => navigate('/donate')}>
+              Support Our Missions
             </button>
-
           </div>
         </section>
       </div>
@@ -67,6 +125,19 @@ const MissionMinistry = () => {
           <p>Thiruvananthapuram, Kerala 695582</p>
         </div>
       </div>
+
+      {enlargedPhoto && (
+        <div className="photo-modal-overlay" onClick={closeEnlargedPhoto}>
+          <div className="photo-modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="photo-modal-close" onClick={closeEnlargedPhoto}>×</button>
+            <img src={enlargedPhoto.image} alt={enlargedPhoto.name} className="photo-modal-image" />
+            <div className="photo-modal-info">
+              <h3>{enlargedPhoto.name}</h3>
+              <p>{enlargedPhoto.focus}</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

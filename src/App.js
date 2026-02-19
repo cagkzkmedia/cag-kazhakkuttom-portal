@@ -64,6 +64,7 @@ import LadiesMinistry from './components/ministries/LadiesMinistry';
 import MissionMinistry from './components/ministries/MissionMinistry';
 import Sitemap from './components/common/Sitemap';
 import GalleryManagement from './components/gallery/GalleryManagement';
+import Gallery from './components/gallery/Gallery';
 
 import './App.css';
 
@@ -117,6 +118,7 @@ function App() {
             <Route path="/articles" element={<AllArticlesPage />} />
             <Route path="/announcements" element={<AllAnnouncementsPage />} />
             <Route path="/donate" element={<DonationPage />} />
+            <Route path="/gallery" element={<Gallery />} />
             <Route path="/sitemap" element={<Sitemap />} />
             
             {/* Ministry Pages */}

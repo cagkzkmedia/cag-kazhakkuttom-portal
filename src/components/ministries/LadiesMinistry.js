@@ -31,7 +31,7 @@ const LadiesMinistry = () => {
       <div className="ministry-hero" style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
         <div className="ministry-hero-content">
           <div className="ministry-hero-icon">💐</div>
-          <h1>Ladies Ministry (WMC)</h1>
+          <h1>Ladies Ministry (WMC) | Christ AG Kazhakkoottam</h1>
           <p className="ministry-hero-subtitle">Women's Missionary Council - Empowering Women of Faith</p>
         </div>
       </div>

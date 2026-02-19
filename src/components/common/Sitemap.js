@@ -99,7 +99,7 @@ const Sitemap = () => {
       <div className="sitemap-hero">
         <div className="sitemap-hero-content">
           <div className="sitemap-hero-icon">🗺️</div>
-          <h1>Sitemap</h1>
+          <h1>Sitemap | Christ AG Kazhakkoottam</h1>
           <p className="sitemap-hero-subtitle">Navigate Our Website Easily</p>
         </div>
       </div>

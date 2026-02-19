@@ -723,39 +723,6 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Quick Links Section */}
-      <section className="quick-links-section">
-        <div className="quick-links-content">
-          <h2>Quick Access</h2>
-          <div className="quick-links-grid">
-            <div className="quick-link-card" onClick={() => navigate('/celebrations')}>
-              <div className="quick-link-icon">🎉</div>
-              <h4>Celebrations</h4>
-              <p>View upcoming birthdays and anniversaries of our church family members.</p>
-              <button className="quick-link-btn">View Celebrations →</button>
-            </div>
-            <div className="quick-link-card" onClick={() => navigate('/articles')}>
-              <div className="quick-link-icon">📖</div>
-              <h4>All Articles</h4>
-              <p>Explore our collection of inspiring articles, devotionals, and biblical teachings.</p>
-              <button className="quick-link-btn">Read Articles →</button>
-            </div>
-            <div className="quick-link-card" onClick={() => navigate('/announcements')}>
-              <div className="quick-link-icon">📰</div>
-              <h4>All News</h4>
-              <p>Stay updated with the latest news, announcements, and events from our church.</p>
-              <button className="quick-link-btn">View News →</button>
-            </div>
-            <div className="quick-link-card" onClick={() => navigate('/donate')}>
-              <div className="quick-link-icon">💝</div>
-              <h4>Make a Donation</h4>
-              <p>Support our ministry and church activities through your generous contribution.</p>
-              <button className="quick-link-btn">Donate Now →</button>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Testimonials Section */}
       <section className="testimonials-section">
         <div className="testimonials-content">
@@ -787,7 +754,7 @@ const HomePage = () => {
           <h2>📸 Church Photo Gallery</h2>
           <p className="section-subtitle">Moments of worship, fellowship, and service in our community</p>
           <div className="gallery-grid">
-            {allGalleryPhotos.map(photo => (
+            {allGalleryPhotos.slice(0, 5).map(photo => (
               <div 
                 key={photo.id} 
                 className="gallery-item"
@@ -809,6 +776,14 @@ const HomePage = () => {
                 </div>
               </div>
             ))}
+          </div>
+          <div className="gallery-view-all">
+            <button 
+              className="view-all-gallery-btn"
+              onClick={() => navigate('/gallery')}
+            >
+              View All Photos →
+            </button>
           </div>
         </div>
       </section>
@@ -872,6 +847,45 @@ const HomePage = () => {
               </div>
             </>
           )}
+        </div>
+      </section>
+
+      {/* Quick Links Section */}
+      <section className="quick-links-section">
+        <div className="quick-links-content">
+          <h2>Quick Access</h2>
+          <div className="quick-links-grid">
+            <div className="quick-link-card" onClick={() => navigate('/celebrations')}>
+              <div className="quick-link-icon">🎉</div>
+              <h4>Celebrations</h4>
+              <p>View upcoming birthdays and anniversaries of our church family members.</p>
+              <button className="quick-link-btn">View Celebrations →</button>
+            </div>
+            <div className="quick-link-card" onClick={() => navigate('/gallery')}>
+              <div className="quick-link-icon">📸</div>
+              <h4>Photo Gallery</h4>
+              <p>Browse our collection of photos from worship services, ministries, and events.</p>
+              <button className="quick-link-btn">View Gallery →</button>
+            </div>
+            <div className="quick-link-card" onClick={() => navigate('/articles')}>
+              <div className="quick-link-icon">📖</div>
+              <h4>All Articles</h4>
+              <p>Explore our collection of inspiring articles, devotionals, and biblical teachings.</p>
+              <button className="quick-link-btn">Read Articles →</button>
+            </div>
+            <div className="quick-link-card" onClick={() => navigate('/announcements')}>
+              <div className="quick-link-icon">📰</div>
+              <h4>All News</h4>
+              <p>Stay updated with the latest news, announcements, and events from our church.</p>
+              <button className="quick-link-btn">View News →</button>
+            </div>
+            <div className="quick-link-card" onClick={() => navigate('/donate')}>
+              <div className="quick-link-icon">💝</div>
+              <h4>Make a Donation</h4>
+              <p>Support our ministry and church activities through your generous contribution.</p>
+              <button className="quick-link-btn">Donate Now →</button>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -950,6 +964,7 @@ const HomePage = () => {
               <button onClick={() => window.scrollTo({ top: document.querySelector('.services-section').offsetTop, behavior: 'smooth' })} className="footer-link">⛪ Services</button>
               <button onClick={() => window.scrollTo({ top: document.querySelector('.ministries-section').offsetTop, behavior: 'smooth' })} className="footer-link">🙏 Ministries</button>
               <button onClick={() => navigate('/celebrations')} className="footer-link">🎉 Celebrations</button>
+              <button onClick={() => navigate('/gallery')} className="footer-link">📸 Photo Gallery</button>
               <button onClick={() => navigate('/articles')} className="footer-link">📚 All Articles</button>
               <button onClick={() => navigate('/announcements')} className="footer-link">📢 All News</button>
               <button onClick={() => navigate('/donate')} className="footer-link">💝 Make a Donation</button>
@@ -1108,5 +1123,5 @@ const HomePage = () => {
       <ChatWidget />
     </div>
   );
-}
+};
 export default HomePage;

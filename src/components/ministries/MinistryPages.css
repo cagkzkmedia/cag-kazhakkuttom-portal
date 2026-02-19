@@ -821,6 +821,235 @@
   margin: 0;
 }
 
+/* Scripture Quote Styling */
+.scripture-quote {
+  background: linear-gradient(135deg, #f7f9fc 0%, #eef2f7 100%);
+  padding: 30px 40px;
+  border-radius: 16px;
+  border-left: 5px solid #667eea;
+  margin: 30px 0;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
+}
+
+.scripture-text {
+  font-size: 20px;
+  font-style: italic;
+  color: #2d3748;
+  font-weight: 600;
+  line-height: 1.6;
+  margin: 0 0 10px 0;
+}
+
+.scripture-reference {
+  font-size: 15px;
+  color: #667eea;
+  font-weight: 700;
+  margin: 0;
+  text-align: right;
+}
+
+/* Section Introduction */
+.section-intro {
+  font-size: 17px;
+  color: #4a5568;
+  line-height: 1.8;
+  margin-bottom: 35px;
+  font-weight: 500;
+}
+
+/* Missionaries Grid */
+.missionaries-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.missionary-card {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  border-top: 4px solid #667eea;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.missionary-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 35px rgba(102, 126, 234, 0.2);
+  border-top-color: #764ba2;
+}
+
+.missionary-photo-placeholder {
+  width: 140px;
+  height: 140px;
+  background: linear-gradient(135deg, #f7fafc 0%, #e2e8f0 100%);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 3px dashed #cbd5e0;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.missionary-card:hover .missionary-photo-placeholder {
+  border-color: #667eea;
+  background: linear-gradient(135deg, #eef2f7 0%, #dfe6f0 100%);
+}
+
+.missionary-photo-placeholder .photo-icon {
+  font-size: 56px;
+  color: #a0aec0;
+}
+
+.missionary-photo-placeholder .photo-label {
+  font-size: 13px;
+  color: #718096;
+  font-weight: 600;
+}
+
+.missionary-photo {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+  transition: all 0.3s ease;
+}
+
+.missionary-card:hover .missionary-photo {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.35);
+}
+
+.missionary-info h3 {
+  font-size: 22px;
+  color: #2d3748;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+  line-height: 1.3;
+}
+
+.missionary-focus {
+  font-size: 15px;
+  color: #667eea;
+  font-weight: 600;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Photo Modal/Lightbox */
+.photo-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  animation: fadeIn 0.3s ease;
+  padding: 20px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.photo-modal-content {
+  position: relative;
+  max-width: 1200px;
+  max-height: 90vh;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.photo-modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(255, 255, 255, 0.95);
+  border: none;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  font-size: 32px;
+  line-height: 1;
+  cursor: pointer;
+  color: #2d3748;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.photo-modal-close:hover {
+  background: #667eea;
+  color: white;
+  transform: rotate(90deg);
+}
+
+.photo-modal-image {
+  width: 100%;
+  max-height: calc(90vh - 150px);
+  object-fit: contain;
+  background: #f7fafc;
+}
+
+.photo-modal-info {
+  padding: 25px 30px;
+  background: linear-gradient(135deg, #f7f9fc 0%, #eef2f7 100%);
+  border-top: 3px solid #667eea;
+}
+
+.photo-modal-info h3 {
+  font-size: 24px;
+  color: #2d3748;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+}
+
+.photo-modal-info p {
+  font-size: 16px;
+  color: #667eea;
+  font-weight: 600;
+  line-height: 1.6;
+  margin: 0;
+}
+
 .teachers-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -981,6 +1210,44 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
   }
+
+  .missionaries-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .missionary-photo-placeholder {
+    width: 120px;
+    height: 120px;
+  }
+
+  .scripture-quote {
+    padding: 25px 30px;
+  }
+
+  .scripture-text {
+    font-size: 18px;
+  }
+
+  .missionary-photo {
+    height: 220px;
+  }
+
+  .photo-modal-overlay {
+    padding: 15px;
+  }
+
+  .photo-modal-info {
+    padding: 20px 25px;
+  }
+
+  .photo-modal-info h3 {
+    font-size: 22px;
+  }
+
+  .photo-modal-info p {
+    font-size: 15px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1006,6 +1273,63 @@
 
   .teachers-grid {
     grid-template-columns: 1fr;
+  }
+
+  .missionaries-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .missionary-photo-placeholder {
+    width: 100px;
+    height: 100px;
+  }
+
+  .missionary-photo-placeholder .photo-icon {
+    font-size: 42px;
+  }
+
+  .missionary-info h3 {
+    font-size: 20px;
+  }
+
+  .missionary-focus {
+    font-size: 14px;
+  }
+
+  .scripture-quote {
+    padding: 20px 25px;
+  }
+
+  .scripture-text {
+    font-size: 16px;
+  }
+
+  .missionary-photo {
+    height: 200px;
+  }
+
+  .photo-modal-overlay {
+    padding: 10px;
+  }
+
+  .photo-modal-close {
+    width: 40px;
+    height: 40px;
+    font-size: 28px;
+    top: 10px;
+    right: 10px;
+  }
+
+  .photo-modal-info {
+    padding: 18px 20px;
+  }
+
+  .photo-modal-info h3 {
+    font-size: 20px;
+  }
+
+  .photo-modal-info p {
+    font-size: 14px;
   }
 
   .headmaster-photo-placeholder {

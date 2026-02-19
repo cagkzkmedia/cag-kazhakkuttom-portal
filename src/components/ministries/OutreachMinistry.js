@@ -31,7 +31,7 @@ const OutreachMinistry = () => {
       <div className="ministry-hero" style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
         <div className="ministry-hero-content">
           <div className="ministry-hero-icon">🌍</div>
-          <h1>Outreach Ministry</h1>
+          <h1>Outreach Ministry | Christ AG Kazhakkoottam</h1>
           <p className="ministry-hero-subtitle">Sharing God's Love Beyond Our Walls</p>
         </div>
       </div>
