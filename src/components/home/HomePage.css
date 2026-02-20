@@ -802,7 +802,7 @@ background: linear-gradient(to top, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.75) 
   width: 100%;
   height: 100%;
   border-radius: 16px;
-  object-fit: cover;
+  object-fit: contain;
   border: 4px solid rgba(255, 255, 255, 0.95);
   box-shadow: 
     0 4px 16px rgba(0, 0, 0, 0.2),
