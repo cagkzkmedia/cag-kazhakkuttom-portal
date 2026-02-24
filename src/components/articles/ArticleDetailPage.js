@@ -129,6 +129,17 @@ const ArticleDetailPage = () => {
   const location = useLocation();
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile device
+  useEffect(() => {
+    const checkMobile = () => {
+      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      const mobileCheck = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
+      setIsMobile(mobileCheck);
+    };
+    checkMobile();
+  }, []);
 
   const handleBackClick = () => {
     // Check if user came from AllArticlesPage
@@ -331,32 +342,40 @@ const ArticleDetailPage = () => {
         <div className="article-paper-content">
           {article.type === 'pdf' && article.pdfData ? (
             <div className="pdf-viewer-container">
-              <object
-                data={`${article.pdfData}#toolbar=0&navpanes=0&scrollbar=0`}
-                type="application/pdf"
-                className="pdf-viewer"
-                aria-label={article.title}
-              >
-                <div className="pdf-fallback">
-                  <p>Unable to display PDF. Please download the file to view it.</p>
+              {isMobile ? (
+                // Mobile-friendly fallback for Android/iOS
+                <div className="pdf-mobile-fallback">
+                  <div className="pdf-mobile-icon">📄</div>
+                  <h3>PDF Document</h3>
+                  <p>This is a PDF document. Tap the button below to download and view it in your device's PDF reader.</p>
                   <a 
                     href={article.pdfData} 
                     download={`${article.title}.pdf`}
-                    className="pdf-download-btn"
+                    className="pdf-download-btn pdf-download-btn-large"
                   >
                     📥 Download PDF
                   </a>
                 </div>
-              </object>
-              <div className="pdf-controls">
-                <a 
-                  href={article.pdfData} 
-                  download={`${article.title}.pdf`}
-                  className="pdf-download-btn"
-                >
-                  📥 Download PDF
-                </a>
-              </div>
+              ) : (
+                // Desktop PDF viewer
+                <>
+                  <iframe
+                    src={`${article.pdfData}#toolbar=0&navpanes=0&scrollbar=0`}
+                    type="application/pdf"
+                    className="pdf-viewer"
+                    title={article.title}
+                  />
+                  <div className="pdf-controls">
+                    <a 
+                      href={article.pdfData} 
+                      download={`${article.title}.pdf`}
+                      className="pdf-download-btn"
+                    >
+                      📥 Download PDF
+                    </a>
+                  </div>
+                </>
+              )}
             </div>
           ) : article.content ? (
             article.content.split('\n\n').map((paragraph, index) => (

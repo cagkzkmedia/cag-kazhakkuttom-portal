@@ -14,7 +14,7 @@ import WeeklyEvents from '../events/WeeklyEvents';
 import './Layout.css';
 
 const Layout = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const dispatch = useDispatch();
   const { celebrationsModalOpen, weeklyEventsModalOpen } = useSelector((state) => state.ui);
 
