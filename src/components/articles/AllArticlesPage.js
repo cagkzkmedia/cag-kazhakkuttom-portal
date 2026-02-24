@@ -200,6 +200,11 @@ const AllArticlesPage = () => {
                         {article.category}
                       </span>
                     )}
+                    {article.type === 'pdf' && (
+                      <span className="article-type-badge">
+                        📄 PDF
+                      </span>
+                    )}
                   </div>
                 )}
                 
@@ -224,7 +229,7 @@ const AllArticlesPage = () => {
                   </div>
                   
                   <button className="article-read-more">
-                    Read More →
+                    {article.type === 'pdf' ? 'View PDF →' : 'Read More →'}
                   </button>
                 </div>
               </div>

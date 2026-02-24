@@ -329,7 +329,25 @@ const ArticleDetailPage = () => {
         </div>
 
         <div className="article-paper-content">
-          {article.content ? (
+          {article.type === 'pdf' && article.pdfData ? (
+            <div className="pdf-viewer-container">
+              <iframe
+                src={article.pdfData}
+                title={article.title}
+                className="pdf-viewer"
+                type="application/pdf"
+              />
+              <div className="pdf-download-section">
+                <a 
+                  href={article.pdfData} 
+                  download={`${article.title}.pdf`}
+                  className="pdf-download-btn"
+                >
+                  📥 Download PDF
+                </a>
+              </div>
+            </div>
+          ) : article.content ? (
             article.content.split('\n\n').map((paragraph, index) => (
               <p key={index} className="article-paragraph">
                 {paragraph}

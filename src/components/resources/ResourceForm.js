@@ -26,9 +26,13 @@ const ResourceForm = ({ resource, onSubmit, onClose, isLoading }) => {
     description: '',
     content: '',
     imageUrl: categoryImages['Faith'],
+    type: 'text', // 'text' or 'pdf'
+    pdfData: null, // base64 PDF data
   });
 
   const [errors, setErrors] = useState({});
+  const [pdfFile, setPdfFile] = useState(null);
+  const [pdfPreview, setPdfPreview] = useState(null);
 
   useEffect(() => {
     if (resource) {
@@ -39,7 +43,12 @@ const ResourceForm = ({ resource, onSubmit, onClose, isLoading }) => {
         description: resource.description || '',
         content: resource.content || '',
         imageUrl: resource.imageUrl || '',
+        type: resource.type || 'text',
+        pdfData: resource.pdfData || null,
       });
+      if (resource.type === 'pdf' && resource.pdfData) {
+        setPdfPreview(resource.pdfData);
+      }
     }
   }, [resource]);
 
@@ -69,8 +78,12 @@ const ResourceForm = ({ resource, onSubmit, onClose, isLoading }) => {
       newErrors.description = 'Description is required';
     }
 
-    if (!formData.content.trim()) {
+    if (formData.type === 'text' && !formData.content.trim()) {
       newErrors.content = 'Content is required';
+    }
+
+    if (formData.type === 'pdf' && !formData.pdfData && !pdfFile) {
+      newErrors.pdf = 'PDF file is required';
     }
 
     setErrors(newErrors);
@@ -101,6 +114,54 @@ const ResourceForm = ({ resource, onSubmit, onClose, isLoading }) => {
         [name]: ''
       }));
     }
+  };
+
+  const handlePdfUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Check if file is PDF
+      if (file.type !== 'application/pdf') {
+        setErrors(prev => ({ ...prev, pdf: 'Please upload a PDF file' }));
+        return;
+      }
+
+      // Check file size (limit to 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        setErrors(prev => ({ ...prev, pdf: 'PDF file size should not exceed 5MB' }));
+        return;
+      }
+
+      setPdfFile(file);
+
+      // Convert to base64
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const base64Data = e.target.result;
+        setFormData(prev => ({
+          ...prev,
+          pdfData: base64Data
+        }));
+        setPdfPreview(base64Data);
+      };
+      reader.readAsDataURL(file);
+
+      // Clear error
+      if (errors.pdf) {
+        setErrors(prev => ({
+          ...prev,
+          pdf: ''
+        }));
+      }
+    }
+  };
+
+  const handleRemovePdf = () => {
+    setPdfFile(null);
+    setPdfPreview(null);
+    setFormData(prev => ({
+      ...prev,
+      pdfData: null
+    }));
   };
 
   const handleSubmit = (e) => {
@@ -170,6 +231,24 @@ const ResourceForm = ({ resource, onSubmit, onClose, isLoading }) => {
           </div>
         </div>
 
+        {/* Article Type */}
+        <div className="form-group">
+          <label htmlFor="type">Article Type *</label>
+          <select
+            id="type"
+            name="type"
+            value={formData.type}
+            onChange={handleChange}
+            disabled={isLoading}
+          >
+            <option value="text">Text Article</option>
+            <option value="pdf">PDF Document</option>
+          </select>
+          <small className="helper-text">
+            Choose 'Text Article' for written content or 'PDF Document' to upload a PDF file
+          </small>
+        </div>
+
         {/* Description */}
         <div className="form-group">
           <label htmlFor="description">Description *</label>
@@ -186,22 +265,69 @@ const ResourceForm = ({ resource, onSubmit, onClose, isLoading }) => {
           {errors.description && <span className="error-message">{errors.description}</span>}
         </div>
 
-        {/* Content */}
-        <div className="form-group">
-          <label htmlFor="content">Content *</label>
-          <textarea
-            id="content"
-            name="content"
-            value={formData.content}
-            onChange={handleChange}
-            placeholder="Full resource content (displayed on detail page)"
-            rows="8"
-            disabled={isLoading}
-            className={errors.content ? 'error' : ''}
-          />
-          {errors.content && <span className="error-message">{errors.content}</span>}
-          <small className="helper-text">Tip: You can use markdown formatting or plain text</small>
-        </div>
+        {/* Content - Only show for text type */}
+        {formData.type === 'text' && (
+          <div className="form-group">
+            <label htmlFor="content">Content *</label>
+            <textarea
+              id="content"
+              name="content"
+              value={formData.content}
+              onChange={handleChange}
+              placeholder="Full resource content (displayed on detail page)"
+              rows="8"
+              disabled={isLoading}
+              className={errors.content ? 'error' : ''}
+            />
+            {errors.content && <span className="error-message">{errors.content}</span>}
+            <small className="helper-text">Tip: You can use markdown formatting or plain text</small>
+          </div>
+        )}
+
+        {/* PDF Upload - Only show for pdf type */}
+        {formData.type === 'pdf' && (
+          <div className="form-group">
+            <label htmlFor="pdf">PDF Document *</label>
+            <input
+              type="file"
+              id="pdf"
+              name="pdf"
+              accept="application/pdf"
+              onChange={handlePdfUpload}
+              disabled={isLoading}
+              className={errors.pdf ? 'error' : ''}
+              style={{ display: 'none' }}
+            />
+            <div className="pdf-upload-area">
+              {!pdfPreview ? (
+                <label htmlFor="pdf" className="pdf-upload-label">
+                  <div className="upload-icon">📄</div>
+                  <div className="upload-text">Click to upload PDF</div>
+                  <div className="upload-hint">Maximum file size: 5MB</div>
+                </label>
+              ) : (
+                <div className="pdf-preview">
+                  <div className="pdf-preview-header">
+                    <span className="pdf-icon">📄</span>
+                    <span className="pdf-name">{pdfFile?.name || 'Uploaded PDF'}</span>
+                    <button 
+                      type="button" 
+                      className="remove-pdf-btn" 
+                      onClick={handleRemovePdf}
+                      disabled={isLoading}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  <div className="pdf-preview-info">
+                    PDF document ready for upload
+                  </div>
+                </div>
+              )}
+            </div>
+            {errors.pdf && <span className="error-message">{errors.pdf}</span>}
+          </div>
+        )}
 
         {/* Image URL */}
         <div className="form-group">
