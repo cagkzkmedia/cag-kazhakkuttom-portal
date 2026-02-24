@@ -331,13 +331,24 @@ const ArticleDetailPage = () => {
         <div className="article-paper-content">
           {article.type === 'pdf' && article.pdfData ? (
             <div className="pdf-viewer-container">
-              <iframe
-                src={article.pdfData}
-                title={article.title}
-                className="pdf-viewer"
+              <object
+                data={`${article.pdfData}#toolbar=0&navpanes=0&scrollbar=0`}
                 type="application/pdf"
-              />
-              <div className="pdf-download-section">
+                className="pdf-viewer"
+                aria-label={article.title}
+              >
+                <div className="pdf-fallback">
+                  <p>Unable to display PDF. Please download the file to view it.</p>
+                  <a 
+                    href={article.pdfData} 
+                    download={`${article.title}.pdf`}
+                    className="pdf-download-btn"
+                  >
+                    📥 Download PDF
+                  </a>
+                </div>
+              </object>
+              <div className="pdf-controls">
                 <a 
                   href={article.pdfData} 
                   download={`${article.title}.pdf`}

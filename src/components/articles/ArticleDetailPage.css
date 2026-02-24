@@ -152,6 +152,9 @@
   position: relative;
   z-index: 1;
   margin: 40px 0;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .article-paragraph {
@@ -176,19 +179,52 @@
 /* PDF Viewer Styles */
 .pdf-viewer-container {
   margin: 30px 0;
+  background: #f7fafc;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
 }
 
 .pdf-viewer {
   width: 100%;
+  min-width: 100%;
   height: 800px;
-  border: 1px solid #e2e8f0;
+  border: 2px solid #e2e8f0;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: white;
+  display: block;
+  margin: 0 auto;
+  overflow: hidden;
 }
 
-.pdf-download-section {
+/* Hide PDF viewer toolbar/controls */
+.pdf-viewer::-webkit-scrollbar {
+  display: none;
+}
+
+.pdf-viewer {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.pdf-fallback {
+  text-align: center;
+  padding: 60px 20px;
+  color: #4a5568;
+}
+
+.pdf-fallback p {
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: #2d3748;
+}
+
+.pdf-controls {
   margin-top: 20px;
   text-align: center;
+  padding-top: 20px;
+  border-top: 2px solid #e2e8f0;
 }
 
 .pdf-download-btn {
@@ -370,6 +406,10 @@
     font-size: 14px;
     padding: 10px 20px;
   }
+
+  .pdf-viewer-container {
+    padding: 15px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -397,5 +437,10 @@
   .pdf-download-btn {
     font-size: 13px;
     padding: 8px 16px;
+  }
+
+  .pdf-viewer-container {
+    padding: 10px;
+    margin: 20px 0;
   }
 }
