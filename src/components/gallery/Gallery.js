@@ -104,7 +104,7 @@ const Gallery = () => {
     return (
       <div className="public-gallery-page">
         <div className="public-gallery-loading">
-          <div className="loading-spinner"></div>
+          <div className="public-gallery-loading-spinner"></div>
           <p>Loading gallery...</p>
         </div>
       </div>
