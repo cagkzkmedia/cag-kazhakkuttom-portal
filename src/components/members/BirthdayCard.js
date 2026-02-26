@@ -66,9 +66,9 @@ Christ AG Church Kazhakkoottam Family 💙`;
         scale: 2,
         logging: false,
         useCORS: true,
-        ignoreElements: (element) => {
-          return element.classList.contains('birthday-card-actions');
-        },
+        allowTaint: true,
+        width: cardRef.current.offsetWidth,
+        height: cardRef.current.offsetHeight,
       });
 
       canvas.toBlob((blob) => {
@@ -95,34 +95,54 @@ Christ AG Church Kazhakkoottam Family 💙`;
         <button className="birthday-close-btn" onClick={onClose}>✕</button>
         
         <div className="birthday-card" ref={cardRef}>
-          <div className="birthday-card-header">
-            <div className="birthday-card-icon">🎂</div>
-            <h2>Happy Birthday!</h2>
+          <div className="birthday-card-photo-section">
+            {member.profileImage && (
+              <img 
+                src={member.profileImage} 
+                alt={formattedName}
+                className="birthday-card-main-photo"
+              />
+            )}
+            <div className="birthday-card-stars">
+              <span className="star star-1">★</span>
+              <span className="star star-2">★</span>
+              <span className="star star-3">★</span>
+              <span className="star star-4">★</span>
+              <span className="star star-5">★</span>
+              <span className="star star-6">★</span>
+              <span className="star star-7">★</span>
+              <span className="star star-8">★</span>
+              <span className="star star-9">★</span>
+              <span className="star star-10">★</span>
+              <span className="star star-11">★</span>
+              <span className="star star-12">★</span>
+            </div>
           </div>
           
-          <div className="birthday-card-body">
+          <div className="birthday-card-content">
+            <div className="birthday-card-title">Happy Birthday!</div>
             <div className="birthday-card-name">{formattedName}</div>
             
             <div className="birthday-card-message">
-              <p>🎉 May this special day bring you endless joy, blessings, and cherished moments. May God's grace shine upon you today and always. Wishing you a year filled with love, peace, and prosperity. God bless you abundantly! 🙏</p>
+              May this special day bring you joy and blessings.
             </div>
             
             <div className="birthday-card-footer">
               <p>With love and prayers,</p>
-              <p className="birthday-card-church-name">Christ AG Church Kazhakkoottam Family 💙</p>
+              <p className="birthday-card-church-name">Christ AG Church Kazhakkoottam Family</p>
             </div>
           </div>
-          
-          <div className="birthday-card-actions">
-            <button className="birthday-download-image-btn" onClick={handleDownloadImage}>
-              <span>💾</span>
-              <span>Download Card</span>
-            </button>
-            <button className="birthday-share-image-btn" onClick={handleShareImage}>
-              <span>📲</span>
-              <span>Send to WhatsApp</span>
-            </button>
-          </div>
+        </div>
+        
+        <div className="birthday-card-actions">
+          <button className="birthday-download-image-btn" onClick={handleDownloadImage}>
+            <span>💾</span>
+            <span>Download Card</span>
+          </button>
+          <button className="birthday-share-image-btn" onClick={handleShareImage}>
+            <span>📲</span>
+            <span>Send to WhatsApp</span>
+          </button>
         </div>
       </div>
     </div>

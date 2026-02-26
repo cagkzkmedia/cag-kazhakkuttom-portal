@@ -71,9 +71,9 @@ Christ AG Church Kazhakkoottam Family 💙`;
         scale: 2,
         logging: false,
         useCORS: true,
-        ignoreElements: (element) => {
-          return element.classList.contains('anniversary-card-actions');
-        },
+        allowTaint: true,
+        width: cardRef.current.offsetWidth,
+        height: cardRef.current.offsetHeight,
       });
 
       canvas.toBlob((blob) => {
@@ -100,34 +100,54 @@ Christ AG Church Kazhakkoottam Family 💙`;
         <button className="anniversary-close-btn" onClick={onClose}>✕</button>
         
         <div className="anniversary-card" ref={cardRef}>
-          <div className="anniversary-card-header">
-            <div className="anniversary-card-icon">💑</div>
-            <h2>Happy Anniversary!</h2>
+          <div className="anniversary-card-photo-section">
+            {member.profileImage && (
+              <img 
+                src={member.profileImage} 
+                alt={formattedName}
+                className="anniversary-card-main-photo"
+              />
+            )}
+            <div className="anniversary-card-stars">
+              <span className="star star-1">★</span>
+              <span className="star star-2">★</span>
+              <span className="star star-3">★</span>
+              <span className="star star-4">★</span>
+              <span className="star star-5">★</span>
+              <span className="star star-6">★</span>
+              <span className="star star-7">★</span>
+              <span className="star star-8">★</span>
+              <span className="star star-9">★</span>
+              <span className="star star-10">★</span>
+              <span className="star star-11">★</span>
+              <span className="star star-12">★</span>
+            </div>
           </div>
           
-          <div className="anniversary-card-body">
+          <div className="anniversary-card-content">
+            <div className="anniversary-card-title">Happy Anniversary!</div>
             <div className="anniversary-card-name">{formattedName}</div>
             
             <div className="anniversary-card-message">
-              <p>💕 Celebrating your beautiful journey together! May God continue to bless your marriage with love, joy, and peace. Wishing you many more blessed years as husband and wife. 🙏</p>
+              Celebrating your beautiful journey together!
             </div>
             
             <div className="anniversary-card-footer">
               <p>With love and prayers,</p>
-              <p className="anniversary-card-church-name">Christ AG Church Kazhakkoottam Family 💙</p>
+              <p className="anniversary-card-church-name">Christ AG Church Kazhakkoottam Family</p>
             </div>
           </div>
-          
-          <div className="anniversary-card-actions">
-            <button className="anniversary-download-image-btn" onClick={handleDownloadImage}>
-              <span>💾</span>
-              <span>Download Card</span>
-            </button>
-            <button className="anniversary-share-image-btn" onClick={handleShareImage}>
-              <span>📲</span>
-              <span>Send to WhatsApp</span>
-            </button>
-          </div>
+        </div>
+        
+        <div className="anniversary-card-actions">
+          <button className="anniversary-download-image-btn" onClick={handleDownloadImage}>
+            <span>💾</span>
+            <span>Download Card</span>
+          </button>
+          <button className="anniversary-share-image-btn" onClick={handleShareImage}>
+            <span>📲</span>
+            <span>Send to WhatsApp</span>
+          </button>
         </div>
       </div>
     </div>

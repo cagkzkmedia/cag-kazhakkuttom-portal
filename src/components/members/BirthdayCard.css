@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Pacifico&family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Pacifico&family=Poppins:wght@400;500;600;700&family=Allura&family=Alex+Brush&display=swap');
 
 /* Birthday Card Modal */
 .birthday-modal-overlay {
@@ -75,15 +75,103 @@
 
 /* Birthday Card */
 .birthday-card {
-  background: linear-gradient(135deg, #FFD700 0%, #FFC700 100%);
-  border-radius: 20px;
-  padding: 40px;
-  box-shadow: 0 20px 60px rgba(255, 215, 0, 0.5), 0 0 0 1px rgba(255, 199, 0, 0.2);
+  background: white;
+  border-radius: 12px;
+  padding: 0;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   position: relative;
   overflow: hidden;
-  max-width: 400px;
+  max-width: 500px;
   margin: 0 auto;
+  display: flex;
   flex-direction: column;
+  border: 4px solid #D4AF37;
+  outline: 1px solid #FFD700;
+  outline-offset: -2px;
+}
+
+/* Photo Section */
+.birthday-card-photo-section {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+  border: 12px solid white;
+  border-bottom: none;
+  box-shadow: 
+    inset 0 0 0 2px #D4AF37,
+    inset 0 0 0 4px white,
+    0 0 30px rgba(212, 175, 55, 0.3);
+}
+
+.birthday-card-main-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: grayscale(100%);
+  opacity: 0.75;
+  mix-blend-mode: multiply;
+  display: block;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+/* Stars Overlay */
+.birthday-card-stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.star {
+  position: absolute;
+  color: #D4AF37;
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.8);
+  opacity: 0.7;
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.8); }
+}
+
+.star-1 { top: 3%; left: 5%; font-size: 36px; animation-delay: 0s; }
+.star-2 { top: 8%; left: 20%; font-size: 18px; animation-delay: 0.5s; }
+.star-3 { top: 6%; left: 50%; font-size: 24px; animation-delay: 1s; }
+.star-4 { top: 12%; right: 18%; font-size: 28px; animation-delay: 1.5s; }
+.star-5 { top: 3%; right: 4%; font-size: 40px; animation-delay: 2s; }
+.star-6 { top: 30%; left: 8%; font-size: 16px; animation-delay: 0.3s; }
+.star-7 { top: 40%; right: 6%; font-size: 22px; animation-delay: 0.8s; }
+.star-8 { bottom: 30%; left: 6%; font-size: 26px; animation-delay: 1.2s; }
+.star-9 { bottom: 18%; right: 10%; font-size: 32px; animation-delay: 1.7s; }
+.star-10 { bottom: 5%; left: 35%; font-size: 20px; animation-delay: 2.2s; }
+.star-11 { top: 55%; left: 3%; font-size: 14px; animation-delay: 0.7s; }
+.star-12 { top: 48%; right: 4%; font-size: 24px; animation-delay: 1.4s; }
+
+/* Content Section */
+.birthday-card-content {
+  background: white;
+  padding: 24px 20px;
+  text-align: center;
+}
+
+.birthday-card-title {
+  font-family: 'Alex Brush', 'Great Vibes', cursive;
+  font-size: 58px;
+  color: #D4AF37;
+  margin: 0 0 12px 0;
+  text-shadow: 
+    3px 3px 6px rgba(212, 175, 55, 0.4),
+    0 0 20px rgba(212, 175, 55, 0.2);
+  line-height: 1.1;
+  font-weight: 400;
+  letter-spacing: 2px;
 }
 
 .birthday-card::before {
@@ -97,7 +185,7 @@
   margin-left: -60px;
   animation: rotateAndPulse 10s linear infinite;
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
 }
 
 @keyframes rotateAndPulse {
@@ -115,6 +203,8 @@
 .birthday-card-header {
   text-align: center;
   margin-bottom: 24px;
+  position: relative;
+  z-index: 2;
 }
 
 .birthday-card-icon {
@@ -146,26 +236,79 @@
   background: rgba(255, 255, 255, 0.98);
   border-radius: 16px;
   padding: 28px;
-  margin-bottom: 24px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.08);
+  position: relative;
+  z-index: 2;
+}
+
+/* Member Photo */
+.birthday-card-photo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  margin-top: -70px;
+}
+
+.birthday-card-photo-wrapper {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  padding: 6px;
+  background: linear-gradient(135deg, #FFD700, #FFC700, #FFD700);
+  border-radius: 12px;
+  box-shadow: 
+    0 8px 24px rgba(255, 215, 0, 0.5),
+    0 4px 12px rgba(0, 0, 0, 0.15);
+  animation: photoGlow 3s ease-in-out infinite;
+  border: 3px solid white;
+}
+
+@keyframes photoGlow {
+  0%, 100% {
+    box-shadow: 
+      0 8px 24px rgba(255, 215, 0, 0.5),
+      0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  50% {
+    box-shadow: 
+      0 10px 32px rgba(255, 215, 0, 0.7),
+      0 6px 16px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.birthday-card-photo {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  object-fit: cover;
+  object-position: center;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: block;
 }
 
 .birthday-card-name {
-  font-size: 36px;
-  font-weight: 800;
-  color: #667eea;
+  font-size: 28px;
+  font-weight: 700;
+  color: #B8956A;
   text-align: center;
-  margin-bottom: 24px;
-  padding-bottom: 20px;
-  border-bottom: 3px solid #e2e8f0;
-  letter-spacing: 0.5px;
-  font-family: 'Pacifico', cursive;
+  margin: 0 0 20px 0;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  border-bottom: none;
+  padding-bottom: 0;
+  text-shadow: 2px 2px 4px rgba(184, 149, 106, 0.2);
 }
 
 .birthday-card-message {
-  color: #2d3748;
+  text-align: center;
+  margin: 0 0 20px 0;
+  font-size: 14px;
   line-height: 1.8;
+  color: #666;
   font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-style: italic;
 }
 
 .birthday-card-message p {
@@ -183,28 +326,30 @@
 
 .birthday-card-footer {
   text-align: center;
-  margin-top: 28px;
-  padding: 0;
+  margin-top: 8px;
+  padding-top: 0;
+  border-top: none;
   background: transparent;
   border-radius: 0;
   box-shadow: none;
-  border-top: 2px solid rgba(0, 0, 0, 0.1);
-  padding-top: 20px;
   font-family: 'Poppins', sans-serif;
 }
 
 .birthday-card-footer p {
   margin: 4px 0;
-  color: #1a202c;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 13px;
+  color: #999;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
 }
 
 .birthday-card-footer .birthday-card-church-name {
-  font-weight: 800 !important;
-  color: #1a202c !important;
-  font-size: 16px !important;
-  margin-top: 8px !important;
+  font-weight: 700 !important;
+  color: #B8956A !important;
+  font-size: 18px !important;
+  margin-top: 4px !important;
+  font-family: 'Allura', cursive !important;
+  letter-spacing: 1px;
 }
 
 .birthday-card-actions {
