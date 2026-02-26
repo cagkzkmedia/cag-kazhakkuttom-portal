@@ -67,8 +67,8 @@ Christ AG Church Kazhakkoottam Family 💙`;
 
     try {
       const canvas = await html2canvas(cardRef.current, {
-        backgroundColor: null,
-        scale: 2,
+        backgroundColor: '#ffffff',
+        scale: 3,
         logging: false,
         useCORS: true,
         allowTaint: true,
