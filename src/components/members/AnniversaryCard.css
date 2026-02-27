@@ -159,7 +159,7 @@
 /* Content Section */
 .anniversary-card-content {
   background: white;
-  padding: 24px 20px;
+  padding: 18px 16px;
   text-align: center;
 }
 
@@ -167,7 +167,7 @@
   font-family: 'Alex Brush', 'Great Vibes', cursive;
   font-size: 48px;
   color: #D4AF37;
-  margin: 0 0 12px 0;
+  margin: 0 0 8px 0;
   text-shadow: 
     3px 3px 6px rgba(212, 175, 55, 0.4),
     0 0 20px rgba(212, 175, 55, 0.2);
@@ -306,13 +306,13 @@
 }
 
 .anniversary-card-name {
-  font-size: 28px;
+  font-size: 22px;
   font-weight: 700;
   color: #B8956A;
   text-align: center;
-  margin: 0 0 20px 0;
+  margin: 0 0 12px 0;
   font-family: 'Poppins', sans-serif;
-  letter-spacing: 5px;
+  letter-spacing: 4px;
   text-transform: uppercase;
   border-bottom: none;
   padding-bottom: 0;
@@ -321,9 +321,9 @@
 
 .anniversary-card-message {
   text-align: center;
-  margin: 0 0 20px 0;
-  font-size: 14px;
-  line-height: 1.8;
+  margin: 0 0 12px 0;
+  font-size: 13px;
+  line-height: 1.6;
   color: #666;
   font-family: 'Poppins', sans-serif;
   font-weight: 400;
@@ -345,14 +345,14 @@
 
 .anniversary-card-footer {
   text-align: center;
-  margin-top: 8px;
+  margin-top: 4px;
   padding-top: 0;
   border-top: none;
 }
 
 .anniversary-card-footer p {
-  margin: 4px 0;
-  font-size: 13px;
+  margin: 2px 0;
+  font-size: 12px;
   color: #999;
   font-family: 'Poppins', sans-serif;
   font-weight: 400;
@@ -361,7 +361,7 @@
 .anniversary-card-church-name {
   font-weight: 700;
   color: #B8956A !important;
-  font-size: 18px !important;
+  font-size: 16px !important;
   font-family: 'Allura', cursive !important;
   letter-spacing: 1px;
 }
