@@ -325,7 +325,6 @@ const HomePage = () => {
         <div className="hero-content">
           <div className="church-header">
             <div className="hero-logos">
-              <img src={agLogo} alt="Assemblies of God" className="hero-logo ag-logo" />
               <img src={churchLogo} alt="Christ AG Church Logo" className="hero-logo church-logo" />
             </div>
             <h1 className="church-name">Christ AG Church</h1>
@@ -951,7 +950,6 @@ const HomePage = () => {
         <div className="footer-content">
           <div className="footer-logo">
             <div className="footer-logos">
-              <img src={agLogo} alt="Assemblies of God" className="ag-logo" />
               <img src={churchLogo} alt="Christ AG Church" className="church-logo" />
             </div>
             <p>Christ AG Church, Kazhakkoottam</p>

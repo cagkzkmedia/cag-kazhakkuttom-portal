@@ -146,7 +146,6 @@
 }
 
 .hero-logo.church-logo {
-  border-radius: 50%;
   padding: 15px;
 }
 
@@ -1373,7 +1372,6 @@ background: linear-gradient(to top, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.75) 
 }
 
 .footer-logo img {
-  height: 80px;
   filter: brightness(0) invert(1);
 }
 
@@ -1382,7 +1380,7 @@ background: linear-gradient(to top, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.75) 
 }
 
 .footer-logo img.church-logo {
-  width: 100px;
+  width: 200px;
 }
 
 .footer-logo p {
