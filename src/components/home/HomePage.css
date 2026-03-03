@@ -1502,10 +1502,6 @@ background: linear-gradient(to top, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.75) 
     margin-bottom: 40px;
   }
 
-  .hero-logo {
-    width: 150px;
-    height: 120px;
-  }
 
   .hero-content {
     padding: 25px 15px;

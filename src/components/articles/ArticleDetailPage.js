@@ -271,7 +271,7 @@ const ArticleDetailPage = () => {
     "dateModified": article.updatedAt || article.createdAt,
     "author": {
       "@type": "Person",
-      "name": article.author || "Christ AG Church"
+      "name": author?.name || article.author || "Christ AG Church"
     },
     "publisher": {
       "@type": "Organization",
@@ -290,30 +290,34 @@ const ArticleDetailPage = () => {
       <Helmet>
         <title>{article.title} | Christ AG Church Kazhakkoottam</title>
         <meta name="description" content={article.description || article.excerpt} />
-        <meta name="keywords" content={`${article.category}, christian article, faith resources, ${article.author}, Christ AG Church, Kazhakkoottam`} />
-        <meta name="author" content={article.author || 'Christ AG Church'} />
+        <meta name="keywords" content={`${article.category}, christian article, faith resources, ${author?.name || article.author}, Christ AG Church, Kazhakkoottam`} />
+        <meta name="author" content={author?.name || article.author || 'Christ AG Church'} />
+        
+        {/* Favicon */}
+        <link rel="icon" type="image/png" sizes="32x32" href={`${window.location.origin}/favicon.ico`} />
+        <link rel="apple-touch-icon" sizes="180x180" href={`${window.location.origin}/logo192.png`} />
         
         {/* Open Graph tags for social sharing */}
         <meta property="og:type" content="article" />
-        <meta property="og:title" content={article.title} />
+        <meta property="og:title" content={`${article.title} - By ${author?.name || article.author || 'Unknown Author'}`} />
         <meta property="og:description" content={article.description || article.excerpt} />
-        <meta property="og:image" content={`${window.location.origin}/logo512.png`} />
-        <meta property="og:image:secure_url" content={`${window.location.origin}/logo512.png`} />
-        <meta property="og:image:width" content="512" />
-        <meta property="og:image:height" content="512" />
-        <meta property="og:image:alt" content="Christ AG Church Kazhakkoottam" />
+        <meta property="og:image" content={article.imageUrl ? article.imageUrl : `${window.location.origin}/logo512.png`} />
+        <meta property="og:image:secure_url" content={article.imageUrl ? article.imageUrl : `${window.location.origin}/logo512.png`} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={article.title} />
         <meta property="og:url" content={window.location.href} />
         <meta property="og:site_name" content="Christ AG Church Kazhakkoottam" />
         <meta property="article:published_time" content={article.createdAt} />
-        <meta property="article:author" content={article.author || 'Christ AG Church'} />
+        <meta property="article:author" content={author?.name || article.author || 'Christ AG Church'} />
         <meta property="article:section" content={article.category} />
         
         {/* Twitter Card tags */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={article.title} />
+        <meta name="twitter:title" content={`${article.title} - By ${author?.name || article.author || 'Unknown Author'}`} />
         <meta name="twitter:description" content={article.description || article.excerpt} />
-        <meta name="twitter:image" content={`${window.location.origin}/logo512.png`} />
-        <meta name="twitter:image:alt" content="Christ AG Church Kazhakkoottam" />
+        <meta name="twitter:image" content={article.imageUrl ? article.imageUrl : `${window.location.origin}/logo512.png`} />
+        <meta name="twitter:image:alt" content={article.title} />
         
         {/* Structured data */}
         <script type="application/ld+json">
