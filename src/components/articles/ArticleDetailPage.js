@@ -3,11 +3,12 @@
  * Displays full article content in a paper-style layout
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { getArticleById } from '../../services/articlesService.firebase';
 import { getAuthorById } from '../../services/authorService.firebase';
+import { formatTextContent } from '../../utils/textFormatter';
 import './ArticleDetailPage.css';
 
 // Mock articles for reference
@@ -245,6 +246,12 @@ const ArticleDetailPage = () => {
     loadArticle();
   }, [id, navigate]);
 
+  // Format article content with support for markdown-like syntax
+  const formattedContent = useMemo(() => {
+    if (!article?.content) return null;
+    return formatTextContent(article.content);
+  }, [article?.content]);
+
   if (loading) {
     return <div className="article-detail-loading">Loading article...</div>;
   }
@@ -395,12 +402,11 @@ const ArticleDetailPage = () => {
                 </>
               )}
             </div>
-          ) : article.content ? (
-            article.content.split('\n\n').map((paragraph, index) => (
-              <p key={index} className="article-paragraph">
-                {paragraph}
-              </p>
-            ))
+          ) : formattedContent ? (
+            <div 
+              className="article-content-formatted"
+              dangerouslySetInnerHTML={{ __html: formattedContent }}
+            />
           ) : (
             <p className="article-paragraph">{article.description}</p>
           )}

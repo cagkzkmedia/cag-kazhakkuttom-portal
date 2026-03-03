@@ -471,13 +471,15 @@ const ResourceForm = ({ resource, onSubmit, onClose, isLoading }) => {
               name="content"
               value={formData.content}
               onChange={handleChange}
-              placeholder="Full resource content (displayed on detail page)"
-              rows="8"
+              placeholder="Full resource content (displayed on detail page)&#10;&#10;Formatting tips:&#10;- Use **text** for bold&#10;- Use *text* for italic&#10;- Start lines with - or * for bullet points&#10;- Use blank lines to separate paragraphs"
+              rows="12"
               disabled={isLoading}
               className={errors.content ? 'error' : ''}
             />
             {errors.content && <span className="error-message">{errors.content}</span>}
-            <small className="helper-text">Tip: You can use markdown formatting or plain text</small>
+            <small className="helper-text">
+              Supports: **bold**, *italic*, bullet points (- item), numbered lists (1. item), and line breaks
+            </small>
           </div>
         )}
 
