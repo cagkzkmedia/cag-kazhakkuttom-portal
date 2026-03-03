@@ -4,6 +4,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import { getAllAuthors, getOrCreateAuthor } from '../../services/authorService.firebase';
 import './ResourceForm.css';
 
 // Default images for each category from Unsplash
@@ -22,8 +23,7 @@ const ResourceForm = ({ resource, onSubmit, onClose, isLoading }) => {
   const [formData, setFormData] = useState({
     title: '',
     category: 'Faith',
-    author: '',
-    authorPhoto: null, // base64 author photo
+    authorId: '', // Reference to author document
     description: '',
     content: '',
     imageUrl: categoryImages['Faith'],
@@ -34,15 +34,34 @@ const ResourceForm = ({ resource, onSubmit, onClose, isLoading }) => {
   const [errors, setErrors] = useState({});
   const [pdfFile, setPdfFile] = useState(null);
   const [pdfPreview, setPdfPreview] = useState(null);
+  const [authors, setAuthors] = useState([]);
+  const [selectedAuthor, setSelectedAuthor] = useState('existing');
+  const [newAuthorName, setNewAuthorName] = useState('');
+  const [newAuthorPhoto, setNewAuthorPhoto] = useState(null);
   const [authorPhotoPreview, setAuthorPhotoPreview] = useState(null);
+  const [loadingAuthors, setLoadingAuthors] = useState(true);
+
+  // Load authors from database
+  useEffect(() => {
+    const loadAuthors = async () => {
+      try {
+        const authorsList = await getAllAuthors();
+        setAuthors(authorsList);
+      } catch (error) {
+        console.error('Error loading authors:', error);
+      } finally {
+        setLoadingAuthors(false);
+      }
+    };
+    loadAuthors();
+  }, []);
 
   useEffect(() => {
     if (resource) {
       setFormData({
         title: resource.title || '',
         category: resource.category || 'Faith',
-        author: resource.author || '',
-        authorPhoto: resource.authorPhoto || null,
+        authorId: resource.authorId || '',
         description: resource.description || '',
         content: resource.content || '',
         imageUrl: resource.imageUrl || '',
@@ -51,9 +70,6 @@ const ResourceForm = ({ resource, onSubmit, onClose, isLoading }) => {
       });
       if (resource.type === 'pdf' && resource.pdfData) {
         setPdfPreview(resource.pdfData);
-      }
-      if (resource.authorPhoto) {
-        setAuthorPhotoPreview(resource.authorPhoto);
       }
     }
   }, [resource]);
@@ -76,8 +92,12 @@ const ResourceForm = ({ resource, onSubmit, onClose, isLoading }) => {
       newErrors.title = 'Title is required';
     }
 
-    if (!formData.author.trim()) {
-      newErrors.author = 'Author is required';
+    if (selectedAuthor === 'existing' && !formData.authorId) {
+      newErrors.author = 'Please select an author';
+    }
+
+    if (selectedAuthor === 'new' && !newAuthorName.trim()) {
+      newErrors.author = 'Author name is required';
     }
 
     if (!formData.description.trim()) {
@@ -189,10 +209,7 @@ const ResourceForm = ({ resource, onSubmit, onClose, isLoading }) => {
       const reader = new FileReader();
       reader.onload = (e) => {
         const base64Data = e.target.result;
-        setFormData(prev => ({
-          ...prev,
-          authorPhoto: base64Data
-        }));
+        setNewAuthorPhoto(base64Data);
         setAuthorPhotoPreview(base64Data);
       };
       reader.readAsDataURL(file);
@@ -209,20 +226,54 @@ const ResourceForm = ({ resource, onSubmit, onClose, isLoading }) => {
 
   const handleRemoveAuthorPhoto = () => {
     setAuthorPhotoPreview(null);
-    setFormData(prev => ({
-      ...prev,
-      authorPhoto: null
-    }));
+    setNewAuthorPhoto(null);
   };
 
-  const handleSubmit = (e) => {
+  const handleAuthorSelectionChange = (value) => {
+    setSelectedAuthor(value);
+    if (value === 'existing') {
+      setNewAuthorName('');
+      setNewAuthorPhoto(null);
+      setAuthorPhotoPreview(null);
+    } else {
+      setFormData(prev => ({ ...prev, authorId: '' }));
+    }
+  };
+
+  const handleExistingAuthorChange = (authorId) => {
+    setFormData(prev => ({ ...prev, authorId }));
+    const author = authors.find(a => a.id === authorId);
+    if (author && author.photo) {
+      setAuthorPhotoPreview(author.photo);
+    } else {
+      setAuthorPhotoPreview(null);
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!validateForm()) {
       return;
     }
 
-    onSubmit(formData);
+    try {
+      let authorId = formData.authorId;
+
+      // If creating a new author, save it first
+      if (selectedAuthor === 'new') {
+        authorId = await getOrCreateAuthor(newAuthorName.trim(), newAuthorPhoto);
+      }
+
+      // Submit the form data with authorId
+      onSubmit({
+        ...formData,
+        authorId
+      });
+    } catch (error) {
+      console.error('Error handling author:', error);
+      setErrors(prev => ({ ...prev, submit: 'Failed to save author. Please try again.' }));
+    }
   };
 
   return (
@@ -249,77 +300,133 @@ const ResourceForm = ({ resource, onSubmit, onClose, isLoading }) => {
           {errors.title && <span className="error-message">{errors.title}</span>}
         </div>
 
-        {/* Category and Author Row */}
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="category">Category *</label>
-            <select
-              id="category"
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-              disabled={isLoading}
-            >
-              {categories.map(cat => (
-                <option key={cat} value={cat}>{cat}</option>
-              ))}
-            </select>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="author">Author *</label>
-            <input
-              type="text"
-              id="author"
-              name="author"
-              value={formData.author}
-              onChange={handleChange}
-              placeholder="Author name"
-              disabled={isLoading}
-              className={errors.author ? 'error' : ''}
-            />
-            {errors.author && <span className="error-message">{errors.author}</span>}
-          </div>
+        {/* Category */}
+        <div className="form-group">
+          <label htmlFor="category">Category *</label>
+          <select
+            id="category"
+            name="category"
+            value={formData.category}
+            onChange={handleChange}
+            disabled={isLoading}
+          >
+            {categories.map(cat => (
+              <option key={cat} value={cat}>{cat}</option>
+            ))}
+          </select>
         </div>
 
-        {/* Author Photo */}
+        {/* Author Selection */}
         <div className="form-group">
-          <label htmlFor="authorPhoto">Author Photo</label>
-          <input
-            type="file"
-            id="authorPhoto"
-            name="authorPhoto"
-            accept="image/*"
-            onChange={handleAuthorPhotoUpload}
-            disabled={isLoading}
-            className={errors.authorPhoto ? 'error' : ''}
-            style={{ display: 'none' }}
-          />
-          <div className="author-photo-upload-area">
-            {!authorPhotoPreview ? (
-              <label htmlFor="authorPhoto" className="author-photo-upload-label">
-                <div className="upload-icon">👤</div>
-                <div className="upload-text">Click to upload author photo</div>
-                <div className="upload-hint">Maximum file size: 2MB</div>
-              </label>
-            ) : (
-              <div className="author-photo-preview">
-                <img src={authorPhotoPreview} alt="Author" />
-                <button 
-                  type="button" 
-                  className="remove-photo-btn" 
-                  onClick={handleRemoveAuthorPhoto}
+          <label>Author *</label>
+          <div className="author-selection-type">
+            <label className="radio-label">
+              <input
+                type="radio"
+                value="existing"
+                checked={selectedAuthor === 'existing'}
+                onChange={(e) => handleAuthorSelectionChange(e.target.value)}
+                disabled={isLoading || loadingAuthors}
+              />
+              <span>Select Existing Author</span>
+            </label>
+            <label className="radio-label">
+              <input
+                type="radio"
+                value="new"
+                checked={selectedAuthor === 'new'}
+                onChange={(e) => handleAuthorSelectionChange(e.target.value)}
+                disabled={isLoading}
+              />
+              <span>Add New Author</span>
+            </label>
+          </div>
+
+          {selectedAuthor === 'existing' ? (
+            <>
+              <select
+                id="existingAuthor"
+                value={formData.authorId}
+                onChange={(e) => handleExistingAuthorChange(e.target.value)}
+                disabled={isLoading || loadingAuthors}
+                className={errors.author ? 'error' : ''}
+              >
+                <option value="">-- Select an author --</option>
+                {authors.map(author => (
+                  <option key={author.id} value={author.id}>
+                    {author.name}
+                  </option>
+                ))}
+              </select>
+              {loadingAuthors && <small className="helper-text">Loading authors...</small>}
+            </>
+          ) : (
+            <>
+              <input
+                type="text"
+                id="newAuthorName"
+                value={newAuthorName}
+                onChange={(e) => setNewAuthorName(e.target.value)}
+                placeholder="Enter new author name"
+                disabled={isLoading}
+                className={errors.author ? 'error' : ''}
+              />
+            </>
+          )}
+          {errors.author && <span className="error-message">{errors.author}</span>}
+        </div>
+
+        {/* Author Photo - Only show for new author or if existing author has photo */}
+        {(selectedAuthor === 'new' || authorPhotoPreview) && (
+          <div className="form-group">
+            <label htmlFor="authorPhoto">
+              {selectedAuthor === 'new' ? 'Author Photo (Optional)' : 'Author Photo'}
+            </label>
+            {selectedAuthor === 'new' && (
+              <>
+                <input
+                  type="file"
+                  id="authorPhoto"
+                  name="authorPhoto"
+                  accept="image/*"
+                  onChange={handleAuthorPhotoUpload}
                   disabled={isLoading}
-                  title="Remove photo"
-                >
-                  ✕
-                </button>
+                  className={errors.authorPhoto ? 'error' : ''}
+                  style={{ display: 'none' }}
+                />
+                <div className="author-photo-upload-area">
+                  {!authorPhotoPreview ? (
+                    <label htmlFor="authorPhoto" className="author-photo-upload-label">
+                      <div className="upload-icon">👤</div>
+                      <div className="upload-text">Click to upload author photo</div>
+                      <div className="upload-hint">Maximum file size: 2MB</div>
+                    </label>
+                  ) : (
+                    <div className="author-photo-preview">
+                      <img src={authorPhotoPreview} alt="Author" />
+                      <button 
+                        type="button" 
+                        className="remove-photo-btn" 
+                        onClick={handleRemoveAuthorPhoto}
+                        disabled={isLoading}
+                        title="Remove photo"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  )}
+                </div>
+                {errors.authorPhoto && <span className="error-message">{errors.authorPhoto}</span>}
+                <small className="helper-text">Optional: Add a photo for the new author</small>
+              </>
+            )}
+            {selectedAuthor === 'existing' && authorPhotoPreview && (
+              <div className="author-photo-preview-readonly">
+                <img src={authorPhotoPreview} alt="Author" />
               </div>
             )}
           </div>
-          {errors.authorPhoto && <span className="error-message">{errors.authorPhoto}</span>}
-          <small className="helper-text">Optional: Add a photo of the author (will be displayed in article detail)</small>
-        </div>
+        )}
 
         {/* Article Type */}
         <div className="form-group">

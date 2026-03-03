@@ -315,6 +315,29 @@
 }
 
 /* Author Photo Upload Styles */
+.author-selection-type {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 12px;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #4a5568;
+}
+
+.radio-label input[type="radio"] {
+  cursor: pointer;
+}
+
+.radio-label span {
+  user-select: none;
+}
+
 .author-photo-upload-area {
   margin-top: 8px;
 }
@@ -357,6 +380,20 @@
   top: 8px;
   right: 8px;
   background: rgba(0, 0, 0, 0.6);
+.author-photo-preview-readonly {
+  display: inline-block;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.author-photo-preview-readonly img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  display: block;
+}
+
   color: white;
   border: none;
   border-radius: 50%;

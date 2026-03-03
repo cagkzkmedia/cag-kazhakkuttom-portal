@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { getArticleById } from '../../services/articlesService.firebase';
+import { getAuthorById } from '../../services/authorService.firebase';
 import './ArticleDetailPage.css';
 
 // Mock articles for reference
@@ -128,6 +129,7 @@ const ArticleDetailPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [article, setArticle] = useState(null);
+  const [author, setAuthor] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -213,6 +215,16 @@ const ArticleDetailPage = () => {
         
         if (foundArticle) {
           setArticle(foundArticle);
+          
+          // Fetch author data if authorId exists
+          if (foundArticle.authorId) {
+            try {
+              const authorData = await getAuthorById(foundArticle.authorId);
+              setAuthor(authorData);
+            } catch (error) {
+              console.error('Error loading author:', error);
+            }
+          }
         } else {
           navigate('/');
         }
@@ -325,7 +337,7 @@ const ArticleDetailPage = () => {
                 <span className="category-badge">{article.category || 'General'}</span>
               </div>
               <div className="meta-group">
-                <span className="author">By {article.author || 'Unknown'}</span>
+                <span className="author">By {author?.name || article.author || 'Unknown'}</span>
                 <span className="separator">•</span>
                 <span className="date">
                   {new Date(article.createdAt).toLocaleDateString('en-US', { 
@@ -340,10 +352,10 @@ const ArticleDetailPage = () => {
         </div>
 
         <div className="article-paper-content">
-          {article.authorPhoto && (
+          {author?.photo && (
             <div className="author-photo-float">
-              <img src={article.authorPhoto} alt={article.author} className="author-photo" />
-              <p className="author-photo-caption">{article.author}</p>
+              <img src={author.photo} alt={author.name} className="author-photo" />
+              <p className="author-photo-caption">{author.name}</p>
             </div>
           )}
           {article.type === 'pdf' && article.pdfData ? (
