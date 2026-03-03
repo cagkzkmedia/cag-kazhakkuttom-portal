@@ -23,6 +23,7 @@ const ResourceForm = ({ resource, onSubmit, onClose, isLoading }) => {
     title: '',
     category: 'Faith',
     author: '',
+    authorPhoto: null, // base64 author photo
     description: '',
     content: '',
     imageUrl: categoryImages['Faith'],
@@ -33,6 +34,7 @@ const ResourceForm = ({ resource, onSubmit, onClose, isLoading }) => {
   const [errors, setErrors] = useState({});
   const [pdfFile, setPdfFile] = useState(null);
   const [pdfPreview, setPdfPreview] = useState(null);
+  const [authorPhotoPreview, setAuthorPhotoPreview] = useState(null);
 
   useEffect(() => {
     if (resource) {
@@ -40,6 +42,7 @@ const ResourceForm = ({ resource, onSubmit, onClose, isLoading }) => {
         title: resource.title || '',
         category: resource.category || 'Faith',
         author: resource.author || '',
+        authorPhoto: resource.authorPhoto || null,
         description: resource.description || '',
         content: resource.content || '',
         imageUrl: resource.imageUrl || '',
@@ -48,6 +51,9 @@ const ResourceForm = ({ resource, onSubmit, onClose, isLoading }) => {
       });
       if (resource.type === 'pdf' && resource.pdfData) {
         setPdfPreview(resource.pdfData);
+      }
+      if (resource.authorPhoto) {
+        setAuthorPhotoPreview(resource.authorPhoto);
       }
     }
   }, [resource]);
@@ -164,6 +170,51 @@ const ResourceForm = ({ resource, onSubmit, onClose, isLoading }) => {
     }));
   };
 
+  const handleAuthorPhotoUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Check if file is an image
+      if (!file.type.startsWith('image/')) {
+        setErrors(prev => ({ ...prev, authorPhoto: 'Please upload an image file' }));
+        return;
+      }
+
+      // Check file size (limit to 2MB)
+      if (file.size > 2 * 1024 * 1024) {
+        setErrors(prev => ({ ...prev, authorPhoto: 'Image size should not exceed 2MB' }));
+        return;
+      }
+
+      // Convert to base64
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const base64Data = e.target.result;
+        setFormData(prev => ({
+          ...prev,
+          authorPhoto: base64Data
+        }));
+        setAuthorPhotoPreview(base64Data);
+      };
+      reader.readAsDataURL(file);
+
+      // Clear error
+      if (errors.authorPhoto) {
+        setErrors(prev => ({
+          ...prev,
+          authorPhoto: ''
+        }));
+      }
+    }
+  };
+
+  const handleRemoveAuthorPhoto = () => {
+    setAuthorPhotoPreview(null);
+    setFormData(prev => ({
+      ...prev,
+      authorPhoto: null
+    }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -229,6 +280,45 @@ const ResourceForm = ({ resource, onSubmit, onClose, isLoading }) => {
             />
             {errors.author && <span className="error-message">{errors.author}</span>}
           </div>
+        </div>
+
+        {/* Author Photo */}
+        <div className="form-group">
+          <label htmlFor="authorPhoto">Author Photo</label>
+          <input
+            type="file"
+            id="authorPhoto"
+            name="authorPhoto"
+            accept="image/*"
+            onChange={handleAuthorPhotoUpload}
+            disabled={isLoading}
+            className={errors.authorPhoto ? 'error' : ''}
+            style={{ display: 'none' }}
+          />
+          <div className="author-photo-upload-area">
+            {!authorPhotoPreview ? (
+              <label htmlFor="authorPhoto" className="author-photo-upload-label">
+                <div className="upload-icon">👤</div>
+                <div className="upload-text">Click to upload author photo</div>
+                <div className="upload-hint">Maximum file size: 2MB</div>
+              </label>
+            ) : (
+              <div className="author-photo-preview">
+                <img src={authorPhotoPreview} alt="Author" />
+                <button 
+                  type="button" 
+                  className="remove-photo-btn" 
+                  onClick={handleRemoveAuthorPhoto}
+                  disabled={isLoading}
+                  title="Remove photo"
+                >
+                  ✕
+                </button>
+              </div>
+            )}
+          </div>
+          {errors.authorPhoto && <span className="error-message">{errors.authorPhoto}</span>}
+          <small className="helper-text">Optional: Add a photo of the author (will be displayed in article detail)</small>
         </div>
 
         {/* Article Type */}

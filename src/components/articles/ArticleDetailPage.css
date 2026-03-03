@@ -157,6 +157,32 @@
   overflow-x: hidden;
 }
 
+/* Author Photo Float Styles */
+.author-photo-float {
+  float: left;
+  margin: 0 24px 16px 0;
+  text-align: center;
+  max-width: 200px;
+}
+
+.author-photo {
+  width: 180px;
+  height: 180px;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 3px solid #fff;
+  display: block;
+}
+
+.author-photo-caption {
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #4a5568;
+  font-style: italic;
+}
+
 .article-paragraph {
   font-size: 16px;
   line-height: 1.9;
@@ -385,6 +411,17 @@
 
   .article-paper-title {
     font-size: 32px;
+  }
+
+  .author-photo-float {
+    float: none;
+    margin: 0 auto 20px auto;
+    max-width: 150px;
+  }
+
+  .author-photo {
+    width: 150px;
+    height: 150px;
   }
 
   .article-paragraph {

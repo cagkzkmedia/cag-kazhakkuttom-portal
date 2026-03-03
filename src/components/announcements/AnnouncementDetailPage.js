@@ -3,10 +3,11 @@
  * Displays full announcement details with news-style layout
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { getAllAnnouncements } from '../../services/announcementService.firebase';
+import { processLinksInContent } from '../../utils/linkUtils';
 import './AnnouncementDetailPage.css';
 
 const AnnouncementDetailPage = () => {
@@ -60,6 +61,12 @@ const AnnouncementDetailPage = () => {
       setLoading(false);
     }
   };
+
+  // Process content to make links clickable and embed YouTube videos
+  const processedDescription = useMemo(() => {
+    if (!announcement?.description) return '';
+    return processLinksInContent(announcement.description);
+  }, [announcement?.description]);
 
   if (loading) {
     return (
@@ -225,7 +232,7 @@ const AnnouncementDetailPage = () => {
               )}
 
               <div className="announcement-detail-body">
-                <div dangerouslySetInnerHTML={{ __html: announcement.description }} />
+                <div dangerouslySetInnerHTML={{ __html: processedDescription }} />
               </div>
             </div>
 

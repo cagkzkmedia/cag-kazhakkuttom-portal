@@ -340,6 +340,12 @@ const ArticleDetailPage = () => {
         </div>
 
         <div className="article-paper-content">
+          {article.authorPhoto && (
+            <div className="author-photo-float">
+              <img src={article.authorPhoto} alt={article.author} className="author-photo" />
+              <p className="author-photo-caption">{article.author}</p>
+            </div>
+          )}
           {article.type === 'pdf' && article.pdfData ? (
             <div className="pdf-viewer-container">
               {isMobile ? (
