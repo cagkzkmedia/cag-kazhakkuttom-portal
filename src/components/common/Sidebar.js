@@ -61,7 +61,6 @@ const Sidebar = ({ isOpen, onItemClick, onClose }) => {
       <aside className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
       <div className="sidebar-header">
         <div className="sidebar-logos">
-          <img src={agLogo} alt="Assemblies of God" className="sidebar-logo ag-logo" />
           <img src={churchLogo} alt="Christ AG Church" className="sidebar-logo church-logo" />
         </div>
         {isOpen && <h3 className="sidebar-title">Christ AG Church</h3>}

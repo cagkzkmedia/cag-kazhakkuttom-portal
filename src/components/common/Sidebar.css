@@ -53,6 +53,7 @@
 
 .sidebar.open .sidebar-logo.church-logo {
   width: 80px;
+      filter: invert(1);
 }
 
 .sidebar-title {
