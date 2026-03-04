@@ -25,7 +25,7 @@
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--border-light);
 }
 
 .sidebar-logos {
@@ -59,7 +59,7 @@
 .sidebar-title {
   font-size: 14px;
   font-weight: 600;
-  color: #2c3e50;
+  color: var(--color-gray-900);
   text-align: center;
   margin: 0;
   white-space: nowrap;
@@ -76,7 +76,7 @@
   align-items: center;
   gap: 16px;
   padding: 16px 24px;
-  color: #4a5568;
+  color: var(--text-tertiary);
   text-decoration: none;
   transition: all 0.2s;
   border-left: 4px solid transparent;
@@ -96,15 +96,15 @@
 }
 
 .sidebar-item:hover {
-  background: #f7fafc;
-  color: #667eea;
+  background: var(--bg-hover);
+  color: var(--color-primary);
 }
 
 .sidebar-item.active,
 .sidebar-action-item.active {
-  background: #edf2f7;
-  color: #667eea;
-  border-left-color: #667eea;
+  background: var(--bg-hover-dark);
+  color: var(--color-primary);
+  border-left-color: var(--color-primary);
   font-weight: 600;
 }
 

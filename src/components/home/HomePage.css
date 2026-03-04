@@ -6,7 +6,7 @@
 
 .home-page {
   min-height: 100vh;
-  background: #ffffff;
+  background: var(--color-white);
   overflow-x: hidden;
 }
 
@@ -56,8 +56,9 @@
 .hero-section {
   position: relative;
   min-height: 100vh;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.88) 0%, rgba(118, 75, 162, 0.88) 100%),
-              url('https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat;
+  background: var(--gradient-hero),
+                     url('../../assets/church-photo.jpg') 40% 50%/cover no-repeat;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -66,17 +67,24 @@
   background-attachment: fixed;
 }
 
-
-
-.hero-section::before {
+.hero-content::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.3) 100%);
-  pointer-events: none;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+  z-index: -1;
+}
+
+/* Desktop: Use contain for background size */
+@media (min-width: 1024px) {
+  .hero-section {
+    background: var(--gradient-hero),
+                url('../../assets/church-photo.jpg') 40% 50%/contain;
+  }
 }
 
 .hero-overlay {
@@ -96,11 +104,11 @@
   width: 100%;
   text-align: center;
   color: white;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.88) 0%, rgba(118, 75, 162, 0.88) 100%),
+  background: var(--gradient-hero),
   url('../../assets/church-group.jpg') center/cover no-repeat;
   backdrop-filter: blur(10px);
   padding: 50px 30px;
-  border-radius: 30px;
+  border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
@@ -147,6 +155,11 @@
 
 .hero-logo.church-logo {
   padding: 15px;
+  filter: brightness(0) invert(1) 
+          drop-shadow(0 8px 20px rgba(0,0,0,0.3))
+          drop-shadow(0 -8px 20px rgba(0,0,0,0.3))
+          drop-shadow(8px 0 20px rgba(0,0,0,0.3))
+          drop-shadow(-8px 0 20px rgba(0,0,0,0.3));
 }
 
 .hero-logo:hover {
@@ -186,7 +199,7 @@
   font-weight: 800;
   margin: 0 0 12px 0;
   letter-spacing: -1px;
-  background: linear-gradient(to right, #ffffff, #f0e6ff);
+  background: var(--gradient-white-to-off-white);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -235,7 +248,7 @@
 
 .primary-cta {
   background: white;
-  color: #667eea;
+  color: var(--color-primary);
   box-shadow: 0 4px 20px rgba(255, 255, 255, 0.3);
   position: relative;
   overflow: hidden;
@@ -289,7 +302,7 @@
 
 /* Info Banner */
 .info-banner {
-  background: linear-gradient(to bottom, #ffffff, #f7fafc);
+  background: var(--gradient-white-to-gray);
   padding: 80px 20px;
   box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.5);
   position: relative;

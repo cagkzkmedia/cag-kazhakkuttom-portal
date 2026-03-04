@@ -17,7 +17,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 16px 20px;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--border-light);
 }
 
 .notification-header h3 {
@@ -31,7 +31,7 @@
   border: none;
   font-size: 18px;
   cursor: pointer;
-  color: #718096;
+  color: var(--text-secondary);
 }
 
 .notification-list {
@@ -42,23 +42,23 @@
 .no-notifications {
   text-align: center;
   padding: 40px;
-  color: #a0aec0;
+  color: var(--text-muted);
 }
 
 .notification-item {
   display: flex;
   justify-content: space-between;
   padding: 16px 20px;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--border-light);
   transition: background 0.2s;
 }
 
 .notification-item:hover {
-  background: #f7fafc;
+  background: var(--bg-hover);
 }
 
 .notification-item.unread {
-  background: #edf2f7;
+  background: var(--bg-hover-dark);
 }
 
 .notification-content {
@@ -68,12 +68,12 @@
 .notification-content p {
   margin: 0 0 4px 0;
   font-size: 14px;
-  color: #2d3748;
+  color: var(--text-primary);
 }
 
 .notification-time {
   font-size: 12px;
-  color: #a0aec0;
+  color: var(--text-muted);
 }
 
 .notification-actions {
