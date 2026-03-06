@@ -5,13 +5,14 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getAllMembers } from '../../services/memberService.firebase';
 import BirthdayCard from '../members/BirthdayCard';
 import AnniversaryCard from '../members/AnniversaryCard';
 import './CelebrationsPage.css';
 
 const CelebrationsPage = () => {
+  const navigate = useNavigate();
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showNextWeek, setShowNextWeek] = useState(false);
@@ -202,6 +203,8 @@ const CelebrationsPage = () => {
 
   return (
     <div className="celebrations-page-wrapper">
+      <button className="celebration-back-home-btn" onClick={() => navigate('/')}>← Back to Home</button>
+      
       <div className="celebrations-page">
         <div className="celebrations-header">
           <div className="celebrations-title-wrapper">

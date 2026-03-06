@@ -5,6 +5,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import churchLogo from '../../assets/cag-logo.png';
+import churchLogoPlain from '../../assets/cag-logo-plain.png';
+import churchLogoWood from '../../assets/cag-logo-wood.png';
 import agLogo from '../../assets/ag-logo.png';
 import pastorImage from '../../assets/pr-family.jpg';
 import pastorSelvinImage from '../../assets/pastor-selvin.jpg';
@@ -78,6 +80,7 @@ const HomePage = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
   const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
   const [isAnnouncementModalOpen, setIsAnnouncementModalOpen] = useState(false);
@@ -319,6 +322,37 @@ const HomePage = () => {
 
   return (
     <div className="home-page">
+      {/* Top Navigation Bar */}
+      <nav className="home-navbar">
+        <div className="navbar-container">
+          <div className="navbar-logo">
+            <img src={churchLogo} alt="CAG Logo" className="navbar-logo-img" />
+            <span className="navbar-brand">Christ AG Church</span>
+          </div>
+          
+          <button 
+            className="mobile-menu-toggle"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {isMobileMenuOpen ? '✕' : '☰'}
+          </button>
+
+          <div className={`navbar-menu ${isMobileMenuOpen ? 'active' : ''}`}>
+            <button onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setIsMobileMenuOpen(false); }} className="navbar-link">Home</button>
+            <button onClick={() => { window.scrollTo({ top: document.querySelector('.about-section')?.offsetTop || 0, behavior: 'smooth' }); setIsMobileMenuOpen(false); }} className="navbar-link">About Us</button>
+            <button onClick={() => { window.scrollTo({ top: document.querySelector('.services-section')?.offsetTop || 0, behavior: 'smooth' }); setIsMobileMenuOpen(false); }} className="navbar-link">Services</button>
+            <button onClick={() => { window.scrollTo({ top: document.querySelector('.ministries-section')?.offsetTop || 0, behavior: 'smooth' }); setIsMobileMenuOpen(false); }} className="navbar-link">Ministries</button>
+            <button onClick={() => { navigate('/celebrations'); setIsMobileMenuOpen(false); }} className="navbar-link">Celebrations</button>
+            <button onClick={() => { navigate('/gallery'); setIsMobileMenuOpen(false); }} className="navbar-link">Gallery</button>
+            <button onClick={() => { navigate('/articles'); setIsMobileMenuOpen(false); }} className="navbar-link">Articles</button>
+            <button onClick={() => { navigate('/announcements'); setIsMobileMenuOpen(false); }} className="navbar-link">News</button>
+           <button onClick={() => { navigate('/bible-reading'); setIsMobileMenuOpen(false); }} className="navbar-link">Bible Reading</button>
+            <button onClick={() => { navigate('/donate'); setIsMobileMenuOpen(false); }} className="navbar-link navbar-link-donate">Donate</button>
+          </div>
+        </div>
+      </nav>
+
       {/* Hero Section */}
       <section className="hero-section">
         <div className="hero-overlay"></div>
@@ -884,6 +918,12 @@ const HomePage = () => {
               <p>Support our ministry and church activities through your generous contribution.</p>
               <button className="quick-link-btn">Donate Now →</button>
             </div>
+            <div className="quick-link-card" onClick={() => navigate('/bible-reading-plan')}>
+              <div className="quick-link-icon">📕</div>
+              <h4>Bible Reading Plan</h4>
+              <p>Follow our one-year Bible reading plan and track your progress daily.</p>
+              <button className="quick-link-btn">Start Reading →</button>
+            </div>
           </div>
         </div>
       </section>
@@ -950,7 +990,7 @@ const HomePage = () => {
         <div className="footer-content">
           <div className="footer-logo">
             <div className="footer-logos">
-              <img src={churchLogo} alt="Christ AG Church" className="church-logo" />
+              <img src={churchLogoWood} alt="Christ AG Church" className="church-logo" />
             </div>
             <p>Christ AG Church, Kazhakkoottam</p>
           </div>

@@ -65,6 +65,7 @@ import MissionMinistry from './components/ministries/MissionMinistry';
 import Sitemap from './components/common/Sitemap';
 import GalleryManagement from './components/gallery/GalleryManagement';
 import Gallery from './components/gallery/Gallery';
+import BibleReadingPlan from './components/bible-reading/BibleReadingPlan';
 
 import './App.css';
 
@@ -120,6 +121,7 @@ function App() {
             <Route path="/donate" element={<DonationPage />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/sitemap" element={<Sitemap />} />
+            <Route path="/bible-reading-plan" element={<BibleReadingPlan />} />
             
             {/* Ministry Pages */}
             <Route path="/ministry/childrens" element={<ChildrensMinistry />} />
