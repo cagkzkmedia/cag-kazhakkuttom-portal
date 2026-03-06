@@ -347,7 +347,7 @@ const HomePage = () => {
             <button onClick={() => { navigate('/gallery'); setIsMobileMenuOpen(false); }} className="navbar-link">Gallery</button>
             <button onClick={() => { navigate('/articles'); setIsMobileMenuOpen(false); }} className="navbar-link">Articles</button>
             <button onClick={() => { navigate('/announcements'); setIsMobileMenuOpen(false); }} className="navbar-link">News</button>
-           <button onClick={() => { navigate('/bible-reading'); setIsMobileMenuOpen(false); }} className="navbar-link">Bible Reading</button>
+           <button onClick={() => { navigate('/bible-reading-plan'); setIsMobileMenuOpen(false); }} className="navbar-link">Bible Reading</button>
             <button onClick={() => { navigate('/donate'); setIsMobileMenuOpen(false); }} className="navbar-link navbar-link-donate">Donate</button>
           </div>
         </div>
