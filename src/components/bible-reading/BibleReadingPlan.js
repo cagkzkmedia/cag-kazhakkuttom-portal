@@ -47,8 +47,8 @@ const BibleReadingPlan = () => {
 
   const handleShare = async () => {
     const shareData = {
-      title: 'One Year Bible Reading Plan',
-      text: `Join me in reading through the Bible in one year! I've completed ${completedDays.length} days (${progressPercentage}%). 📖`,
+      title: 'One Year Bible Reading Plan - Christ AG Church | ഒരു വർഷം ബൈബിൾ വായനാ പദ്ധതി',
+      text: `📖 One Year Bible Reading Plan | ഒരു വർഷം ബൈബിൾ വായനാ പദ്ധതി\n\nJoin me in reading through the entire Bible in one year!\nഒരു വർഷം കൊണ്ട് മുഴുവൻ ബൈബിളും വായിക്കാൻ എന്നോടൊപ്പം ചേരൂ!\n\nRead through the Old Testament, New Testament, Psalms, and Proverbs systematically.\nപഴയനിയമം, പുതിയനിയമം, സങ്കീർത്തനങ്ങൾ, സദൃശ്യവാക്യങ്ങൾ എന്നിവ ക്രമാനുസൃതമായി വായിക്കൂ.\n\nഈ വായനാ പദ്ധതി നിങ്ങളെ ഒരു വർഷത്തിനുള്ളിൽ മുഴുവൻ ബൈബിളിലൂടെയും കൊണ്ടുപോകും. ഓരോ ദിവസവും പഴയനിയമം, പുതിയനിയമം, സങ്കീർത്തനങ്ങൾ, സദൃശ്യവാക്യങ്ങൾ എന്നിവയിൽ നിന്നുള്ള വായനകൾ ഉൾപ്പെടുന്നു. നിങ്ങളുടെ പുരോഗതി ട്രാക്ക് ചെയ്യാൻ ഓരോ ദിവസവും പൂർത്തിയാക്കുമ്പോൾ ചെക്ക് ചെയ്യുക.\n\n"Your word is a lamp for my feet, a light on my path." - Psalm 119:105\n"അങ്ങയുടെ വചനം എന്റെ കാലിന് ദീപവും എന്റെ പാതയ്ക്ക് പ്രകാശവുമാകുന്നു." - സങ്കീർത്തനം 119:105`,
       url: window.location.href
     };
 
@@ -57,8 +57,9 @@ const BibleReadingPlan = () => {
         await navigator.share(shareData);
       } else {
         // Fallback: Copy to clipboard
-        await navigator.clipboard.writeText(window.location.href);
-        alert('Link copied to clipboard!');
+        const shareText = `${shareData.title}\n\n${shareData.text}\n\n${shareData.url}`;
+        await navigator.clipboard.writeText(shareText);
+        alert('Content copied to clipboard!');
       }
     } catch (err) {
       console.error('Error sharing:', err);
@@ -526,17 +527,24 @@ const BibleReadingPlan = () => {
         <meta name="description" content="Complete your Bible in one year with our structured reading plan. Daily readings from Old Testament, New Testament, Psalms, and Proverbs. Track your progress and grow spiritually." />
         <meta name="keywords" content="Bible reading plan, one year Bible, daily Bible reading, Christian devotion, scripture reading, Bible study, Malayalam Bible, ബൈബിൾ വായന, Christ AG Church, Kazhakkoottam" />
         
+        {/* Favicon */}
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/logo192.png" />
+        
         {/* Open Graph tags for social sharing */}
         <meta property="og:type" content="website" />
         <meta property="og:title" content="One Year Bible Reading Plan - Christ AG Church Kazhakkoottam" />
         <meta property="og:description" content="Complete your Bible in one year with daily readings from OT, NT, Psalms, and Proverbs. Track your progress and grow spiritually." />
         <meta property="og:image" content={`${window.location.origin}/logo512.png`} />
         <meta property="og:image:secure_url" content={`${window.location.origin}/logo512.png`} />
+        <meta property="og:image:type" content="image/png" />
         <meta property="og:image:width" content="512" />
         <meta property="og:image:height" content="512" />
-        <meta property="og:image:alt" content="Christ AG Church Kazhakkoottam" />
+        <meta property="og:image:alt" content="Christ AG Church Kazhakkoottam - Bible Reading Plan" />
         <meta property="og:url" content={window.location.href} />
         <meta property="og:site_name" content="Christ AG Church Kazhakkoottam" />
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:locale:alternate" content="ml_IN" />
         
         {/* Twitter Card tags */}
         <meta name="twitter:card" content="summary_large_image" />
