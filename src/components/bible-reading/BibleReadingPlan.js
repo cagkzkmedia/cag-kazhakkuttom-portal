@@ -3,6 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import churchLogo from '../../assets/cag-logo.png';
 import './BibleReadingPlan.css';
+import {
+  getUserProgress,
+  createUserProgress,
+  updateUserProgress,
+  updateUserName,
+  generateUserId
+} from '../../services/bibleReadingService.firebase';
 
 const BibleReadingPlan = () => {
   const navigate = useNavigate();
@@ -11,21 +18,46 @@ const BibleReadingPlan = () => {
   const [view, setView] = useState('list'); // 'list' or 'calendar'
   const [selectedMonth, setSelectedMonth] = useState(1);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [userId, setUserId] = useState(null);
+  const [userName, setUserName] = useState('');
+  const [showNameModal, setShowNameModal] = useState(false);
+  const [tempName, setTempName] = useState('');
+  const [startDay, setStartDay] = useState(1);
+  const [isStartFromToday, setIsStartFromToday] = useState(false);
+  const [userStartDate, setUserStartDate] = useState(null);
 
   useEffect(() => {
-    // Load completed days from localStorage
-    const saved = localStorage.getItem('bibleReadingProgress');
-    if (saved) {
-      setCompletedDays(JSON.parse(saved));
-    }
+    // Generate or retrieve user ID
+    const id = generateUserId();
+    setUserId(id);
 
-    // Calculate current day of year
-    const today = new Date();
-    const start = new Date(today.getFullYear(), 0, 0);
-    const diff = today - start;
-    const oneDay = 1000 * 60 * 60 * 24;
-    const dayOfYear = Math.floor(diff / oneDay);
-    setCurrentDay(dayOfYear);
+    // Load user progress from Firebase
+    const loadProgress = async () => {
+      try {
+        const progress = await getUserProgress(id);
+        if (progress) {
+          setCompletedDays(progress.completedDays || []);
+          setUserName(progress.userName || '');
+          setStartDay(progress.startDay || 1);
+          setUserStartDate(progress.startDate ? new Date(progress.startDate) : null);
+        } else {
+          // Try to migrate from localStorage
+          const saved = localStorage.getItem('bibleReadingProgress');
+          if (saved) {
+            setCompletedDays(JSON.parse(saved));
+          }
+        }
+      } catch (error) {
+        console.error('Error loading progress:', error);
+        // Fallback to localStorage
+        const saved = localStorage.getItem('bibleReadingProgress');
+        if (saved) {
+          setCompletedDays(JSON.parse(saved));
+        }
+      }
+    };
+
+    loadProgress();
 
     // Scroll to top button visibility
     const handleScroll = () => {
@@ -36,14 +68,169 @@ const BibleReadingPlan = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const toggleDayCompletion = (day) => {
+  // Calculate current day based on user's start date
+  useEffect(() => {
+    if (userStartDate) {
+      const today = new Date();
+      const startDate = new Date(userStartDate);
+      const diffTime = today - startDate;
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      // Day number is diffDays + 1 (since day 1 is the start date)
+      const todayDayNumber = Math.max(1, Math.min(365, diffDays + 1));
+      setCurrentDay(todayDayNumber);
+    } else {
+      // Fallback to day of year if no start date
+      const today = new Date();
+      const start = new Date(today.getFullYear(), 0, 0);
+      const diff = today - start;
+      const oneDay = 1000 * 60 * 60 * 24;
+      const dayOfYear = Math.floor(diff / oneDay);
+      setCurrentDay(dayOfYear);
+    }
+  }, [userStartDate]);
+
+  const toggleDayCompletion = async (day) => {
+    // Show name modal if this is the first completion and no name is set
+    if (completedDays.length === 0 && !userName) {
+      setShowNameModal(true);
+      return;
+    }
+
     const updated = completedDays.includes(day)
       ? completedDays.filter(d => d !== day)
       : [...completedDays, day];
     
     setCompletedDays(updated);
     localStorage.setItem('bibleReadingProgress', JSON.stringify(updated));
+    
+    // Save to Firebase
+    try {
+      if (userId) {
+        if (!userName) {
+          // If no user record exists, we need to get the name first
+          setShowNameModal(true);
+        } else {
+          await updateUserProgress(userId, updated);
+        }
+      }
+    } catch (error) {
+      console.error('Error saving progress to Firebase:', error);
+    }
   };
+
+  const handleNameSubmit = async () => {
+    if (!tempName.trim()) {
+      alert('Please enter your name');
+      return;
+    }
+
+    setUserName(tempName);
+    setShowNameModal(false);
+
+    try {
+      if (userId) {
+        // Check if user exists
+        const progress = await getUserProgress(userId);
+        if (progress) {
+          // Update existing user
+          await updateUserName(userId, tempName);
+        } else {
+          // Create new user - always start from Day 1
+          // Store the actual start date for reference
+          await createUserProgress(userId, tempName, 1);
+          // Set startDay to 1 to show Day 1 as today
+          setStartDay(1);
+          setUserStartDate(new Date());
+        }
+
+        // If we were waiting to toggle a day, do it now
+        if (completedDays.length === 0) {
+          // User might want to mark today as complete after setting up
+          console.log('Profile created successfully');
+        }
+      }
+    } catch (error) {
+      console.error('Error saving name to Firebase:', error);
+      alert('Failed to save your name. Please try again.');
+    }
+  };
+
+  const handleStartReading = () => {
+    setIsStartFromToday(true);
+    setStartDay(1);
+    setShowNameModal(true);
+  };
+
+  // Helper function to get the actual date for a given day number
+  const getActualDateForDay = (dayNumber) => {
+    if (!userStartDate) {
+      // Fallback to original static dates if no start date
+      return readingPlan[dayNumber - 1]?.date || `Day ${dayNumber}`;
+    }
+    
+    // Calculate the actual date by adding (dayNumber - 1) days to startDate
+    const actualDate = new Date(userStartDate);
+    actualDate.setDate(actualDate.getDate() + (dayNumber - 1));
+    
+    // Format as "Mar 9" style
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return `${monthNames[actualDate.getMonth()]} ${actualDate.getDate()}`;
+  };
+
+  // Helper function to get month name and year for a given month index (1-12)
+  const getMonthLabel = (monthIndex) => {
+    if (!userStartDate) {
+      const months = ['January', 'February', 'March', 'April', 'May', 'June', 
+                      'July', 'August', 'September', 'October', 'November', 'December'];
+      return months[monthIndex - 1];
+    }
+    
+    // Calculate which actual month this represents
+    const startDate = new Date(userStartDate);
+    const monthDate = new Date(startDate);
+    monthDate.setMonth(startDate.getMonth() + (monthIndex - 1));
+    
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
+                        'July', 'August', 'September', 'October', 'November', 'December'];
+    return `${monthNames[monthDate.getMonth()]} ${monthDate.getFullYear()}`;
+  };
+
+  // Helper function to get which month a day falls into (1-12)
+  const getMonthForDay = (dayNumber) => {
+    if (!userStartDate) {
+      // Use original logic
+      return Math.ceil(dayNumber / 30.5); // Rough approximation
+    }
+    
+    const startDate = new Date(userStartDate);
+    const dayDate = new Date(startDate);
+    dayDate.setDate(startDate.getDate() + (dayNumber - 1));
+    
+    // Calculate how many months have passed since start
+    const monthsDiff = (dayDate.getFullYear() - startDate.getFullYear()) * 12 + 
+                      (dayDate.getMonth() - startDate.getMonth());
+    
+    return monthsDiff + 1; // 1-based index
+  };
+
+  // Helper function to get the next day to read
+  const getNextDay = () => {
+    if (completedDays.length === 0) return 1; // Start with day 1
+    
+    // Sort completed days and find the first uncompleted day
+    const sortedCompleted = [...completedDays].sort((a, b) => a - b);
+    
+    // Find first gap in sequence starting from day 1
+    for (let i = 1; i <= 365; i++) {
+      if (!completedDays.includes(i)) {
+        return i;
+      }
+    }
+    
+    return null; // All days completed
+  };
+
+  const nextDay = getNextDay();
 
   const handleShare = async () => {
     const shareData = {
@@ -492,9 +679,14 @@ const BibleReadingPlan = () => {
 
   const filteredReadings = view === 'calendar' 
     ? readingPlan.filter(r => {
-        const months = ['January', 'February', 'March', 'April', 'May', 'June', 
-                        'July', 'August', 'September', 'October', 'November', 'December'];
-        return r.month === months[selectedMonth - 1];
+        if (!userStartDate) {
+          // Use original static month filtering
+          const months = ['January', 'February', 'March', 'April', 'May', 'June', 
+                          'July', 'August', 'September', 'October', 'November', 'December'];
+          return r.month === months[selectedMonth - 1];
+        }
+        // Use dynamic month filtering based on actual dates
+        return getMonthForDay(r.day) === selectedMonth;
       })
     : readingPlan;
 
@@ -580,6 +772,23 @@ const BibleReadingPlan = () => {
           </div>
         
         <div className="bible-progress-section">
+          <div className="bible-progress-header-actions">
+            {userName ? (
+              <div className="bible-progress-status">
+                <span className="bible-in-progress-badge">
+                  ✅ In Progress
+                </span>
+                <span className="bible-days-completed-text">
+                  {completedDays.length} of 365 days completed
+                </span>
+              </div>
+            ) : (
+              <button className="bible-start-today-btn" onClick={handleStartReading}>
+                📖 Start Reading
+              </button>
+            )}
+            {userName && <span className="bible-user-greeting">Welcome, {userName}! 👋</span>}
+          </div>
           <div className="bible-progress-stats">
             <div className="bible-stat">
               <span className="bible-stat-number">{completedDays.length}</span>
@@ -623,10 +832,9 @@ const BibleReadingPlan = () => {
               value={selectedMonth} 
               onChange={(e) => setSelectedMonth(Number(e.target.value))}
             >
-              {['January', 'February', 'March', 'April', 'May', 'June', 
-                'July', 'August', 'September', 'October', 'November', 'December'].map((month, i) => (
-                <option key={i + 1} value={i + 1}>
-                  {month}
+              {Array.from({ length: 12 }, (_, i) => i + 1).map((monthNum) => (
+                <option key={monthNum} value={monthNum}>
+                  {getMonthLabel(monthNum)}
                 </option>
               ))}
             </select>
@@ -652,24 +860,30 @@ const BibleReadingPlan = () => {
       </div>
 
       <div className={`bible-reading-plan ${view}`}>
-        {filteredReadings.map((reading) => (
-          <div 
-            key={reading.day} 
-            id={`day-${reading.day}`}
-            className={`bible-reading-day ${completedDays.includes(reading.day) ? 'bible-completed' : ''} ${reading.day === currentDay ? 'bible-current' : ''}`}
-          >
-            <div className="bible-day-header">
-              <div className="bible-day-info">
-                <span className="bible-day-number">Day {reading.day}</span>
-                <span className="bible-day-date">{reading.date}</span>
-                {reading.day === currentDay && <span className="bible-today-badge">Today</span>}
-              </div>
-              <button 
-                className="bible-complete-checkbox"
-                onClick={() => toggleDayCompletion(reading.day)}
-                aria-label={completedDays.includes(reading.day) ? 'Mark as incomplete' : 'Mark as complete'}
-              >
-                {completedDays.includes(reading.day) ? '✓' : '○'}
+        {filteredReadings.map((reading) => {
+          const isCompleted = completedDays.includes(reading.day);
+          const isCurrent = reading.day === currentDay;
+          const isNext = reading.day === nextDay;
+          
+          return (
+            <div 
+              key={reading.day} 
+              id={`day-${reading.day}`}
+              className={`bible-reading-day ${isCompleted ? 'bible-completed' : ''} ${isCurrent ? 'bible-current' : ''} ${isNext ? 'bible-next' : ''}`}
+            >
+              <div className="bible-day-header">
+                <div className="bible-day-info">
+                  <span className="bible-day-number">Day {reading.day}</span>
+                  <span className="bible-day-date">{getActualDateForDay(reading.day)}</span>
+                  {isCurrent && <span className="bible-today-badge">Today</span>}
+                  {isNext && <span className="bible-next-badge">Next</span>}
+                </div>
+                <button 
+                  className="bible-complete-checkbox"
+                  onClick={() => toggleDayCompletion(reading.day)}
+                  aria-label={isCompleted ? 'Mark as incomplete' : 'Mark as complete'}
+                >
+                  {isCompleted ? '✓' : '○'}
               </button>
             </div>
             
@@ -692,7 +906,8 @@ const BibleReadingPlan = () => {
               </div>
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
 
       <div className="bible-info-footer">
@@ -749,6 +964,38 @@ const BibleReadingPlan = () => {
         >
           ↑
         </button>
+      )}
+
+      {/* Name Modal */}
+      {showNameModal && (
+        <div className="bible-name-modal-overlay" onClick={() => setShowNameModal(false)}>
+          <div className="bible-name-modal" onClick={(e) => e.stopPropagation()}>
+            <h2>Welcome to Bible Reading Plan! 📖</h2>
+            <p>Please enter your name to track your progress:</p>
+            <input
+              type="text"
+              className="bible-name-input"
+              placeholder="Enter your name"
+              value={tempName}
+              onChange={(e) => setTempName(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleNameSubmit()}
+              autoFocus
+            />
+            <div className="bible-modal-actions">
+              <button className="bible-modal-btn-submit" onClick={handleNameSubmit}>
+                {isStartFromToday ? 'Start My Journey' : 'Save Name'}
+              </button>
+              <button className="bible-modal-btn-cancel" onClick={() => setShowNameModal(false)}>
+                Cancel
+              </button>
+            </div>
+            {isStartFromToday && (
+              <p className="bible-modal-info">
+                ℹ️ Your reading plan will start from Day 1 today. Complete 365 days to finish the entire Bible!
+              </p>
+            )}
+          </div>
+        </div>
       )}
     </div>
   );

@@ -34,6 +34,7 @@ const Sidebar = ({ isOpen, onItemClick, onClose }) => {
     { path: '/admin/testimonials', icon: '💬', label: 'Testimonials', roles: ['admin', 'content_manager'] },
     { path: '/admin/announcements', icon: '📢', label: 'Latest News', roles: ['admin', 'content_manager'] },
     { path: '/admin/gallery', icon: '📸', label: 'Gallery', roles: ['admin', 'content_manager'] },
+    { path: '/admin/bible-reading-progress', icon: '📖', label: 'Bible Reading Progress', roles: ['admin'] },
     { path: '/admin/chat', icon: '💭', label: 'Live Chat', roles: ['admin'] },
     { path: '/admin/notifications', icon: '🔔', label: 'Notifications', roles: ['admin', 'events_manager', 'finance_manager', 'resource_manager', 'content_manager'] },
     { path: '/admin/users', icon: '👤', label: 'User Management', roles: ['admin'] },

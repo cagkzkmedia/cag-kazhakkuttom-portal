@@ -48,6 +48,7 @@ import MemberSignup from './components/member-portal/MemberSignup';
 
 // Admin Components
 import AdminMemberApprovals from './components/admin/AdminMemberApprovals';
+import AdminBibleReadingProgress from './components/admin/AdminBibleReadingProgress';
 import AnnouncementManagement from './components/announcements/AnnouncementManagement';
 import AnnouncementDetailPage from './components/announcements/AnnouncementDetailPage';
 import AllAnnouncementsPage from './components/announcements/AllAnnouncementsPage';
@@ -252,6 +253,14 @@ function App() {
                 element={
                   <RoleGuard allowedRoles={['admin', 'content_manager']}>
                     <GalleryManagement />
+                  </RoleGuard>
+                } 
+              />
+              <Route 
+                path="bible-reading-progress" 
+                element={
+                  <RoleGuard allowedRoles={['admin']}>
+                    <AdminBibleReadingProgress />
                   </RoleGuard>
                 } 
               />
