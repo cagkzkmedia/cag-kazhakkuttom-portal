@@ -325,22 +325,27 @@
   opacity: 1;
 }
 
-.bible-reading-day.bible-completed::after {
-  content: '✓';
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  width: 35px;
-  height: 35px;
-  background: linear-gradient(135deg, #22c55e 0%, #4ade80 100%);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Partially Completed Day Styling */
+.bible-reading-day.bible-partial {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(96, 165, 250, 0.08));
+  border-color: #bfdbfe;
+  position: relative;
+}
+
+.bible-reading-day.bible-partial::before {
+  background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+  opacity: 1;
+}
+
+.bible-progress-badge {
+  background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
   color: white;
-  font-size: 1.2rem;
-  font-weight: bold;
-  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
 }
 
 .bible-reading-day.bible-completed .bible-day-header {
@@ -484,8 +489,8 @@
 
 .bible-reading-item {
   display: flex;
-  align-items: flex-start;
-  gap: 12px;
+  flex-direction: column;
+  gap: 8px;
   padding: 12px;
   background: #f8fafc;
   border-radius: 10px;
@@ -495,23 +500,62 @@
 
 .bible-reading-item:hover {
   background: #f1f5f9;
-  transform: translateX(5px);
   border-left-color: #667eea;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.bible-reading-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
 }
 
 .bible-reading-label {
   font-size: 0.9rem;
   font-weight: 600;
   color: #475569;
-  min-width: 140px;
   white-space: nowrap;
+}
+
+.bible-section-checkbox {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid #cbd5e1;
+  background: white;
+  color: #94a3b8;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.bible-section-checkbox:hover {
+  background: #f1f5f9;
+  border-color: #4f46e5;
+  transform: scale(1.1);
+}
+
+.bible-section-checkbox.checked {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border-color: #22c55e;
+  color: white;
+}
+
+.bible-section-checkbox.checked:hover {
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
 }
 
 .bible-reading-text {
   font-size: 0.95rem;
   color: #1e293b;
   font-weight: 500;
+  padding-left: 5px;
 }
 
 /* Footer Section */
@@ -825,6 +869,133 @@
   color: #64748b;
   font-weight: 500;
   margin-left: 8px;
+}
+
+/* Badges Section */
+.bible-badges-section {
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  margin: 25px 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.bible-badges-header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.bible-badges-header h3 {
+  color: #4f46e5;
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+}
+
+.bible-badges-header p {
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.bible-badges-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.bible-badge {
+  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+  border: 2px solid #e2e8f0;
+  border-radius: 15px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.3s ease;
+  position: relative;
+  cursor: default;
+}
+
+.bible-badge.earned {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border-color: #fbbf24;
+  box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+  animation: badgeEarn 0.6s ease;
+}
+
+.bible-badge.locked {
+  opacity: 0.5;
+  filter: grayscale(100%);
+}
+
+.bible-badge.earned:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(251, 191, 36, 0.4);
+}
+
+@keyframes badgeEarn {
+  0% { transform: scale(0.8); opacity: 0; }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.bible-badge-icon {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.bible-badge-info {
+  text-align: center;
+}
+
+.bible-badge-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 4px;
+}
+
+.bible-badge-milestone {
+  font-size: 0.85rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.bible-badge-checkmark {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4);
+}
+
+.bible-next-badge-info {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08), rgba(118, 75, 162, 0.08));
+  border-left: 4px solid #667eea;
+  padding: 15px 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.bible-next-badge-info p {
+  margin: 0;
+  color: #475569;
+  font-size: 1rem;
+}
+
+.bible-next-badge-info strong {
+  color: #667eea;
+  font-weight: 700;
 }
 
 /* Name Modal */

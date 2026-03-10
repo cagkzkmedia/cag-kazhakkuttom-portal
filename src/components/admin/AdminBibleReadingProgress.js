@@ -6,7 +6,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AdminBibleReadingProgress.css';
-import { getAllUsersProgress } from '../../services/bibleReadingService.firebase';
+import { 
+  getAllUsersProgress, 
+  resetUserProgress, 
+  deleteUserProgress 
+} from '../../services/bibleReadingService.firebase';
 
 const AdminBibleReadingProgress = () => {
   const navigate = useNavigate();
@@ -16,6 +20,21 @@ const AdminBibleReadingProgress = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('createdAt'); // createdAt, userName, progress
   const [sortOrder, setSortOrder] = useState('desc'); // asc, desc
+
+  // Badge milestones
+  const badges = [
+    { id: 1, name: 'First Steps', icon: '🌱', milestone: 1 },
+    { id: 2, name: 'One Week', icon: '⭐', milestone: 7 },
+    { id: 3, name: 'Committed', icon: '🔥', milestone: 30 },
+    { id: 4, name: 'Warrior', icon: '⚔️', milestone: 90 },
+    { id: 5, name: 'Half Way', icon: '🏆', milestone: 182 },
+    { id: 6, name: 'Almost There', icon: '🎯', milestone: 300 },
+    { id: 7, name: 'Champion', icon: '👑', milestone: 365 }
+  ];
+
+  const getUserBadges = (completedCount) => {
+    return badges.filter(badge => completedCount >= badge.milestone);
+  };
 
   useEffect(() => {
     loadProgressData();
@@ -110,6 +129,47 @@ const AdminBibleReadingProgress = () => {
     if (percent >= 50) return 'blue';
     if (percent >= 25) return 'orange';
     return 'red';
+  };
+
+  const handleResetProgress = async (userId, userName) => {
+    const confirmReset = window.confirm(
+      `Are you sure you want to reset progress for "${userName}"?\n\nThis will clear all completed days but keep the user record.`
+    );
+
+    if (!confirmReset) return;
+
+    try {
+      await resetUserProgress(userId);
+      alert('Progress reset successfully!');
+      loadProgressData(); // Reload data
+    } catch (error) {
+      console.error('Error resetting progress:', error);
+      alert('Failed to reset progress. Please try again.');
+    }
+  };
+
+  const handleDeleteUser = async (userId, userName) => {
+    const confirmDelete = window.confirm(
+      `⚠️ WARNING: Are you sure you want to DELETE the entire reading record for "${userName}"?\n\nThis action CANNOT be undone!`
+    );
+
+    if (!confirmDelete) return;
+
+    // Double confirmation for delete
+    const doubleConfirm = window.confirm(
+      `FINAL CONFIRMATION: Delete "${userName}"'s reading record permanently?`
+    );
+
+    if (!doubleConfirm) return;
+
+    try {
+      await deleteUserProgress(userId);
+      alert('User record deleted successfully.');
+      loadProgressData(); // Reload data
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      alert('Failed to delete user. Please try again.');
+    }
   };
 
   const sortedData = getSortedAndFilteredData();
@@ -212,10 +272,14 @@ const AdminBibleReadingProgress = () => {
                   <th onClick={() => handleSort('createdAt')} className="sortable">
                     Joined {sortBy === 'createdAt' && (sortOrder === 'asc' ? '↑' : '↓')}
                   </th>
+                  <th>Badges</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {sortedData.map((user) => (
+                {sortedData.map((user) => {
+                  const earnedBadges = getUserBadges(user.completedCount);
+                  return (
                   <tr key={user.id}>
                     <td className="user-name">
                       <strong>{user.userName || 'Anonymous'}</strong>
@@ -238,8 +302,42 @@ const AdminBibleReadingProgress = () => {
                     </td>
                     <td>{formatDate(user.updatedAt)}</td>
                     <td>{formatDate(user.createdAt)}</td>
+                    <td className="badges-cell">
+                      {earnedBadges.length > 0 ? (
+                        <div className="admin-badges-list">
+                          {earnedBadges.map(badge => (
+                            <span 
+                              key={badge.id} 
+                              className="admin-badge-icon" 
+                              title={badge.name}
+                            >
+                              {badge.icon}
+                            </span>
+                          ))}
+                        </div>
+                      ) : (
+                        <span className="no-badges">No badges yet</span>
+                      )}
+                    </td>
+                    <td className="action-buttons">
+                      <button 
+                        className="btn-reset" 
+                        onClick={() => handleResetProgress(user.userId, user.userName)}
+                        title="Reset progress"
+                      >
+                        🔄 Reset
+                      </button>
+                      <button 
+                        className="btn-delete" 
+                        onClick={() => handleDeleteUser(user.userId, user.userName)}
+                        title="Delete user"
+                      >
+                        🗑️ Delete
+                      </button>
+                    </td>
                   </tr>
-                ))}
+                  );
+                })}
               </tbody>
             </table>
           </div>

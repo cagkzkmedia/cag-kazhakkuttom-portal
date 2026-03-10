@@ -14,7 +14,8 @@ import {
 const BibleReadingPlan = () => {
   const navigate = useNavigate();
   const [currentDay, setCurrentDay] = useState(1);
-  const [completedDays, setCompletedDays] = useState([]);
+  const [completedDays, setCompletedDays] = useState([]); // For backward compatibility
+  const [sectionProgress, setSectionProgress] = useState({}); // { dayNumber: { ot: true, nt: false, ps: true, pr: false } }
   const [view, setView] = useState('list'); // 'list' or 'calendar'
   const [selectedMonth, setSelectedMonth] = useState(1);
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -26,6 +27,25 @@ const BibleReadingPlan = () => {
   const [isStartFromToday, setIsStartFromToday] = useState(false);
   const [userStartDate, setUserStartDate] = useState(null);
 
+  // Badge milestones
+  const badges = [
+    { id: 1, name: 'First Steps', icon: '🌱', milestone: 1, description: 'Completed your first day!' },
+    { id: 2, name: 'One Week', icon: '⭐', milestone: 7, description: 'One week of reading!' },
+    { id: 3, name: 'Committed', icon: '🔥', milestone: 30, description: '30 days strong!' },
+    { id: 4, name: 'Warrior', icon: '⚔️', milestone: 90, description: '90 days completed!' },
+    { id: 5, name: 'Half Way', icon: '🏆', milestone: 182, description: 'Halfway through!' },
+    { id: 6, name: 'Almost There', icon: '🎯', milestone: 300, description: '300 days completed!' },
+    { id: 7, name: 'Champion', icon: '👑', milestone: 365, description: 'Completed the entire Bible!' }
+  ];
+
+  const getEarnedBadges = () => {
+    return badges.filter(badge => completedDays.length >= badge.milestone);
+  };
+
+  const getNextBadge = () => {
+    return badges.find(badge => completedDays.length < badge.milestone);
+  };
+
   useEffect(() => {
     // Generate or retrieve user ID
     const id = generateUserId();
@@ -36,7 +56,21 @@ const BibleReadingPlan = () => {
       try {
         const progress = await getUserProgress(id);
         if (progress) {
-          setCompletedDays(progress.completedDays || []);
+          // Load section progress (new format)
+          setSectionProgress(progress.sectionProgress || {});
+          // Migrate old format to new if needed
+          if (progress.completedDays && progress.completedDays.length > 0) {
+            const legacyCompleted = progress.completedDays || [];
+            setCompletedDays(legacyCompleted);
+            // Convert old format to new format if no sectionProgress exists
+            if (!progress.sectionProgress || Object.keys(progress.sectionProgress).length === 0) {
+              const migratedProgress = {};
+              legacyCompleted.forEach(day => {
+                migratedProgress[day] = { ot: true, nt: true, ps: true, pr: true };
+              });
+              setSectionProgress(migratedProgress);
+            }
+          }
           setUserName(progress.userName || '');
           setStartDay(progress.startDay || 1);
           setUserStartDate(progress.startDate ? new Date(progress.startDate) : null);
@@ -44,7 +78,8 @@ const BibleReadingPlan = () => {
           // Try to migrate from localStorage
           const saved = localStorage.getItem('bibleReadingProgress');
           if (saved) {
-            setCompletedDays(JSON.parse(saved));
+            const legacyCompleted = JSON.parse(saved);
+            setCompletedDays(legacyCompleted);
           }
         }
       } catch (error) {
@@ -71,8 +106,13 @@ const BibleReadingPlan = () => {
   // Calculate current day based on user's start date
   useEffect(() => {
     if (userStartDate) {
+      // Normalize dates to midnight for accurate day calculation
       const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      
       const startDate = new Date(userStartDate);
+      startDate.setHours(0, 0, 0, 0);
+      
       const diffTime = today - startDate;
       const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
       // Day number is diffDays + 1 (since day 1 is the start date)
@@ -89,29 +129,78 @@ const BibleReadingPlan = () => {
     }
   }, [userStartDate]);
 
-  const toggleDayCompletion = async (day) => {
+  const toggleSectionCompletion = async (day, section) => {
     // Show name modal if this is the first completion and no name is set
-    if (completedDays.length === 0 && !userName) {
+    if (Object.keys(sectionProgress).length === 0 && !userName) {
       setShowNameModal(true);
       return;
     }
 
-    const updated = completedDays.includes(day)
-      ? completedDays.filter(d => d !== day)
-      : [...completedDays, day];
+    const currentDayProgress = sectionProgress[day] || { ot: false, nt: false, ps: false, pr: false };
+    const updatedDayProgress = {
+      ...currentDayProgress,
+      [section]: !currentDayProgress[section]
+    };
+
+    const updatedProgress = {
+      ...sectionProgress,
+      [day]: updatedDayProgress
+    };
+
+    setSectionProgress(updatedProgress);
     
-    setCompletedDays(updated);
-    localStorage.setItem('bibleReadingProgress', JSON.stringify(updated));
+    // Update completedDays for backward compatibility (day is complete if all sections done)
+    const allSectionsComplete = Object.values(updatedDayProgress).every(val => val === true);
+    let updatedCompletedDays = [...completedDays];
+    if (allSectionsComplete && !completedDays.includes(day)) {
+      updatedCompletedDays.push(day);
+    } else if (!allSectionsComplete && completedDays.includes(day)) {
+      updatedCompletedDays = updatedCompletedDays.filter(d => d !== day);
+    }
+    setCompletedDays(updatedCompletedDays);
     
     // Save to Firebase
     try {
       if (userId) {
         if (!userName) {
-          // If no user record exists, we need to get the name first
           setShowNameModal(true);
         } else {
-          await updateUserProgress(userId, updated);
+          await updateUserProgress(userId, updatedCompletedDays, updatedProgress);
         }
+      }
+    } catch (error) {
+      console.error('Error saving progress to Firebase:', error);
+    }
+  };
+
+  const toggleDayCompletion = async (day) => {
+    // Toggle all sections for the day
+    const currentDayProgress = sectionProgress[day] || { ot: false, nt: false, ps: false, pr: false };
+    const allComplete = Object.values(currentDayProgress).every(val => val === true);
+    
+    const updatedDayProgress = {
+      ot: !allComplete,
+      nt: !allComplete,
+      ps: !allComplete,
+      pr: !allComplete
+    };
+
+    const updatedProgress = {
+      ...sectionProgress,
+      [day]: updatedDayProgress
+    };
+
+    setSectionProgress(updatedProgress);
+    
+    const updatedCompletedDays = !allComplete 
+      ? [...completedDays.filter(d => d !== day), day]
+      : completedDays.filter(d => d !== day);
+    
+    setCompletedDays(updatedCompletedDays);
+    
+    try {
+      if (userId && userName) {
+        await updateUserProgress(userId, updatedCompletedDays, updatedProgress);
       }
     } catch (error) {
       console.error('Error saving progress to Firebase:', error);
@@ -137,10 +226,12 @@ const BibleReadingPlan = () => {
         } else {
           // Create new user - always start from Day 1
           // Store the actual start date for reference
-          await createUserProgress(userId, tempName, 1);
+          const newProgress = await createUserProgress(userId, tempName, 1);
           // Set startDay to 1 to show Day 1 as today
           setStartDay(1);
-          setUserStartDate(new Date());
+          // Use the startDate returned from Firebase
+          const startDate = newProgress.startDate ? new Date(newProgress.startDate) : new Date();
+          setUserStartDate(startDate);
         }
 
         // If we were waiting to toggle a day, do it now
@@ -789,6 +880,44 @@ const BibleReadingPlan = () => {
             )}
             {userName && <span className="bible-user-greeting">Welcome, {userName}! 👋</span>}
           </div>
+
+          {/* Badges Section */}
+          {userName && completedDays.length > 0 && (
+            <div className="bible-badges-section">
+              <div className="bible-badges-header">
+                <h3>🏅 Your Achievements</h3>
+                <p>Earn badges as you progress through your reading journey</p>
+              </div>
+              <div className="bible-badges-container">
+                {badges.map(badge => {
+                  const isEarned = completedDays.length >= badge.milestone;
+                  return (
+                    <div 
+                      key={badge.id} 
+                      className={`bible-badge ${isEarned ? 'earned' : 'locked'}`}
+                      title={badge.description}
+                    >
+                      <div className="bible-badge-icon">{badge.icon}</div>
+                      <div className="bible-badge-info">
+                        <div className="bible-badge-name">{badge.name}</div>
+                        <div className="bible-badge-milestone">{badge.milestone} days</div>
+                      </div>
+                      {isEarned && <div className="bible-badge-checkmark">✓</div>}
+                    </div>
+                  );
+                })}
+              </div>
+              {getNextBadge() && (
+                <div className="bible-next-badge-info">
+                  <p>
+                    🎯 Next milestone: <strong>{getNextBadge().name}</strong> - 
+                    Complete {getNextBadge().milestone - completedDays.length} more days!
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+
           <div className="bible-progress-stats">
             <div className="bible-stat">
               <span className="bible-stat-number">{completedDays.length}</span>
@@ -862,6 +991,10 @@ const BibleReadingPlan = () => {
       <div className={`bible-reading-plan ${view}`}>
         {filteredReadings.map((reading) => {
           const isCompleted = completedDays.includes(reading.day);
+          const dayProgress = sectionProgress[reading.day] || { ot: false, nt: false, ps: false, pr: false };
+          const sectionsCompleted = Object.values(dayProgress).filter(v => v).length;
+          const totalSections = 4;
+          const isPartiallyComplete = sectionsCompleted > 0 && sectionsCompleted < totalSections;
           const isCurrent = reading.day === currentDay;
           const isNext = reading.day === nextDay;
           
@@ -869,7 +1002,7 @@ const BibleReadingPlan = () => {
             <div 
               key={reading.day} 
               id={`day-${reading.day}`}
-              className={`bible-reading-day ${isCompleted ? 'bible-completed' : ''} ${isCurrent ? 'bible-current' : ''} ${isNext ? 'bible-next' : ''}`}
+              className={`bible-reading-day ${isCompleted ? 'bible-completed' : ''} ${isPartiallyComplete ? 'bible-partial' : ''} ${isCurrent ? 'bible-current' : ''} ${isNext ? 'bible-next' : ''}`}
             >
               <div className="bible-day-header">
                 <div className="bible-day-info">
@@ -877,31 +1010,85 @@ const BibleReadingPlan = () => {
                   <span className="bible-day-date">{getActualDateForDay(reading.day)}</span>
                   {isCurrent && <span className="bible-today-badge">Today</span>}
                   {isNext && <span className="bible-next-badge">Next</span>}
+                  {isPartiallyComplete && (
+                    <span className="bible-progress-badge">{sectionsCompleted}/{totalSections}</span>
+                  )}
                 </div>
                 <button 
                   className="bible-complete-checkbox"
-                  onClick={() => toggleDayCompletion(reading.day)}
-                  aria-label={isCompleted ? 'Mark as incomplete' : 'Mark as complete'}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleDayCompletion(reading.day);
+                  }}
+                  aria-label={isCompleted ? 'Mark all as incomplete' : 'Mark all as complete'}
                 >
-                  {isCompleted ? '✓' : '○'}
+                  {isCompleted ? '✓' : isPartiallyComplete ? '◐' : '○'}
               </button>
             </div>
             
             <div className="bible-reading-sections">
               <div className="bible-reading-item">
-                <span className="bible-reading-label">📖 Old Testament</span>
+                <div className="bible-reading-item-header">
+                  <span className="bible-reading-label">📖 Old Testament</span>
+                  <button 
+                    className={`bible-section-checkbox ${dayProgress.ot ? 'checked' : ''}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleSectionCompletion(reading.day, 'ot');
+                    }}
+                    aria-label="Toggle Old Testament completion"
+                  >
+                    {dayProgress.ot ? '✓' : '○'}
+                  </button>
+                </div>
                 <span className="bible-reading-text">{reading.ot}</span>
               </div>
               <div className="bible-reading-item">
-                <span className="bible-reading-label">✝️ New Testament</span>
+                <div className="bible-reading-item-header">
+                  <span className="bible-reading-label">✝️ New Testament</span>
+                  <button 
+                    className={`bible-section-checkbox ${dayProgress.nt ? 'checked' : ''}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleSectionCompletion(reading.day, 'nt');
+                    }}
+                    aria-label="Toggle New Testament completion"
+                  >
+                    {dayProgress.nt ? '✓' : '○'}
+                  </button>
+                </div>
                 <span className="bible-reading-text">{reading.nt}</span>
               </div>
               <div className="bible-reading-item">
-                <span className="bible-reading-label">🎵 Psalm</span>
+                <div className="bible-reading-item-header">
+                  <span className="bible-reading-label">🎵 Psalm</span>
+                  <button 
+                    className={`bible-section-checkbox ${dayProgress.ps ? 'checked' : ''}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleSectionCompletion(reading.day, 'ps');
+                    }}
+                    aria-label="Toggle Psalm completion"
+                  >
+                    {dayProgress.ps ? '✓' : '○'}
+                  </button>
+                </div>
                 <span className="bible-reading-text">{reading.ps}</span>
               </div>
               <div className="bible-reading-item">
-                <span className="bible-reading-label">💡 Proverbs</span>
+                <div className="bible-reading-item-header">
+                  <span className="bible-reading-label">💡 Proverbs</span>
+                  <button 
+                    className={`bible-section-checkbox ${dayProgress.pr ? 'checked' : ''}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleSectionCompletion(reading.day, 'pr');
+                    }}
+                    aria-label="Toggle Proverbs completion"
+                  >
+                    {dayProgress.pr ? '✓' : '○'}
+                  </button>
+                </div>
                 <span className="bible-reading-text">{reading.pr}</span>
               </div>
             </div>

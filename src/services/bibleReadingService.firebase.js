@@ -9,7 +9,8 @@ import {
   getDocs, 
   getDoc, 
   setDoc, 
-  updateDoc, 
+  updateDoc,
+  deleteDoc, 
   query, 
   orderBy,
   serverTimestamp,
@@ -84,16 +85,24 @@ export const createUserProgress = async (userId, userName, startDay = 1) => {
 /**
  * Update user's Bible reading progress
  * @param {string} userId - User's unique identifier
- * @param {number[]} completedDays - Array of completed day numbers
+ * @param {number[]} completedDays - Array of completed day numbers (for backward compatibility)
+ * @param {object} sectionProgress - Object with section completion status { dayNumber: { ot: bool, nt: bool, ps: bool, pr: bool } }
  */
-export const updateUserProgress = async (userId, completedDays) => {
+export const updateUserProgress = async (userId, completedDays, sectionProgress = null) => {
   try {
     const userDocRef = doc(db, BIBLE_READING_COLLECTION, userId);
     
-    await updateDoc(userDocRef, {
+    const updateData = {
       completedDays,
       updatedAt: serverTimestamp(),
-    });
+    };
+
+    // Add sectionProgress if provided
+    if (sectionProgress !== null) {
+      updateData.sectionProgress = sectionProgress;
+    }
+    
+    await updateDoc(userDocRef, updateData);
     
     return true;
   } catch (error) {
@@ -196,4 +205,40 @@ export const generateUserId = () => {
   }
   
   return userId;
+};
+
+/**
+ * Reset user's progress (Admin only)
+ * Clears all completed days but keeps the user record
+ * @param {string} userId - User's unique identifier
+ */
+export const resetUserProgress = async (userId) => {
+  try {
+    const userDocRef = doc(db, BIBLE_READING_COLLECTION, userId);
+    
+    await updateDoc(userDocRef, {
+      completedDays: [],
+      updatedAt: serverTimestamp(),
+    });
+    
+    return true;
+  } catch (error) {
+    console.error('Error resetting user progress:', error);
+    throw error;
+  }
+};
+
+/**
+ * Delete user's entire reading record (Admin only)
+ * @param {string} userId - User's unique identifier
+ */
+export const deleteUserProgress = async (userId) => {
+  try {
+    const userDocRef = doc(db, BIBLE_READING_COLLECTION, userId);
+    await deleteDoc(userDocRef);
+    return true;
+  } catch (error) {
+    console.error('Error deleting user progress:', error);
+    throw error;
+  }
 };
