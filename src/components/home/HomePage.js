@@ -86,6 +86,7 @@ const HomePage = () => {
   const [isAnnouncementModalOpen, setIsAnnouncementModalOpen] = useState(false);
   const [galleryPhotos, setGalleryPhotos] = useState([]);
   const [allGalleryPhotos, setAllGalleryPhotos] = useState(GALLERY_PHOTOS);
+  const [openSubmenu, setOpenSubmenu] = useState(null);
 
   // Gallery navigation handlers
   const handleNextPhoto = () => {
@@ -342,12 +343,59 @@ const HomePage = () => {
             <button onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setIsMobileMenuOpen(false); }} className="navbar-link">Home</button>
             <button onClick={() => { window.scrollTo({ top: document.querySelector('.about-section')?.offsetTop || 0, behavior: 'smooth' }); setIsMobileMenuOpen(false); }} className="navbar-link">About Us</button>
             <button onClick={() => { window.scrollTo({ top: document.querySelector('.services-section')?.offsetTop || 0, behavior: 'smooth' }); setIsMobileMenuOpen(false); }} className="navbar-link">Services</button>
-            <button onClick={() => { window.scrollTo({ top: document.querySelector('.ministries-section')?.offsetTop || 0, behavior: 'smooth' }); setIsMobileMenuOpen(false); }} className="navbar-link">Ministries</button>
+            
+            {/* Ministries Dropdown */}
+            <div 
+              className="navbar-dropdown"
+              onMouseEnter={() => setOpenSubmenu('ministries')}
+              onMouseLeave={() => setOpenSubmenu(null)}
+            >
+              <button 
+                className="navbar-link navbar-dropdown-trigger"
+                onClick={() => setOpenSubmenu(openSubmenu === 'ministries' ? null : 'ministries')}
+              >
+                Ministries <span className="dropdown-arrow">▼</span>
+              </button>
+              {openSubmenu === 'ministries' && (
+                <div className="navbar-dropdown-menu">
+                  <button onClick={() => { navigate('/ministry/childrens'); setIsMobileMenuOpen(false); setOpenSubmenu(null); }} className="navbar-dropdown-item">Children's Ministry</button>
+                  <button onClick={() => { navigate('/ministry/youth'); setIsMobileMenuOpen(false); setOpenSubmenu(null); }} className="navbar-dropdown-item">Youth Ministry</button>
+                  <button onClick={() => { navigate('/ministry/worship'); setIsMobileMenuOpen(false); setOpenSubmenu(null); }} className="navbar-dropdown-item">Worship Ministry</button>
+                  <button onClick={() => { navigate('/ministry/family'); setIsMobileMenuOpen(false); setOpenSubmenu(null); }} className="navbar-dropdown-item">Family Ministry</button>
+                  <button onClick={() => { navigate('/ministry/outreach'); setIsMobileMenuOpen(false); setOpenSubmenu(null); }} className="navbar-dropdown-item">Outreach Ministry</button>
+                  <button onClick={() => { navigate('/ministry/prayer'); setIsMobileMenuOpen(false); setOpenSubmenu(null); }} className="navbar-dropdown-item">Prayer Ministry</button>
+                  <button onClick={() => { navigate('/ministry/ladies'); setIsMobileMenuOpen(false); setOpenSubmenu(null); }} className="navbar-dropdown-item">Ladies Ministry</button>
+                  <button onClick={() => { navigate('/ministry/mission'); setIsMobileMenuOpen(false); setOpenSubmenu(null); }} className="navbar-dropdown-item">Mission Ministry</button>
+                </div>
+              )}
+            </div>
+
             <button onClick={() => { navigate('/celebrations'); setIsMobileMenuOpen(false); }} className="navbar-link">Celebrations</button>
             <button onClick={() => { navigate('/gallery'); setIsMobileMenuOpen(false); }} className="navbar-link">Gallery</button>
             <button onClick={() => { navigate('/articles'); setIsMobileMenuOpen(false); }} className="navbar-link">Articles</button>
             <button onClick={() => { navigate('/announcements'); setIsMobileMenuOpen(false); }} className="navbar-link">News</button>
-           <button onClick={() => { navigate('/bible-reading-plan'); setIsMobileMenuOpen(false); }} className="navbar-link">Bible Reading</button>
+            <button onClick={() => { navigate('/bible-reading-plan'); setIsMobileMenuOpen(false); }} className="navbar-link">Bible Reading</button>
+            
+            {/* Login Dropdown */}
+            <div 
+              className="navbar-dropdown"
+              onMouseEnter={() => setOpenSubmenu('login')}
+              onMouseLeave={() => setOpenSubmenu(null)}
+            >
+              <button 
+                className="navbar-link navbar-dropdown-trigger"
+                onClick={() => setOpenSubmenu(openSubmenu === 'login' ? null : 'login')}
+              >
+                Login <span className="dropdown-arrow">▼</span>
+              </button>
+              {openSubmenu === 'login' && (
+                <div className="navbar-dropdown-menu">
+                  <button onClick={() => { navigate('/login'); setIsMobileMenuOpen(false); setOpenSubmenu(null); }} className="navbar-dropdown-item">Admin Login</button>
+                  <button onClick={() => { navigate('/member-portal/login'); setIsMobileMenuOpen(false); setOpenSubmenu(null); }} className="navbar-dropdown-item">Member Login</button>
+                </div>
+              )}
+            </div>
+
             <button onClick={() => { navigate('/donate'); setIsMobileMenuOpen(false); }} className="navbar-link navbar-link-donate">Donate</button>
           </div>
         </div>
