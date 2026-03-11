@@ -32,6 +32,7 @@ const generateCredentials = (member) => {
   const password = emailPrefix + '123';
   return {
     username,
+    usernameLowerCase: username.toLowerCase(),
     password,
     temporaryPassword: true,
     lastPasswordChange: null,
@@ -251,13 +252,17 @@ const getMemberById = async (id) => {
 
 /**
  * Get member by credentials (for portal login)
+ * Username comparison is case-insensitive using indexed usernameLowerCase field
  */
 const getMemberByCredentials = async (username, password) => {
   try {
     const membersCol = collection(db, MEMBERS_COLLECTION);
+    const normalizedUsername = username.toLowerCase();
+    
+    // Efficient query using indexed usernameLowerCase field
     const q = query(
       membersCol,
-      where('credentials.username', '==', username),
+      where('credentials.usernameLowerCase', '==', normalizedUsername),
       where('hasPortalAccess', '==', true)
     );
     
@@ -277,6 +282,7 @@ const getMemberByCredentials = async (username, password) => {
         };
       }
     }
+    
     return null;
   } catch (error) {
     console.error('Error authenticating member:', error);
@@ -410,6 +416,7 @@ const resetMemberCredentials = async (memberId) => {
     const memberDoc = doc(db, MEMBERS_COLLECTION, memberId);
     await updateDoc(memberDoc, {
       'credentials.password': newPassword,
+      'credentials.usernameLowerCase': member.credentials.username.toLowerCase(),
       'credentials.temporaryPassword': true,
       'credentials.lastPasswordChange': serverTimestamp(),
       updatedAt: serverTimestamp(),

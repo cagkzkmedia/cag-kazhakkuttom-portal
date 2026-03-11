@@ -13,6 +13,20 @@
           "order": "DESCENDING"
         }
       ]
+    },
+    {
+      "collectionGroup": "members",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "credentials.usernameLowerCase",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "hasPortalAccess",
+          "order": "ASCENDING"
+        }
+      ]
     }
   ],
   "fieldOverrides": []
