@@ -252,34 +252,77 @@ const getMemberById = async (id) => {
 
 /**
  * Get member by credentials (for portal login)
- * Username comparison is case-insensitive using indexed usernameLowerCase field
+ * Username comparison is case-insensitive
+ * Backward compatible: works with or without usernameLowerCase field
  */
 const getMemberByCredentials = async (username, password) => {
   try {
     const membersCol = collection(db, MEMBERS_COLLECTION);
     const normalizedUsername = username.toLowerCase();
     
-    // Efficient query using indexed usernameLowerCase field
-    const q = query(
+    // Try efficient query using indexed usernameLowerCase field first
+    try {
+      const q = query(
+        membersCol,
+        where('credentials.usernameLowerCase', '==', normalizedUsername),
+        where('hasPortalAccess', '==', true)
+      );
+      
+      const querySnapshot = await getDocs(q);
+      
+      if (!querySnapshot.empty) {
+        const doc = querySnapshot.docs[0];
+        const data = doc.data();
+        
+        // Verify password
+        if (data.credentials?.password === password) {
+          return {
+            id: doc.id,
+            ...data,
+            dateOfBirth: data.dateOfBirth?.toDate?.()?.toISOString() || data.dateOfBirth,
+            joinDate: data.joinDate?.toDate?.()?.toISOString() || data.joinDate,
+          };
+        }
+      }
+    } catch (indexError) {
+      console.log('Index not available or no usernameLowerCase field, falling back to manual search');
+    }
+    
+    // Fallback: Search through all members with portal access (backward compatibility)
+    const fallbackQuery = query(
       membersCol,
-      where('credentials.usernameLowerCase', '==', normalizedUsername),
       where('hasPortalAccess', '==', true)
     );
     
-    const querySnapshot = await getDocs(q);
+    const fallbackSnapshot = await getDocs(fallbackQuery);
     
-    if (!querySnapshot.empty) {
-      const doc = querySnapshot.docs[0];
+    for (const doc of fallbackSnapshot.docs) {
       const data = doc.data();
+      const storedUsername = data.credentials?.username?.toLowerCase();
       
-      // Verify password
-      if (data.credentials?.password === password) {
-        return {
-          id: doc.id,
-          ...data,
-          dateOfBirth: data.dateOfBirth?.toDate?.()?.toISOString() || data.dateOfBirth,
-          joinDate: data.joinDate?.toDate?.()?.toISOString() || data.joinDate,
-        };
+      // Compare usernames case-insensitively
+      if (storedUsername === normalizedUsername) {
+        // Verify password
+        if (data.credentials?.password === password) {
+          // Auto-migrate: Add usernameLowerCase field for future efficiency
+          try {
+            const memberRef = doc.ref;
+            await updateDoc(memberRef, {
+              'credentials.usernameLowerCase': normalizedUsername,
+              'updatedAt': serverTimestamp()
+            });
+            console.log(`Auto-migrated member ${doc.id} with usernameLowerCase field`);
+          } catch (migrationError) {
+            console.log('Could not auto-migrate member:', migrationError);
+          }
+          
+          return {
+            id: doc.id,
+            ...data,
+            dateOfBirth: data.dateOfBirth?.toDate?.()?.toISOString() || data.dateOfBirth,
+            joinDate: data.joinDate?.toDate?.()?.toISOString() || data.joinDate,
+          };
+        }
       }
     }
     

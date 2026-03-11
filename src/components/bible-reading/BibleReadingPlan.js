@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import churchLogo from '../../assets/cag-logo.png';
+import pastorImage from '../../assets/pr-family.jpg';
 import './BibleReadingPlan.css';
 import {
   getUserProgress,
@@ -26,6 +27,9 @@ const BibleReadingPlan = () => {
   const [startDay, setStartDay] = useState(1);
   const [isStartFromToday, setIsStartFromToday] = useState(false);
   const [userStartDate, setUserStartDate] = useState(null);
+  const [showBadgeToast, setShowBadgeToast] = useState(false);
+  const [newBadge, setNewBadge] = useState(null);
+  const [unlockedBadgeIds, setUnlockedBadgeIds] = useState(new Set());
 
   // Badge milestones
   const badges = [
@@ -44,6 +48,25 @@ const BibleReadingPlan = () => {
 
   const getNextBadge = () => {
     return badges.find(badge => completedDays.length < badge.milestone);
+  };
+
+  // Check for newly unlocked badges and show toast
+  const checkForNewBadge = (updatedCompletedCount) => {
+    const earnedBadges = badges.filter(badge => updatedCompletedCount >= badge.milestone);
+    
+    // Find badges that were just unlocked (not previously in unlockedBadgeIds)
+    const newlyUnlocked = earnedBadges.find(badge => !unlockedBadgeIds.has(badge.id));
+    
+    if (newlyUnlocked) {
+      setNewBadge(newlyUnlocked);
+      setShowBadgeToast(true);
+      setUnlockedBadgeIds(prev => new Set([...prev, newlyUnlocked.id]));
+      
+      // Auto-hide after 5 seconds
+      setTimeout(() => {
+        setShowBadgeToast(false);
+      }, 5000);
+    }
   };
 
   useEffect(() => {
@@ -74,6 +97,10 @@ const BibleReadingPlan = () => {
           setUserName(progress.userName || '');
           setStartDay(progress.startDay || 1);
           setUserStartDate(progress.startDate ? new Date(progress.startDate) : null);
+          
+          // Initialize unlocked badges based on current progress
+          const currentEarnedBadges = badges.filter(badge => (progress.completedDays?.length || 0) >= badge.milestone);
+          setUnlockedBadgeIds(new Set(currentEarnedBadges.map(b => b.id)));
         } else {
           // Try to migrate from localStorage
           const saved = localStorage.getItem('bibleReadingProgress');
@@ -152,12 +179,19 @@ const BibleReadingPlan = () => {
     // Update completedDays for backward compatibility (day is complete if all sections done)
     const allSectionsComplete = Object.values(updatedDayProgress).every(val => val === true);
     let updatedCompletedDays = [...completedDays];
+    const wasNewlyCompleted = allSectionsComplete && !completedDays.includes(day);
+    
     if (allSectionsComplete && !completedDays.includes(day)) {
       updatedCompletedDays.push(day);
     } else if (!allSectionsComplete && completedDays.includes(day)) {
       updatedCompletedDays = updatedCompletedDays.filter(d => d !== day);
     }
     setCompletedDays(updatedCompletedDays);
+    
+    // Check for new badge unlock when a day is newly completed
+    if (wasNewlyCompleted) {
+      checkForNewBadge(updatedCompletedDays.length);
+    }
     
     // Save to Firebase
     try {
@@ -192,11 +226,18 @@ const BibleReadingPlan = () => {
 
     setSectionProgress(updatedProgress);
     
+    const wasNewlyCompleted = !allComplete && !completedDays.includes(day);
+    
     const updatedCompletedDays = !allComplete 
       ? [...completedDays.filter(d => d !== day), day]
       : completedDays.filter(d => d !== day);
     
     setCompletedDays(updatedCompletedDays);
+    
+    // Check for new badge unlock when a day is newly completed
+    if (wasNewlyCompleted) {
+      checkForNewBadge(updatedCompletedDays.length);
+    }
     
     try {
       if (userId && userName) {
@@ -1181,6 +1222,48 @@ const BibleReadingPlan = () => {
                 ℹ️ Your reading plan will start from Day 1 today. Complete 365 days to finish the entire Bible!
               </p>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Badge Unlock Toast Notification */}
+      {showBadgeToast && newBadge && (
+        <div className={`badge-toast ${showBadgeToast ? 'badge-toast-show' : ''}`}>
+          <div className="badge-toast-content">
+            <button 
+              className="badge-toast-close" 
+              onClick={() => setShowBadgeToast(false)}
+              aria-label="Close"
+            >
+              ✕
+            </button>
+            <div className="badge-toast-header">
+              <div className="badge-toast-pastor-section">
+                <img 
+                  src={pastorImage} 
+                  alt="Pastor Jobin Elisha" 
+                  className="badge-toast-pastor-img"
+                />
+                <div className="badge-toast-pastor-info">
+                  <span className="badge-toast-pastor-name">Pastor Jobin Elisha</span>
+                  <span className="badge-toast-church-name">Christ AG Church</span>
+                </div>
+              </div>
+            </div>
+            <div className="badge-toast-body">
+              <div className="badge-toast-icon">{newBadge.icon}</div>
+              <h3 className="badge-toast-title">🎉 Congratulations!</h3>
+              <p className="badge-toast-message">
+                You've unlocked the <strong>"{newBadge.name}"</strong> badge!
+              </p>
+              <p className="badge-toast-description">{newBadge.description}</p>
+              <p className="badge-toast-verse">
+                "Your word is a lamp for my feet, a light on my path." - Psalm 119:105
+              </p>
+              <p className="badge-toast-encouragement">
+                Keep going! God's Word is transforming your life daily.
+              </p>
+            </div>
           </div>
         </div>
       )}
