@@ -561,6 +561,20 @@
   letter-spacing: 2px;
 }
 
+.celebration-days-since {
+  font-family: 'Trebuchet MS', 'Arial', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  background: linear-gradient(135deg, #FFB6D9 0%, #FF6B9D 100%);
+  color: white;
+  margin-top: 12px;
+  padding: 6px 14px;
+  border-radius: 14px;
+  display: inline-block;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  letter-spacing: 0.3px;
+}
+
 .celebration-message-text {
   font-family: 'Palatino Linotype', 'Book Antiqua', 'URW Palladio L', serif;
   font-size: 28px;

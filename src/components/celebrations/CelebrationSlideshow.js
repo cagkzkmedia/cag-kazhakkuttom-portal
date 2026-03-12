@@ -199,6 +199,27 @@ const CelebrationSlideshow = () => {
     return 'th';
   };
 
+  const getDaysSinceBirthday = (dateOfBirth) => {
+    if (!dateOfBirth) return 0;
+    
+    const today = new Date();
+    const birthDate = new Date(dateOfBirth);
+    
+    // Get the last birthday (this year or last year)
+    let lastBirthday = new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+    
+    // If birthday hasn't occurred this year yet, use last year's birthday
+    if (lastBirthday > today) {
+      lastBirthday = new Date(today.getFullYear() - 1, birthDate.getMonth(), birthDate.getDate());
+    }
+    
+    // Calculate days difference
+    const millisecondsPerDay = 1000 * 60 * 60 * 24;
+    const daysSince = Math.floor((today - lastBirthday) / millisecondsPerDay);
+    
+    return daysSince;
+  };
+
   if (loading) {
     return (
       <div className="celebration-slideshow-container">
@@ -345,6 +366,11 @@ const CelebrationSlideshow = () => {
                 <div className="celebration-date-month">
                   {new Date(currentCelebration.date).toLocaleDateString('en-US', { month: 'long' })}
                 </div>
+                {currentCelebration.type === 'birthday' && (
+                  <div className="celebration-days-since">
+                    {getDaysSinceBirthday(currentCelebration.member.dateOfBirth)} days since
+                  </div>
+                )}
               </div>
               
               <p className="celebration-message-text">{message.message}</p>

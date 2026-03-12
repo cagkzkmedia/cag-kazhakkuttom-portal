@@ -58,7 +58,7 @@ const sendCredentialsEmail = async (member, credentials) => {
  */
 const createMemberSignup = async (signupData) => {
   try {
-    const { name, email, phone, gender, dateOfBirth, dateOfJoining, maritalStatus, marriageDate } = signupData;
+    const { name, email, phone, gender, dateOfBirth, dateOfJoining, maritalStatus, marriageDate, profileImage } = signupData;
     
     // Check if member with this email already exists
     const membersCol = collection(db, MEMBERS_COLLECTION);
@@ -79,6 +79,7 @@ const createMemberSignup = async (signupData) => {
       joinDate: dateOfJoining,
       maritalStatus,
       marriageDate: maritalStatus === 'married' ? marriageDate : null,
+      profileImage: profileImage || null,
       status: 'pending',
       isApproved: false,
       hasPortalAccess: false,

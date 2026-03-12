@@ -108,6 +108,28 @@ const CelebrationsPage = () => {
     return today.getMonth() === dateObj.getMonth() && today.getDate() === dateObj.getDate();
   };
 
+  // Calculate days since last birthday
+  const getDaysSinceBirthday = (dateOfBirth) => {
+    if (!dateOfBirth) return 0;
+    
+    const today = new Date();
+    const birthDate = new Date(dateOfBirth);
+    
+    // Get the last birthday (this year or last year)
+    let lastBirthday = new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+    
+    // If birthday hasn't occurred this year yet, use last year's birthday
+    if (lastBirthday > today) {
+      lastBirthday = new Date(today.getFullYear() - 1, birthDate.getMonth(), birthDate.getDate());
+    }
+    
+    // Calculate days difference
+    const millisecondsPerDay = 1000 * 60 * 60 * 24;
+    const daysSince = Math.floor((today - lastBirthday) / millisecondsPerDay);
+    
+    return daysSince;
+  };
+
   // Get members celebrating birthdays this week
   const birthdayMembers = members.filter(
     (m) => m.dateOfBirth && isInCurrentWeek(m.dateOfBirth)
@@ -269,6 +291,9 @@ const CelebrationsPage = () => {
                                     day: 'numeric',
                                   })}
                                 </p>
+                                <p className="days-since-birthday">
+                                  {getDaysSinceBirthday(member.dateOfBirth)} days since birthday
+                                </p>
                               </div>
                               <div className="celebration-wish">
                                 🎈 Happy Birthday!
@@ -312,6 +337,9 @@ const CelebrationsPage = () => {
                                     month: 'short',
                                     day: 'numeric',
                                   })}
+                                </p>
+                                <p className="days-since-birthday">
+                                  {getDaysSinceBirthday(member.dateOfBirth)} days since birthday
                                 </p>
                               </div>
                               <div className="celebration-wish">
