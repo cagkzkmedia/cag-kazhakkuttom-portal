@@ -452,20 +452,23 @@ const CelebrationSlideshow = () => {
             </div>
             
             <div className="celebration-message-body">
-              <div className="celebration-date-display">
-                <div className="celebration-date-day">
-                  {new Date(currentCelebration.date).getDate()}
+              <div className="celebration-date-row">
+                <div className="celebration-date-display">
+                  <div className="celebration-date-day">
+                    {new Date(currentCelebration.date).getDate()}
+                  </div>
+                  <div className="celebration-date-month">
+                    {new Date(currentCelebration.date).toLocaleDateString('en-US', { month: 'long' })}
+                  </div>
                 </div>
-                <div className="celebration-date-month">
-                  {new Date(currentCelebration.date).toLocaleDateString('en-US', { month: 'long' })}
-                </div>
+
                 {currentCelebration.type === 'birthday' && (
                   <div className="celebration-days-since">
                     {getBirthdayCelebrationText(currentCelebration.member.dateOfBirth)}
                   </div>
                 )}
               </div>
-              
+
               <p className="celebration-message-text">{message.message}</p>
               <p className="celebration-church-name">Christ AG Church Kazhakkoottam 💙</p>
             </div>

@@ -11,8 +11,7 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 /* Floating emoji background decorations */
@@ -245,7 +244,7 @@
     repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,.03) 2px, rgba(0,0,0,.03) 3px);
   border-radius: 30px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  overflow: auto;
+  overflow: visible;
   display: grid;
   grid-template-columns: 50% 50%;
   height: 85vh;
@@ -621,14 +620,23 @@
   padding: 20px 0;
 }
 
+.celebration-date-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
 .celebration-date-display {
   text-align: center;
-  margin-bottom: 30px;
   padding: 20px;
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
   border-radius: 20px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   border: 3px solid #2d3748;
+  min-width: 180px;
 }
 
 .celebration-date-day {
@@ -656,10 +664,11 @@
   font-weight: 600;
   background: linear-gradient(135deg, #FFB6D9 0%, #FF6B9D 100%);
   color: white;
-  margin-top: 12px;
+  margin-top: 0;
   padding: 10px 20px;
   border-radius: 14px;
   display: inline-block;
+  align-self: center;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   letter-spacing: 0.3px;
   animation: dayCountGlow 2.2s ease-in-out infinite;
@@ -904,8 +913,12 @@
     padding: 8px 0;
   }
 
+  .celebration-date-row {
+    margin-bottom: 18px;
+    gap: 12px;
+  }
+
   .celebration-date-display {
-    margin-bottom: 14px;
     padding: 14px;
   }
 
