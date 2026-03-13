@@ -432,13 +432,17 @@ const CelebrationSlideshow = () => {
                     </div>
                   ) : (
                     <>
-                      <div className="celebration-name">{message.name}</div>
-                      <button
-                        className="celebration-name-edit-btn"
-                        onClick={() => handleStartEditName(currentCelebration)}
-                      >
-                        ✏️ Edit name / spouse name
-                      </button>
+                      <div className="celebration-name-container">
+                        <div className="celebration-name">{message.name}</div>
+                        <button
+                          className="celebration-name-edit-btn"
+                          onClick={() => handleStartEditName(currentCelebration)}
+                          title="Edit name"
+                          aria-label="Edit name"
+                        >
+                          ✏️
+                        </button>
+                      </div>
                     </>
                   )}
                 </div>
