@@ -256,7 +256,8 @@ const CelebrationSlideshow = () => {
     const daysLived = Math.floor((celebrationDate - birthDate) / millisecondsPerDay) + 1;
 
     if (daysLived <= 0) return 'Celebrating birthday';
-    return `Celebrating ${daysLived}${getOrdinalSuffix(daysLived)} day on earth`;
+    const dayText = daysLived === 1 ? 'day' : 'days';
+    return `${daysLived} ${dayText}`;
   };
 
   if (loading) {
