@@ -177,7 +177,7 @@
 }
 
 /* Buttons */
-.btn {
+.admin-member-approvals .btn {
   padding: 8px 16px;
   border: none;
   border-radius: 6px;
@@ -188,7 +188,7 @@
   white-space: nowrap;
 }
 
-.btn:disabled {
+.admin-member-approvals .btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
@@ -223,7 +223,7 @@
   transform: translateY(0);
 }
 
-.btn-primary-large {
+.admin-member-approvals .btn-primary-large {
   background: linear-gradient(135deg, #3498db, #2980b9);
   color: white;
   padding: 12px 32px;
@@ -231,12 +231,12 @@
   flex: 1;
 }
 
-.btn-primary-large:hover:not(:disabled) {
+.admin-member-approvals .btn-primary-large:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
 }
 
-.btn-primary {
+.admin-member-approvals .btn-primary {
   background: linear-gradient(135deg, #3498db, #2980b9);
   color: white;
   padding: 12px 24px;
@@ -244,12 +244,12 @@
   flex: 1;
 }
 
-.btn-primary:hover:not(:disabled) {
+.admin-member-approvals .btn-primary:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
 }
 
-.btn-secondary {
+.admin-member-approvals .btn-secondary {
   background: #ecf0f1;
   color: #2c3e50;
   padding: 12px 24px;
@@ -257,7 +257,7 @@
   flex: 1;
 }
 
-.btn-secondary:hover:not(:disabled) {
+.admin-member-approvals .btn-secondary:hover:not(:disabled) {
   background: #bdc3c7;
 }
 
@@ -567,7 +567,7 @@
     gap: 6px;
   }
 
-  .btn {
+  .admin-member-approvals .btn {
     padding: 6px 12px;
     font-size: 12px;
     width: 100%;

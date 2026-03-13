@@ -700,7 +700,7 @@
   flex-wrap: wrap;
 }
 
-.btn-primary, .btn-secondary {
+.cta-buttons .btn-primary, .cta-buttons .btn-secondary {
   padding: 16px 40px;
   font-size: 16px;
   font-weight: 700;
@@ -712,24 +712,24 @@
   letter-spacing: 0.5px;
 }
 
-.btn-primary {
+.cta-buttons .btn-primary {
   background: white;
   color: #667eea;
   box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
 }
 
-.btn-primary:hover {
+.cta-buttons .btn-primary:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
 }
 
-.btn-secondary {
+.cta-buttons .btn-secondary {
   background: rgba(255, 255, 255, 0.2);
   color: white;
   border: 2px solid white;
 }
 
-.btn-secondary:hover {
+.cta-buttons .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.3);
   transform: translateY(-3px);
 }
@@ -1178,7 +1178,7 @@
     gap: 15px;
   }
 
-  .btn-primary, .btn-secondary {
+  .cta-buttons .btn-primary, .cta-buttons .btn-secondary {
     width: 100%;
   }
 

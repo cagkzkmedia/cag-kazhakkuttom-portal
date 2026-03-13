@@ -14,7 +14,7 @@
   margin: 0;
 }
 
-.btn {
+.donations-page .btn {
   padding: 10px 20px;
   border: none;
   border-radius: 8px;
@@ -27,23 +27,23 @@
   gap: 8px;
 }
 
-.btn-primary {
+.donations-page .btn-primary {
   background: #667eea;
   color: white;
 }
 
-.btn-primary:hover {
+.donations-page .btn-primary:hover {
   background: #5568d3;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
 }
 
-.btn-secondary {
+.donations-page .btn-secondary {
   background: #e2e8f0;
   color: #4a5568;
 }
 
-.btn-secondary:hover {
+.donations-page .btn-secondary:hover {
   background: #cbd5e0;
 }
 
@@ -231,4 +231,17 @@
 .badge.Mission { 
   background: linear-gradient(135deg, #feebc8 0%, #fbd38d 100%); 
   color: #7c2d12; 
+}
+
+@media (max-width: 768px) {
+  .donations-page .page-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .donations-page .page-header .btn.btn-primary {
+    width: 100%;
+    justify-content: center;
+  }
 }

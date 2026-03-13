@@ -13,8 +13,26 @@ const CelebrationSlideshow = () => {
   const [celebrations, setCelebrations] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [uploadedImages, setUploadedImages] = useState({});
+  const [customAnniversaryNames, setCustomAnniversaryNames] = useState(() => {
+    try {
+      const saved = localStorage.getItem('celebrationSlideshowAnniversaryNames');
+      return saved ? JSON.parse(saved) : {};
+    } catch {
+      return {};
+    }
+  });
+  const [editingNameId, setEditingNameId] = useState(null);
+  const [editingNameValue, setEditingNameValue] = useState('');
   const [loading, setLoading] = useState(true);
   const fileInputRefs = useRef({});
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('celebrationSlideshowAnniversaryNames', JSON.stringify(customAnniversaryNames));
+    } catch (error) {
+      console.error('Error saving custom anniversary names:', error);
+    }
+  }, [customAnniversaryNames]);
 
   useEffect(() => {
     fetchWeeklyCelebrations();
@@ -157,6 +175,35 @@ const CelebrationSlideshow = () => {
     );
   };
 
+  const handleStartEditName = (celebration) => {
+    const currentDisplayName = customAnniversaryNames[celebration.id] || celebration.name || '';
+    setEditingNameId(celebration.id);
+    setEditingNameValue(currentDisplayName);
+  };
+
+  const handleCancelEditName = () => {
+    setEditingNameId(null);
+    setEditingNameValue('');
+  };
+
+  const handleSaveEditName = (celebration) => {
+    const trimmedName = editingNameValue.trim();
+
+    if (!trimmedName) {
+      const updatedNames = { ...customAnniversaryNames };
+      delete updatedNames[celebration.id];
+      setCustomAnniversaryNames(updatedNames);
+    } else {
+      setCustomAnniversaryNames((prev) => ({
+        ...prev,
+        [celebration.id]: trimmedName
+      }));
+    }
+
+    setEditingNameId(null);
+    setEditingNameValue('');
+  };
+
   const handleKeyDown = (e) => {
     if (e.key === 'ArrowLeft') handlePrevious();
     if (e.key === 'ArrowRight') handleNext();
@@ -199,25 +246,17 @@ const CelebrationSlideshow = () => {
     return 'th';
   };
 
-  const getDaysSinceBirthday = (dateOfBirth) => {
-    if (!dateOfBirth) return 0;
-    
-    const today = new Date();
+  const getBirthdayCelebrationText = (dateOfBirth) => {
+    if (!dateOfBirth) return 'Celebrating birthday';
+
     const birthDate = new Date(dateOfBirth);
-    
-    // Get the last birthday (this year or last year)
-    let lastBirthday = new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate());
-    
-    // If birthday hasn't occurred this year yet, use last year's birthday
-    if (lastBirthday > today) {
-      lastBirthday = new Date(today.getFullYear() - 1, birthDate.getMonth(), birthDate.getDate());
-    }
-    
-    // Calculate days difference
+    const today = new Date();
+    const celebrationDate = new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate());
     const millisecondsPerDay = 1000 * 60 * 60 * 24;
-    const daysSince = Math.floor((today - lastBirthday) / millisecondsPerDay);
-    
-    return daysSince;
+    const daysLived = Math.floor((celebrationDate - birthDate) / millisecondsPerDay) + 1;
+
+    if (daysLived <= 0) return 'Celebrating birthday';
+    return `Celebrating ${daysLived}${getOrdinalSuffix(daysLived)} day on earth`;
   };
 
   if (loading) {
@@ -244,9 +283,13 @@ const CelebrationSlideshow = () => {
   }
 
   const currentCelebration = celebrations[currentIndex];
+  const displayName = currentCelebration.type === 'anniversary' && customAnniversaryNames[currentCelebration.id]
+    ? customAnniversaryNames[currentCelebration.id]
+    : currentCelebration.name;
+
   const message = currentCelebration.type === 'birthday' 
-    ? getBirthdayMessage(currentCelebration.name)
-    : getAnniversaryMessage(currentCelebration.name, currentCelebration.years);
+    ? getBirthdayMessage(displayName)
+    : getAnniversaryMessage(displayName, currentCelebration.years);
 
   return (
     <div className="celebration-slideshow-container">
@@ -355,7 +398,52 @@ const CelebrationSlideshow = () => {
           <div className="celebration-message-section">
             <div className="celebration-message-header">
               <h2 className="celebration-message-title">{message.title}</h2>
-              <div className="celebration-name">{message.name}</div>
+              {currentCelebration.type === 'anniversary' ? (
+                <div className="celebration-name-editor">
+                  {editingNameId === currentCelebration.id ? (
+                    <div className="celebration-name-editing">
+                      <input
+                        type="text"
+                        value={editingNameValue}
+                        onChange={(e) => setEditingNameValue(e.target.value)}
+                        className="celebration-name-input"
+                        placeholder="Enter spouse name"
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') handleSaveEditName(currentCelebration);
+                          if (e.key === 'Escape') handleCancelEditName();
+                        }}
+                        autoFocus
+                      />
+                      <div className="celebration-name-edit-actions">
+                        <button
+                          className="celebration-name-save-btn"
+                          onClick={() => handleSaveEditName(currentCelebration)}
+                        >
+                          Save
+                        </button>
+                        <button
+                          className="celebration-name-cancel-btn"
+                          onClick={handleCancelEditName}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="celebration-name">{message.name}</div>
+                      <button
+                        className="celebration-name-edit-btn"
+                        onClick={() => handleStartEditName(currentCelebration)}
+                      >
+                        ✏️ Edit name / spouse name
+                      </button>
+                    </>
+                  )}
+                </div>
+              ) : (
+                <div className="celebration-name">{message.name}</div>
+              )}
             </div>
             
             <div className="celebration-message-body">
@@ -368,7 +456,7 @@ const CelebrationSlideshow = () => {
                 </div>
                 {currentCelebration.type === 'birthday' && (
                   <div className="celebration-days-since">
-                    {getDaysSinceBirthday(currentCelebration.member.dateOfBirth)} days since
+                    {getBirthdayCelebrationText(currentCelebration.member.dateOfBirth)}
                   </div>
                 )}
               </div>

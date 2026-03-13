@@ -123,6 +123,28 @@
   background: #5563d6;
 }
 
+/* Ensure Edit Profile CTA remains visible over any global .btn/.btn-secondary styles */
+.member-portal-dashboard .profile-actions .btn.btn-secondary.btn-edit-profile {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #ffffff;
+  border: 1px solid rgba(102, 126, 234, 0.35);
+  box-shadow: 0 8px 18px rgba(102, 126, 234, 0.28);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.member-portal-dashboard .profile-actions .btn.btn-secondary.btn-edit-profile:hover {
+  background: linear-gradient(135deg, #5b6fe0 0%, #6f43a1 100%);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(102, 126, 234, 0.34);
+  filter: saturate(1.05);
+}
+
+.member-portal-dashboard .profile-actions .btn.btn-secondary.btn-edit-profile:focus-visible {
+  outline: 3px solid rgba(102, 126, 234, 0.35);
+  outline-offset: 2px;
+}
+
 /* Weekly Events Card Styles */
 .weekly-events-card .card-header {
   display: flex;
@@ -451,6 +473,15 @@
 
   .label {
     font-weight: 600;
+  }
+
+  .profile-actions {
+    width: 100%;
+  }
+
+  .member-portal-dashboard .profile-actions .btn.btn-secondary.btn-edit-profile {
+    width: 100%;
+    justify-content: center;
   }
 }
 
