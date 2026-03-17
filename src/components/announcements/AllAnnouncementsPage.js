@@ -7,7 +7,7 @@ import './AllAnnouncementsPage.css';
 const AllAnnouncementsPage = () => {
   const [announcements, setAnnouncements] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState('all'); // all, active, expired
+  const [filter, setFilter] = useState('active'); // all, active (expired hidden on public page)
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,10 +30,13 @@ const AllAnnouncementsPage = () => {
     return new Date(expiryDate) < new Date();
   };
 
-  const filteredAnnouncements = announcements.filter(announcement => {
+  const activeAnnouncements = announcements.filter(
+    announcement => !isExpired(announcement.expiryDate)
+  );
+
+  const filteredAnnouncements = activeAnnouncements.filter(() => {
     if (filter === 'all') return true;
-    if (filter === 'active') return !isExpired(announcement.expiryDate);
-    if (filter === 'expired') return isExpired(announcement.expiryDate);
+    if (filter === 'active') return true;
     return true;
   });
 
@@ -175,12 +178,6 @@ const AllAnnouncementsPage = () => {
                 onClick={() => setFilter('active')}
               >
                 Active
-              </button>
-              <button
-                className={`filter-btn ${filter === 'expired' ? 'active' : ''}`}
-                onClick={() => setFilter('expired')}
-              >
-                Expired
               </button>
             </div>
           </div>

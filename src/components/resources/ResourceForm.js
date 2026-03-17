@@ -71,8 +71,19 @@ const ResourceForm = ({ resource, onSubmit, onClose, isLoading }) => {
       if (resource.type === 'pdf' && resource.pdfData) {
         setPdfPreview(resource.pdfData);
       }
+      
+      // When editing, if article has an authorId, load that author's photo
+      if (resource.authorId && authors.length > 0) {
+        const author = authors.find(a => a.id === resource.authorId);
+        if (author) {
+          setSelectedAuthor('existing');
+          if (author.photo) {
+            setAuthorPhotoPreview(author.photo);
+          }
+        }
+      }
     }
-  }, [resource]);
+  }, [resource, authors]);
 
   const categories = [
     'Faith',
@@ -234,7 +245,7 @@ const ResourceForm = ({ resource, onSubmit, onClose, isLoading }) => {
     if (value === 'existing') {
       setNewAuthorName('');
       setNewAuthorPhoto(null);
-      setAuthorPhotoPreview(null);
+      // Don't clear preview - allow editing existing author's photo
     } else {
       setFormData(prev => ({ ...prev, authorId: '' }));
     }
@@ -382,49 +393,47 @@ const ResourceForm = ({ resource, onSubmit, onClose, isLoading }) => {
             <label htmlFor="authorPhoto">
               {selectedAuthor === 'new' ? 'Author Photo (Optional)' : 'Author Photo'}
             </label>
-            {selectedAuthor === 'new' && (
-              <>
-                <input
-                  type="file"
-                  id="authorPhoto"
-                  name="authorPhoto"
-                  accept="image/*"
-                  onChange={handleAuthorPhotoUpload}
-                  disabled={isLoading}
-                  className={errors.authorPhoto ? 'error' : ''}
-                  style={{ display: 'none' }}
-                />
-                <div className="author-photo-upload-area">
-                  {!authorPhotoPreview ? (
-                    <label htmlFor="authorPhoto" className="author-photo-upload-label">
-                      <div className="upload-icon">👤</div>
-                      <div className="upload-text">Click to upload author photo</div>
-                      <div className="upload-hint">Maximum file size: 2MB</div>
+            <input
+              type="file"
+              id="authorPhoto"
+              name="authorPhoto"
+              accept="image/*"
+              onChange={handleAuthorPhotoUpload}
+              disabled={isLoading}
+              className={errors.authorPhoto ? 'error' : ''}
+              style={{ display: 'none' }}
+            />
+            <div className="author-photo-upload-area">
+              {!authorPhotoPreview ? (
+                <label htmlFor="authorPhoto" className="author-photo-upload-label">
+                  <div className="upload-icon">👤</div>
+                  <div className="upload-text">Click to upload author photo</div>
+                  <div className="upload-hint">Maximum file size: 2MB</div>
+                </label>
+              ) : (
+                <div className="author-photo-preview">
+                  <img src={authorPhotoPreview} alt="Author" />
+                  <button 
+                    type="button" 
+                    className="remove-photo-btn" 
+                    onClick={handleRemoveAuthorPhoto}
+                    disabled={isLoading}
+                    title="Remove photo"
+                  >
+                    ✕
+                  </button>
+                  {selectedAuthor === 'existing' && (
+                    <label htmlFor="authorPhoto" className="change-photo-btn" title="Change photo">
+                      ✎
                     </label>
-                  ) : (
-                    <div className="author-photo-preview">
-                      <img src={authorPhotoPreview} alt="Author" />
-                      <button 
-                        type="button" 
-                        className="remove-photo-btn" 
-                        onClick={handleRemoveAuthorPhoto}
-                        disabled={isLoading}
-                        title="Remove photo"
-                      >
-                        ✕
-                      </button>
-                    </div>
                   )}
                 </div>
-                {errors.authorPhoto && <span className="error-message">{errors.authorPhoto}</span>}
-                <small className="helper-text">Optional: Add a photo for the new author</small>
-              </>
-            )}
-            {selectedAuthor === 'existing' && authorPhotoPreview && (
-              <div className="author-photo-preview-readonly">
-                <img src={authorPhotoPreview} alt="Author" />
-              </div>
-            )}
+              )}
+            </div>
+            {errors.authorPhoto && <span className="error-message">{errors.authorPhoto}</span>}
+            <small className="helper-text">
+              {selectedAuthor === 'new' ? 'Optional: Add a photo for the new author' : 'Click to change the photo'}
+            </small>
           </div>
         )}
 

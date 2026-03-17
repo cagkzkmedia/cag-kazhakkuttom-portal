@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import churchLogo from '../../assets/cag-logo.png';
-import pastorImage from '../../assets/pr-family.jpg';
+import pastorImage from '../../assets/prjobin.jpeg';
 import './BibleReadingPlan.css';
 import {
   getUserProgress,
@@ -62,10 +62,10 @@ const BibleReadingPlan = () => {
       setShowBadgeToast(true);
       setUnlockedBadgeIds(prev => new Set([...prev, newlyUnlocked.id]));
       
-      // Auto-hide after 5 seconds
+      // Auto-hide after 8 seconds
       setTimeout(() => {
         setShowBadgeToast(false);
-      }, 5000);
+      }, 8000);
     }
   };
 
@@ -1239,19 +1239,22 @@ const BibleReadingPlan = () => {
             </button>
             <div className="badge-toast-header">
               <div className="badge-toast-pastor-section">
-                <img 
-                  src={pastorImage} 
-                  alt="Pastor Jobin Elisha" 
-                  className="badge-toast-pastor-img"
-                />
                 <div className="badge-toast-pastor-info">
-                  <span className="badge-toast-pastor-name">Pastor Jobin Elisha</span>
+                  <span className="badge-toast-pastor-name">New message from Pr Jobin Elisha</span>
                   <span className="badge-toast-church-name">Christ AG Church</span>
                 </div>
               </div>
             </div>
             <div className="badge-toast-body">
+              <div className="badge-toast-pastor-center">
+                <img
+                  src={pastorImage}
+                  alt="Pastor Jobin Elisha"
+                  className="badge-toast-pastor-center-img"
+                />
+              </div>
               <div className="badge-toast-icon">{newBadge.icon}</div>
+              <p className="badge-toast-greeting">Dear {userName?.trim() || 'Brother/Sister'}</p>
               <h3 className="badge-toast-title">🎉 Congratulations!</h3>
               <p className="badge-toast-message">
                 You've unlocked the <strong>"{newBadge.name}"</strong> badge!
@@ -1263,6 +1266,9 @@ const BibleReadingPlan = () => {
               <p className="badge-toast-encouragement">
                 Keep going! God's Word is transforming your life daily.
               </p>
+            </div>
+            <div className="badge-toast-progress">
+              <div className="badge-toast-progress-bar"></div>
             </div>
           </div>
         </div>
