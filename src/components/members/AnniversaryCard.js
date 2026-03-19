@@ -102,10 +102,19 @@ Christ AG Church Kazhakkoottam Family 💙`;
         <div className="anniversary-card" ref={cardRef}>
           <div className="anniversary-card-photo-section">
             {member.profileImage && (
-              <img 
-                src={member.profileImage} 
-                alt={formattedName}
+              <div
                 className="anniversary-card-main-photo"
+                style={{
+                  backgroundImage: `url(${member.profileImage})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center 40%',
+                  backgroundRepeat: 'no-repeat',
+                  width: '100%',
+                  height: '100%',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                }}
               />
             )}
             <div className="anniversary-card-stars">

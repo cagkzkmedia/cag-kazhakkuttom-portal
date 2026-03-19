@@ -12,6 +12,7 @@ import './CelebrationSlideshow.css';
 const CelebrationSlideshow = () => {
   const [celebrations, setCelebrations] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [weekOffset, setWeekOffset] = useState(0); // 0 = this week, -1 = prev, +1 = next
   const [uploadedImages, setUploadedImages] = useState({});
   const [customAnniversaryNames, setCustomAnniversaryNames] = useState(() => {
     try {
@@ -35,10 +36,11 @@ const CelebrationSlideshow = () => {
   }, [customAnniversaryNames]);
 
   useEffect(() => {
-    fetchWeeklyCelebrations();
-  }, []);
+    fetchWeeklyCelebrations(weekOffset);
+    setCurrentIndex(0);
+  }, [weekOffset]);
 
-  const fetchWeeklyCelebrations = async () => {
+  const fetchWeeklyCelebrations = async (offset = 0) => {
     try {
       setLoading(true);
       const membersRef = collection(db, 'members');
@@ -46,8 +48,12 @@ const CelebrationSlideshow = () => {
       const querySnapshot = await getDocs(q);
       
       const now = new Date();
-      const currentWeekStart = getStartOfWeek(now);
-      const currentWeekEnd = getEndOfWeek(now);
+      // Shift the reference date by offset weeks
+      const referenceDate = new Date(now);
+      referenceDate.setDate(now.getDate() + offset * 7);
+
+      const currentWeekStart = getStartOfWeek(referenceDate);
+      const currentWeekEnd = getEndOfWeek(referenceDate);
       
       const celebrationsList = [];
       
@@ -57,7 +63,7 @@ const CelebrationSlideshow = () => {
         // Check for birthday
         if (member.dateOfBirth) {
           const dob = new Date(member.dateOfBirth);
-          if (isDateInCurrentWeek(dob, currentWeekStart, currentWeekEnd)) {
+          if (isDateInWeek(dob, currentWeekStart, currentWeekEnd, referenceDate)) {
             celebrationsList.push({
               id: `birthday-${member.id}`,
               type: 'birthday',
@@ -71,8 +77,8 @@ const CelebrationSlideshow = () => {
         // Check for anniversary
         if (member.marriageDate) {
           const marriageDate = new Date(member.marriageDate);
-          if (isDateInCurrentWeek(marriageDate, currentWeekStart, currentWeekEnd)) {
-            const years = now.getFullYear() - marriageDate.getFullYear();
+          if (isDateInWeek(marriageDate, currentWeekStart, currentWeekEnd, referenceDate)) {
+            const years = referenceDate.getFullYear() - marriageDate.getFullYear();
             celebrationsList.push({
               id: `anniversary-${member.id}`,
               type: 'anniversary',
@@ -95,8 +101,8 @@ const CelebrationSlideshow = () => {
         // Within same type, sort by date
         const dateA = new Date(a.date);
         const dateB = new Date(b.date);
-        dateA.setFullYear(now.getFullYear());
-        dateB.setFullYear(now.getFullYear());
+        dateA.setFullYear(referenceDate.getFullYear());
+        dateB.setFullYear(referenceDate.getFullYear());
         return dateA - dateB;
       });
       
@@ -122,10 +128,9 @@ const CelebrationSlideshow = () => {
     return new Date(d.setDate(diff));
   };
 
-  const isDateInCurrentWeek = (date, weekStart, weekEnd) => {
+  const isDateInWeek = (date, weekStart, weekEnd, referenceDate) => {
     const checkDate = new Date(date);
-    const currentYear = new Date().getFullYear();
-    checkDate.setFullYear(currentYear);
+    checkDate.setFullYear(referenceDate.getFullYear());
     
     const weekStartCopy = new Date(weekStart);
     const weekEndCopy = new Date(weekEnd);
@@ -272,12 +277,23 @@ const CelebrationSlideshow = () => {
   }
 
   if (celebrations.length === 0) {
+    const weekLabel = weekOffset === 0 ? 'this week' : weekOffset < 0 ? `${Math.abs(weekOffset)} week${Math.abs(weekOffset) > 1 ? 's' : ''} ago` : `in ${weekOffset} week${weekOffset > 1 ? 's' : ''}`;
     return (
       <div className="celebration-slideshow-container">
+        <div className="celebration-week-nav">
+          <button className="celebration-week-btn" onClick={() => setWeekOffset(prev => prev - 1)}>← Previous Week</button>
+          <span className="celebration-week-label">
+            {weekOffset === 0 ? 'This Week' : weekOffset === -1 ? 'Previous Week' : weekOffset === 1 ? 'Next Week' : weekOffset > 0 ? `+${weekOffset} Weeks` : `${weekOffset} Weeks`}
+          </span>
+          <button className="celebration-week-btn" onClick={() => setWeekOffset(prev => prev + 1)}>Next Week →</button>
+          {weekOffset !== 0 && (
+            <button className="celebration-week-btn celebration-week-btn-today" onClick={() => setWeekOffset(0)}>Back to Today</button>
+          )}
+        </div>
         <div className="celebration-slideshow-empty">
           <div className="celebration-empty-icon">🎉</div>
-          <h2>No Celebrations This Week</h2>
-          <p>Check back next week for upcoming birthdays and anniversaries!</p>
+          <h2>No Celebrations {weekLabel.charAt(0).toUpperCase() + weekLabel.slice(1)}</h2>
+          <p>No birthdays or anniversaries found for this week!</p>
         </div>
       </div>
     );
@@ -317,6 +333,33 @@ const CelebrationSlideshow = () => {
         <div className="celebration-counter">
           {currentIndex + 1} of {celebrations.length}
         </div>
+      </div>
+
+      {/* Week Navigation */}
+      <div className="celebration-week-nav">
+        <button
+          className="celebration-week-btn"
+          onClick={() => setWeekOffset(prev => prev - 1)}
+        >
+          ← Previous Week
+        </button>
+        <span className="celebration-week-label">
+          {weekOffset === 0 ? 'This Week' : weekOffset === -1 ? 'Previous Week' : weekOffset === 1 ? 'Next Week' : weekOffset > 0 ? `+${weekOffset} Weeks` : `${weekOffset} Weeks`}
+        </span>
+        <button
+          className="celebration-week-btn"
+          onClick={() => setWeekOffset(prev => prev + 1)}
+        >
+          Next Week →
+        </button>
+        {weekOffset !== 0 && (
+          <button
+            className="celebration-week-btn celebration-week-btn-today"
+            onClick={() => setWeekOffset(0)}
+          >
+            Back to Today
+          </button>
+        )}
       </div>
 
       <div className="celebration-slideshow-content">
