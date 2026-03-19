@@ -823,6 +823,26 @@ const BibleReadingPlan = () => {
     : readingPlan;
 
   const progressPercentage = ((completedDays.length / 365) * 100).toFixed(1);
+  const progressValue = Number(progressPercentage);
+
+  const getPlantStage = () => {
+    if (completedDays.length >= 365) return 'tree';
+    if (completedDays.length >= 270) return 'young-tree';
+    if (completedDays.length >= 180) return 'sapling';
+    if (completedDays.length >= 90) return 'sprout';
+    if (completedDays.length >= 1) return 'seedling';
+    return 'seed';
+  };
+
+  const plantStage = getPlantStage();
+  const plantStageEmoji = {
+    seed: '🟤',
+    seedling: '🌱',
+    sprout: '🌿',
+    sapling: '🪴',
+    'young-tree': '🌳',
+    tree: '🌲'
+  };
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -973,8 +993,21 @@ const BibleReadingPlan = () => {
               <span className="bible-stat-label">Progress</span>
             </div>
           </div>
-          <div className="bible-progress-bar">
-            <div className="bible-progress-fill" style={{ width: `${progressPercentage}%` }}></div>
+          <div className="bible-growth-visual" aria-live="polite">
+            <div className="bible-growth-track">
+              <div
+                className="bible-growth-track-fill"
+                style={{ width: `${progressPercentage}%` }}
+              ></div>
+            </div>
+            <div className={`bible-growth-plant ${plantStage}`}>
+              <span className="bible-growth-emoji" role="img" aria-label="Plant growth stage">
+                {plantStageEmoji[plantStage]}
+              </span>
+            </div>
+            <p className="bible-growth-text">
+              Your faith plant is growing: <strong>{progressValue}%</strong> complete
+            </p>
           </div>
         </div>
       </div>

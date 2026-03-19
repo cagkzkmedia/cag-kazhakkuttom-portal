@@ -153,6 +153,89 @@
   box-shadow: 0 0 10px rgba(74, 222, 128, 0.5);
 }
 
+.bible-growth-visual {
+  margin-top: 14px;
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 12px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.bible-growth-track {
+  height: 8px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.25);
+  overflow: hidden;
+}
+
+.bible-growth-track-fill {
+  height: 100%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, #86efac, #22c55e);
+  transition: width 0.5s ease;
+}
+
+.bible-growth-plant {
+  margin: 8px 0 4px;
+  text-align: center;
+  transform-origin: bottom center;
+  animation: plantSway 2.6s ease-in-out infinite;
+  transition: transform 0.4s ease;
+}
+
+.bible-growth-emoji {
+  display: inline-block;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.15));
+}
+
+.bible-growth-plant.seed .bible-growth-emoji {
+  font-size: 20px;
+}
+
+.bible-growth-plant.seedling .bible-growth-emoji {
+  font-size: 30px;
+}
+
+.bible-growth-plant.sprout .bible-growth-emoji {
+  font-size: 40px;
+}
+
+.bible-growth-plant.sapling .bible-growth-emoji {
+  font-size: 50px;
+}
+
+.bible-growth-plant.young-tree .bible-growth-emoji {
+  font-size: 58px;
+}
+
+.bible-growth-plant.tree .bible-growth-emoji {
+  font-size: 66px;
+}
+
+.bible-growth-text {
+  margin: 0;
+  text-align: center;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.bible-growth-text strong {
+  color: #dcfce7;
+}
+
+@keyframes plantSway {
+  0%,
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(-2deg) scale(1.02);
+  }
+  75% {
+    transform: rotate(2deg) scale(1.02);
+  }
+}
+
 /* Controls Section */
 .bible-reading-controls {
   display: flex;
@@ -652,6 +735,11 @@
 
   .bible-progress-stats {
     flex-direction: column;
+  }
+
+  .bible-growth-plant.tree .bible-growth-emoji,
+  .bible-growth-plant.young-tree .bible-growth-emoji {
+    font-size: 54px;
   }
 
   .bible-reading-controls {
