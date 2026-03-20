@@ -497,6 +497,9 @@ const CelebrationSlideshow = () => {
             <div className="celebration-message-body">
               <div className="celebration-date-row">
                 <div className="celebration-date-display">
+                  <div className="celebration-date-day">
+                    {new Date(currentCelebration.date).getDate()}
+                  </div>
                   <div className="celebration-date-month">
                     {new Date(currentCelebration.date).toLocaleDateString('en-US', { month: 'long' })}
                   </div>
