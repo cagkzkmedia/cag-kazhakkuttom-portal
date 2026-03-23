@@ -40,6 +40,7 @@ const ShareableWeeklyEvents = ({ events, weekRange, onClose }) => {
     const grouped = {};
     
     events.forEach(event => {
+      if (event.isEveryDayInaWeek) return; // handled separately
       const eventDate = new Date(event.date);
       const dayKey = eventDate.toLocaleDateString('en-US', { 
         weekday: 'long', 
@@ -127,6 +128,7 @@ const ShareableWeeklyEvents = ({ events, weekRange, onClose }) => {
     }
   };
 
+  const everyDayEvents = events.filter(e => e.isEveryDayInaWeek);
   const groupedEvents = groupEventsByDay();
   const sortedDays = Object.keys(groupedEvents).sort((a, b) => {
     return groupedEvents[a].date - groupedEvents[b].date;
@@ -153,6 +155,21 @@ const ShareableWeeklyEvents = ({ events, weekRange, onClose }) => {
                   <p className="week-date-range">{weekRange || 'DATE RANGE NOT AVAILABLE'}</p>
                 </div>
               </div>
+
+              {everyDayEvents.length > 0 && (
+                <div className="everyday-events-section">
+                  <div className="everyday-events-header">📅 Every Day This Week</div>
+                  {everyDayEvents.map((event, index) => (
+                    <div key={index} className="everyday-event-item">
+                      <span className="everyday-event-title">{event.title}</span>
+                      <span className="everyday-event-time">
+                        {event.time ? formatTo12Hour(event.time) : ''}
+                        {event.location ? ` @ ${event.location}` : ''}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
 
               <div className="shareable-events-list">
                 {sortedDays.length === 0 ? (
@@ -184,6 +201,9 @@ const ShareableWeeklyEvents = ({ events, weekRange, onClose }) => {
                               return (
                                 <div key={index} className={`event-line ${eventColorClass}`}>
                                   <span className="event-title-main">{event.title}</span>
+                                  {event.isEveryDayInaWeek && (
+                                    <span className="event-everyday-badge">📅 Every Day This Week</span>
+                                  )}
                                   <span className="event-time-main">
                                     {event.time ? formatTo12Hour(event.time) : ''}
                                     {event.location ? ` @ ${event.location}` : ''}

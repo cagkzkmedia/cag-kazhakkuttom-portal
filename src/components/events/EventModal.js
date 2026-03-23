@@ -13,6 +13,7 @@ const EventModal = ({ event, onClose, onSuccess }) => {
     location: '',
     type: 'worship',
     zoomLink: '',
+    isEveryDayInaWeek: false,
     isRecurring: false,
     recurringPattern: 'weekly',
     recurringEndDate: '',
@@ -154,6 +155,17 @@ const EventModal = ({ event, onClose, onSuccess }) => {
               onChange={(e) => setFormData({...formData, zoomLink: e.target.value})} 
             />
             <small style={{color: '#718096', marginTop: '4px', display: 'block'}}>Enter the Zoom meeting link if this event will be held online</small>
+          </div>
+          <div className="form-group">
+            <label className="checkbox-label">
+              <input 
+                type="checkbox" 
+                checked={formData.isEveryDayInaWeek} 
+                onChange={(e) => setFormData({...formData, isEveryDayInaWeek: e.target.checked})} 
+              />
+              <span>Every Day in a Week</span>
+            </label>
+            <small style={{color: '#718096', marginTop: '4px', display: 'block'}}>Check this if this event occurs every day during the week</small>
           </div>
           
           {!event && (
