@@ -1085,6 +1085,7 @@
     padding: 10px;
     min-height: 100vh;
     justify-content: flex-start;
+    overflow-y: auto;
   }
 
   .celebration-slideshow-title {
