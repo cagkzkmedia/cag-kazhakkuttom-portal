@@ -605,7 +605,6 @@
   background-clip: text;
   color: transparent;
   text-shadow: none;
-  animation: ordinalGlow 1.5s ease-in-out infinite;
   letter-spacing: -2px;
 }
 
@@ -616,17 +615,6 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent;
-}
-
-@keyframes ordinalGlow {
-  0%, 100% {
-    filter: drop-shadow(0 0 12px rgba(255, 20, 147, 0.6));
-    text-shadow: 0 0 25px rgba(255, 20, 147, 0.5);
-  }
-  50% {
-    filter: drop-shadow(0 0 20px rgba(255, 105, 180, 0.9));
-    text-shadow: 0 0 35px rgba(255, 105, 180, 0.7);
-  }
 }
 
 @keyframes birthdayGlow {
