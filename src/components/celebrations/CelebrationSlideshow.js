@@ -460,7 +460,7 @@ const CelebrationSlideshow = () => {
             <div className="celebration-message-header">
               {currentCelebration.type === 'anniversary' ? (
                 <h2 className="celebration-message-title" data-celebration-type={currentCelebration.type}>
-                  Happy <span className="celebration-ordinal-number">{message.ordinalNumber}</span><span className="celebration-ordinal-suffix">{message.ordinalSuffix}</span> Anniversary!
+                  Happy <span className="celebration-ordinal-container"><span className="celebration-ordinal-number">{message.ordinalNumber}</span><span className="celebration-ordinal-suffix">{message.ordinalSuffix}</span></span> Anniversary!
                 </h2>
               ) : (
                 <h2 className="celebration-message-title" data-celebration-type={currentCelebration.type}>{message.title}</h2>
