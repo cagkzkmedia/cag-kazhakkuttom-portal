@@ -116,9 +116,14 @@ const ImageCropModal = ({ image, onCrop, onCancel }) => {
     if (!canvas) return { x: 0, y: 0 };
     
     const rect = canvas.getBoundingClientRect();
+    
+    // Handle both mouse and touch events
+    const clientX = e.clientX || (e.touches && e.touches[0]?.clientX) || 0;
+    const clientY = e.clientY || (e.touches && e.touches[0]?.clientY) || 0;
+    
     return {
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
+      x: clientX - rect.left,
+      y: clientY - rect.top,
     };
   };
 
@@ -144,6 +149,7 @@ const ImageCropModal = ({ image, onCrop, onCancel }) => {
 
   const handleMouseDown = (e) => {
     if (!cropBox) return;
+    e.preventDefault();
 
     const pos = getMousePos(e);
     const handle = getResizeHandle(pos, cropBox);
@@ -163,6 +169,19 @@ const ImageCropModal = ({ image, onCrop, onCancel }) => {
       setStartX(pos.x);
       setStartY(pos.y);
     }
+  };
+
+  const handleTouchStart = (e) => {
+    handleMouseDown(e);
+  };
+
+  const handleTouchMove = (e) => {
+    e.preventDefault();
+    handleMouseMove(e);
+  };
+
+  const handleTouchEnd = () => {
+    handleMouseUp();
   };
 
   const handleMouseMove = (e) => {
@@ -318,6 +337,9 @@ const ImageCropModal = ({ image, onCrop, onCancel }) => {
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
             onMouseLeave={handleMouseUp}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
           />
         </div>
 

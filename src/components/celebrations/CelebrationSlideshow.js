@@ -7,6 +7,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { collection, query, getDocs } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import { getProfileImageUrl } from '../../utils/imageUtils';
+import ImageCropModal from '../common/ImageCropModal';
 import './CelebrationSlideshow.css';
 
 const CelebrationSlideshow = () => {
@@ -25,6 +26,9 @@ const CelebrationSlideshow = () => {
   const [editingNameId, setEditingNameId] = useState(null);
   const [editingNameValue, setEditingNameValue] = useState('');
   const [loading, setLoading] = useState(true);
+  const [showCropModal, setShowCropModal] = useState(false);
+  const [imageToCrop, setImageToCrop] = useState(null);
+  const [pendingCropCelebrationId, setPendingCropCelebrationId] = useState(null);
   const fileInputRefs = useRef({});
 
   useEffect(() => {
@@ -158,14 +162,25 @@ const CelebrationSlideshow = () => {
 
     const reader = new FileReader();
     reader.onloadend = () => {
-      setUploadedImages(prev => ({
-        ...prev,
-        [celebrationId]: reader.result
-      }));
+      setImageToCrop(reader.result);
+      setPendingCropCelebrationId(celebrationId);
+      setShowCropModal(true);
       // Reset the file input
       event.target.value = '';
     };
     reader.readAsDataURL(file);
+  };
+
+  const handleCropComplete = (croppedImage) => {
+    if (pendingCropCelebrationId) {
+      setUploadedImages(prev => ({
+        ...prev,
+        [pendingCropCelebrationId]: croppedImage
+      }));
+    }
+    setShowCropModal(false);
+    setImageToCrop(null);
+    setPendingCropCelebrationId(null);
   };
 
   const handlePrevious = () => {
@@ -441,7 +456,7 @@ const CelebrationSlideshow = () => {
           {/* Right Side - Message */}
           <div className="celebration-message-section">
             <div className="celebration-message-header">
-              <h2 className="celebration-message-title">{message.title}</h2>
+              <h2 className="celebration-message-title" data-celebration-type={currentCelebration.type}>{message.title}</h2>
               {currentCelebration.type === 'anniversary' ? (
                 <div className="celebration-name-editor">
                   {editingNameId === currentCelebration.id ? (
@@ -526,6 +541,19 @@ const CelebrationSlideshow = () => {
           </div>
         )}
       </div>
+
+      {/* Image Crop Modal */}
+      {showCropModal && imageToCrop && (
+        <ImageCropModal
+          image={imageToCrop}
+          onCrop={handleCropComplete}
+          onCancel={() => {
+            setShowCropModal(false);
+            setImageToCrop(null);
+            setPendingCropCelebrationId(null);
+          }}
+        />
+      )}
     </div>
   );
 };

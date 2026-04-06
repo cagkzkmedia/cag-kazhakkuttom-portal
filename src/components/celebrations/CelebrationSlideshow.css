@@ -559,6 +559,54 @@
   font-weight: bold;
 }
 
+/* Birthday Title Styling */
+.celebration-message-title[data-celebration-type="birthday"] {
+  font-size: 72px;
+  background: linear-gradient(135deg, #FF6B9D 0%, #FF1493 50%, #C44569 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
+  animation: birthdayGlow 2s ease-in-out infinite;
+  letter-spacing: 2px;
+}
+
+/* Anniversary Title Styling */
+.celebration-message-title[data-celebration-type="anniversary"] {
+  font-size: 68px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #9F7AEA 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
+  animation: anniversaryGlow 2s ease-in-out infinite;
+  letter-spacing: 1px;
+}
+
+@keyframes birthdayGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px rgba(255, 107, 157, 0.5));
+    text-shadow: 0 0 20px rgba(255, 107, 157, 0.4);
+  }
+  50% {
+    filter: drop-shadow(0 0 16px rgba(255, 20, 147, 0.8));
+    text-shadow: 0 0 30px rgba(255, 20, 147, 0.6);
+  }
+}
+
+@keyframes anniversaryGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px rgba(102, 126, 234, 0.5));
+    text-shadow: 0 0 20px rgba(102, 126, 234, 0.4);
+  }
+  50% {
+    filter: drop-shadow(0 0 16px rgba(118, 75, 162, 0.8));
+    text-shadow: 0 0 30px rgba(118, 75, 162, 0.6);
+  }
+}
+
 .celebration-name {
   font-family: 'Georgia', 'Palatino Linotype', 'Times New Roman', serif;
   font-size: 90px;
@@ -941,6 +989,14 @@
     margin-bottom: 14px;
   }
 
+  .celebration-message-title[data-celebration-type="birthday"] {
+    font-size: 56px;
+  }
+
+  .celebration-message-title[data-celebration-type="anniversary"] {
+    font-size: 52px;
+  }
+
   .celebration-name {
     font-size: clamp(36px, 5vw, 64px);
     margin-bottom: 18px;
@@ -1053,6 +1109,14 @@
     font-size: 48px;
   }
 
+  .celebration-message-title[data-celebration-type="birthday"] {
+    font-size: 56px;
+  }
+
+  .celebration-message-title[data-celebration-type="anniversary"] {
+    font-size: 52px;
+  }
+
   .celebration-name {
     font-size: 42px;
   }
@@ -1122,6 +1186,14 @@
 
   .celebration-message-title {
     font-size: 36px;
+  }
+
+  .celebration-message-title[data-celebration-type="birthday"] {
+    font-size: 42px;
+  }
+
+  .celebration-message-title[data-celebration-type="anniversary"] {
+    font-size: 40px;
   }
 
   .celebration-name {
