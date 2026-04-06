@@ -591,17 +591,17 @@
 }
 
 .celebration-ordinal-suffix {
-  font-size: 96px;
+  font-size: 120px;
   font-weight: 900;
-  font-style: italic;
-  background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF8C00 100%);
+  font-family: "Comic Sans MS", "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
+  background: linear-gradient(135deg, #00D084 0%, #00A651 50%, #008C3D 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent;
   text-shadow: none;
-  letter-spacing: -2px;
-  margin: 0 4px;
+  letter-spacing: 0;
+  margin: 0 4px 0 8px;
 }
 
 @keyframes birthdayGlow {
