@@ -622,9 +622,6 @@
   color: transparent;
   letter-spacing: 0;
   display: inline-block;
-  position: absolute;
-  top: -20px;
-  right: -10px;
   margin: 0;
   line-height: 1;
 }
