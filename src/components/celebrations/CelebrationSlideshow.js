@@ -249,10 +249,9 @@ const CelebrationSlideshow = () => {
   };
 
   const getAnniversaryMessage = (name, years) => {
-    const yearText = years > 0 ? `${years}` : '';
-    const ordinalText = years > 0 ? getOrdinalSuffix(years) : '';
+    const ordinalText = years > 0 ? `${years}${getOrdinalSuffix(years)}` : '';
     return {
-      title: `Happy ${yearText}`,
+      title: `Happy ${years}`,
       ordinal: ordinalText,
       message: `Celebrating your beautiful journey together. May the Lord bless you with many more wonderful years ahead.`,
       name: formatName(name)
