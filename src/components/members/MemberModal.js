@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { addMember, updateMember } from '../../redux/slices/memberSlice';
 import { createMember, updateMember as updateMemberService } from '../../services/memberService.firebase';
 import { convertImageToBase64, validateImageFile } from '../../utils/imageUtils';
+import ImageCropModal from '../common/ImageCropModal';
 import './MemberModal.css';
 
 const MemberModal = ({ member, onClose, onSuccess, onRefresh }) => {
@@ -29,6 +30,8 @@ const MemberModal = ({ member, onClose, onSuccess, onRefresh }) => {
   });
   const [loading, setLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
+  const [showCropModal, setShowCropModal] = useState(false);
+  const [imageToCrop, setImageToCrop] = useState(null);
 
   useEffect(() => {
     if (member) {
@@ -58,14 +61,21 @@ const MemberModal = ({ member, onClose, onSuccess, onRefresh }) => {
 
     try {
       const base64Image = await convertImageToBase64(file);
-      setFormData({
-        ...formData,
-        profileImage: base64Image,
-      });
-      setImagePreview(base64Image);
+      setImageToCrop(base64Image);
+      setShowCropModal(true);
     } catch (err) {
       alert(err.message || 'Failed to process image');
     }
+  };
+
+  const handleCropComplete = (croppedImage) => {
+    setFormData({
+      ...formData,
+      profileImage: croppedImage,
+    });
+    setImagePreview(croppedImage);
+    setShowCropModal(false);
+    setImageToCrop(null);
   };
 
   const handleRemoveImage = () => {
@@ -316,6 +326,17 @@ const MemberModal = ({ member, onClose, onSuccess, onRefresh }) => {
             </button>
           </div>
         </form>
+
+        {showCropModal && imageToCrop && (
+          <ImageCropModal
+            image={imageToCrop}
+            onCrop={handleCropComplete}
+            onCancel={() => {
+              setShowCropModal(false);
+              setImageToCrop(null);
+            }}
+          />
+        )}
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createMemberSignup } from '../../services/memberService.firebase';
 import { convertImageToBase64, validateImageFile } from '../../utils/imageUtils';
+import ImageCropModal from '../common/ImageCropModal';
 import './MemberSignup.css';
 
 const MemberSignup = () => {
@@ -26,6 +27,8 @@ const MemberSignup = () => {
   const [showApprovalPopup, setShowApprovalPopup] = useState(false);
   const [signupEmail, setSignupEmail] = useState('');
   const [imagePreview, setImagePreview] = useState(null);
+  const [showCropModal, setShowCropModal] = useState(false);
+  const [imageToCrop, setImageToCrop] = useState(null);
 
   const navigate = useNavigate();
 
@@ -49,15 +52,23 @@ const MemberSignup = () => {
 
     try {
       const base64Image = await convertImageToBase64(file);
-      setFormData({
-        ...formData,
-        profileImage: base64Image,
-      });
-      setImagePreview(base64Image);
+      setImageToCrop(base64Image);
+      setShowCropModal(true);
       setError(null);
     } catch (err) {
       setError(err.message || 'Failed to process image');
     }
+  };
+
+  const handleCropComplete = (croppedImage) => {
+    setFormData({
+      ...formData,
+      profileImage: croppedImage,
+    });
+    setImagePreview(croppedImage);
+    setShowCropModal(false);
+    setImageToCrop(null);
+    setError(null);
   };
 
   const handleRemoveImage = () => {
@@ -375,6 +386,17 @@ const MemberSignup = () => {
             </button>
           </div>
         </div>
+      )}
+
+      {showCropModal && imageToCrop && (
+        <ImageCropModal
+          image={imageToCrop}
+          onCrop={handleCropComplete}
+          onCancel={() => {
+            setShowCropModal(false);
+            setImageToCrop(null);
+          }}
+        />
       )}
     </div>
   );

@@ -104,3 +104,47 @@ export const validateImageFile = (file) => {
     errors
   };
 };
+
+/**
+ * Crop image using canvas
+ * @param {string} imageSrc - Image source (data URL)
+ * @param {object} cropArea - Crop area with x, y, width, height, scale
+ * @returns {Promise<string>} Cropped image as base64
+ */
+export const cropImage = (imageSrc, cropArea) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const img = new Image();
+      img.src = imageSrc;
+      
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Calculate the original image coordinates
+        const scaleFactor = 1 / cropArea.scale;
+        const x = cropArea.x * scaleFactor;
+        const y = cropArea.y * scaleFactor;
+        const width = cropArea.width * scaleFactor;
+        const height = cropArea.height * scaleFactor;
+        
+        canvas.width = width;
+        canvas.height = height;
+        
+        // Draw the cropped image
+        ctx.drawImage(img, x, y, width, height, 0, 0, width, height);
+        
+        // Convert to base64
+        const base64Image = canvas.toDataURL('image/jpeg', 0.9);
+        resolve(base64Image);
+      };
+      
+      img.onerror = () => {
+        reject('Failed to load image for cropping');
+      };
+    } catch (err) {
+      reject(err.message || 'Error cropping image');
+    }
+  });
+};
+
