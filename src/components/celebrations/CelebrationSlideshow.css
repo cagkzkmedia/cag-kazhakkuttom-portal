@@ -562,7 +562,8 @@
 /* Birthday Title Styling */
 .celebration-message-title[data-celebration-type="birthday"] {
   font-size: 72px;
-  background: linear-gradient(135deg, #FF6B9D 0%, #FF1493 50%, #C44569 100%);
+  font-family: 'Comic Sans MS', 'Arial Rounded MT Bold', 'Trebuchet MS', cursive;
+  background: linear-gradient(135deg, #00D084 0%, #00A651 50%, #008C3D 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -570,12 +571,14 @@
   text-shadow: none;
   animation: birthdayGlow 2s ease-in-out infinite;
   letter-spacing: 2px;
+  font-weight: 900;
 }
 
 /* Anniversary Title Styling */
 .celebration-message-title[data-celebration-type="anniversary"] {
   font-size: 68px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #9F7AEA 100%);
+  font-family: 'Great Vibes', 'Allura', 'Alex Brush', cursive;
+  background: linear-gradient(135deg, #FF6B9D 0%, #F5576C 50%, #E84D5A 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -583,27 +586,28 @@
   text-shadow: none;
   animation: anniversaryGlow 2s ease-in-out infinite;
   letter-spacing: 1px;
+  font-weight: 700;
 }
 
 @keyframes birthdayGlow {
   0%, 100% {
-    filter: drop-shadow(0 0 8px rgba(255, 107, 157, 0.5));
-    text-shadow: 0 0 20px rgba(255, 107, 157, 0.4);
+    filter: drop-shadow(0 0 8px rgba(0, 208, 132, 0.5));
+    text-shadow: 0 0 20px rgba(0, 208, 132, 0.4);
   }
   50% {
-    filter: drop-shadow(0 0 16px rgba(255, 20, 147, 0.8));
-    text-shadow: 0 0 30px rgba(255, 20, 147, 0.6);
+    filter: drop-shadow(0 0 16px rgba(0, 166, 81, 0.8));
+    text-shadow: 0 0 30px rgba(0, 166, 81, 0.6);
   }
 }
 
 @keyframes anniversaryGlow {
   0%, 100% {
-    filter: drop-shadow(0 0 8px rgba(102, 126, 234, 0.5));
-    text-shadow: 0 0 20px rgba(102, 126, 234, 0.4);
+    filter: drop-shadow(0 0 8px rgba(255, 107, 157, 0.5));
+    text-shadow: 0 0 20px rgba(255, 107, 157, 0.4);
   }
   50% {
-    filter: drop-shadow(0 0 16px rgba(118, 75, 162, 0.8));
-    text-shadow: 0 0 30px rgba(118, 75, 162, 0.6);
+    filter: drop-shadow(0 0 16px rgba(245, 87, 108, 0.8));
+    text-shadow: 0 0 30px rgba(245, 87, 108, 0.6);
   }
 }
 
