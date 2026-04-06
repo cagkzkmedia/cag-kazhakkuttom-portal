@@ -586,18 +586,13 @@
   text-shadow: none;
   animation: anniversaryGlow 2s ease-in-out infinite;
   letter-spacing: 1px;
-  font-weight: 400;
+  font-weight: 900;
   line-height: 1.3;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: center;
-  gap: 8px;
 }
 
 .celebration-ordinal-suffix {
   font-size: 96px;
-  font-weight: 700;
+  font-weight: 900;
   font-style: italic;
   background: linear-gradient(135deg, #FF1493 0%, #FF69B4 50%, #FFB6C1 100%);
   -webkit-background-clip: text;
@@ -606,17 +601,7 @@
   color: transparent;
   text-shadow: none;
   letter-spacing: -2px;
-}
-
-.celebration-anniversary-text {
-  font-size: 76px;
-  background: linear-gradient(135deg, #FF6B9D 0%, #F5576C 50%, #E84D5A 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
-  font-weight: 800;
-  margin-left: 8px;
+  margin: 0 4px;
 }
 
 @keyframes birthdayGlow {
