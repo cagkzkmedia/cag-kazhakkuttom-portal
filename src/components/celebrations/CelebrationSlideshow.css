@@ -577,7 +577,7 @@
 /* Anniversary Title Styling */
 .celebration-message-title[data-celebration-type="anniversary"] {
   font-size: 68px;
-  font-family: 'Georgia', 'Garamond', 'Times New Roman', serif;
+  font-family: 'Great Vibes', 'Allura', 'Dancing Script', 'Pacifico', cursive;
   background: linear-gradient(135deg, #FF6B9D 0%, #F5576C 50%, #E84D5A 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
