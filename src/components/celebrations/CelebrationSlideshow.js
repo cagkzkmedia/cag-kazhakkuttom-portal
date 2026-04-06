@@ -249,9 +249,11 @@ const CelebrationSlideshow = () => {
   };
 
   const getAnniversaryMessage = (name, years) => {
-    const yearText = years > 0 ? `${years}${getOrdinalSuffix(years)} ` : '';
+    const yearText = years > 0 ? `${years}` : '';
+    const ordinalText = years > 0 ? getOrdinalSuffix(years) : '';
     return {
-      title: `Happy ${yearText}Anniversary!`,
+      title: `Happy ${yearText}`,
+      ordinal: ordinalText,
       message: `Celebrating your beautiful journey together. May the Lord bless you with many more wonderful years ahead.`,
       name: formatName(name)
     };
@@ -456,7 +458,15 @@ const CelebrationSlideshow = () => {
           {/* Right Side - Message */}
           <div className="celebration-message-section">
             <div className="celebration-message-header">
-              <h2 className="celebration-message-title" data-celebration-type={currentCelebration.type}>{message.title}</h2>
+              {currentCelebration.type === 'anniversary' ? (
+                <h2 className="celebration-message-title" data-celebration-type={currentCelebration.type}>
+                  {message.title}
+                  <span className="celebration-ordinal-suffix">{message.ordinal}</span>
+                  <span className="celebration-anniversary-text"> Anniversary!</span>
+                </h2>
+              ) : (
+                <h2 className="celebration-message-title" data-celebration-type={currentCelebration.type}>{message.title}</h2>
+              )}
               {currentCelebration.type === 'anniversary' ? (
                 <div className="celebration-name-editor">
                   {editingNameId === currentCelebration.id ? (
