@@ -591,7 +591,7 @@
 }
 
 .celebration-ordinal-suffix {
-  font-size: 120px;
+  font-size: 48px;
   font-weight: 900;
   font-family: "Great Vibes", "Allura", "Dancing Script", "Pacifico", cursive;
   background: linear-gradient(135deg, #00D084 0%, #00A651 50%, #008C3D 100%);
@@ -601,7 +601,10 @@
   color: transparent;
   text-shadow: none;
   letter-spacing: 0;
-  margin: 0 4px 0 8px;
+  margin: 0;
+  position: relative;
+  vertical-align: super;
+  top: -40px;
 }
 
 @keyframes birthdayGlow {
