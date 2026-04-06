@@ -609,6 +609,7 @@
   letter-spacing: 0;
   display: inline-block;
   line-height: 1;
+  padding: 0 10px;
 }
 
 .celebration-ordinal-suffix {
