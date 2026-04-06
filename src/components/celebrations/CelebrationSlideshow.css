@@ -584,16 +584,17 @@
   background-clip: text;
   color: transparent;
   text-shadow: none;
-  animation: anniversaryGlow 2s ease-in-out infinite;
   letter-spacing: 1px;
   font-weight: 900;
   line-height: 1.3;
+  overflow: visible;
 }
 
 .celebration-ordinal-container {
   position: relative;
   display: inline-block;
   margin: 0 4px;
+  overflow: visible;
 }
 
 .celebration-ordinal-number {
