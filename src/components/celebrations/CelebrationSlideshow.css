@@ -609,12 +609,14 @@
 }
 
 .celebration-anniversary-text {
-  font-size: 68px;
+  font-size: 76px;
   background: linear-gradient(135deg, #FF6B9D 0%, #F5576C 50%, #E84D5A 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent;
+  font-weight: 800;
+  margin-left: 8px;
 }
 
 @keyframes birthdayGlow {
@@ -1034,7 +1036,7 @@
   }
 
   .celebration-anniversary-text {
-    font-size: 52px;
+    font-size: 58px;
   }
 
   .celebration-name {
@@ -1161,8 +1163,12 @@
     font-size: 76px;
   }
 
+  .celebration-ordinal-suffix {
+    font-size: 76px;
+  }
+
   .celebration-anniversary-text {
-    font-size: 52px;
+    font-size: 58px;
   }
 
   .celebration-name {
@@ -1249,7 +1255,7 @@
   }
 
   .celebration-anniversary-text {
-    font-size: 40px;
+    font-size: 48px;
   }
 
   .celebration-name {
