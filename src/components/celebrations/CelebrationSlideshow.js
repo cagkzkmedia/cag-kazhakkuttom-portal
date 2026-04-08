@@ -60,9 +60,17 @@ const CelebrationSlideshow = () => {
       const currentWeekEnd = getEndOfWeek(referenceDate);
       
       const celebrationsList = [];
+      const allMembers = {};
+      const processedAnniversaryIds = new Set();
       
+      // First pass: store all members in map
       querySnapshot.forEach((doc) => {
-        const member = { id: doc.id, ...doc.data() };
+        allMembers[doc.id] = { id: doc.id, ...doc.data() };
+      });
+      
+      // Second pass: process celebrations
+      querySnapshot.forEach((doc) => {
+        const member = allMembers[doc.id];
         
         // Check for birthday
         if (member.dateOfBirth) {
@@ -78,19 +86,40 @@ const CelebrationSlideshow = () => {
           }
         }
         
-        // Check for anniversary
-        if (member.marriageDate) {
+        // Check for anniversary (with spouse consolidation)
+        if (member.marriageDate && !processedAnniversaryIds.has(member.id)) {
           const marriageDate = new Date(member.marriageDate);
           if (isDateInWeek(marriageDate, currentWeekStart, currentWeekEnd, referenceDate)) {
             const years = referenceDate.getFullYear() - marriageDate.getFullYear();
+            
+            // Check if spouse is linked or has manual spouse name
+            let spouse = null;
+            let spouseName = null;
+            
+            if (member.spouseId && allMembers[member.spouseId]) {
+              spouse = allMembers[member.spouseId];
+              spouseName = spouse.name || `${spouse.firstName || ''} ${spouse.lastName || ''}`.trim();
+              processedAnniversaryIds.add(member.spouseId); // Mark spouse as processed
+            } else if (member.spouseName) {
+              spouseName = member.spouseName;
+            }
+            
+            const memberName = member.name || `${member.firstName || ''} ${member.lastName || ''}`.trim();
+            
+            // Create couple name if spouse exists (linked or manual)
+            const coupleNames = spouseName ? `${memberName} & ${spouseName}` : memberName;
+            
             celebrationsList.push({
-              id: `anniversary-${member.id}`,
+              id: spouse ? `anniversary-couple-${member.id}-${spouse.id}` : `anniversary-${member.id}`,
               type: 'anniversary',
               member: member,
+              spouse: spouse || null,
               date: marriageDate,
-              name: member.name || `${member.firstName || ''} ${member.lastName || ''}`.trim(),
+              name: coupleNames,
               years: years,
             });
+            
+            processedAnniversaryIds.add(member.id);
           }
         }
       });
@@ -110,7 +139,38 @@ const CelebrationSlideshow = () => {
         return dateA - dateB;
       });
       
-      setCelebrations(celebrationsList);
+      // Insert section title cards
+      const finalList = [];
+      let birthdayTitleAdded = false;
+      let anniversaryTitleAdded = false;
+      
+      celebrationsList.forEach((celebration) => {
+        if (celebration.type === 'birthday' && !birthdayTitleAdded) {
+          finalList.push({
+            id: 'title-birthdays',
+            type: 'section-title',
+            title: 'Birthdays This Week',
+            dateFrom: currentWeekStart,
+            dateTo: currentWeekEnd,
+          });
+          birthdayTitleAdded = true;
+        }
+        
+        if (celebration.type === 'anniversary' && !anniversaryTitleAdded) {
+          finalList.push({
+            id: 'title-anniversaries',
+            type: 'section-title',
+            title: 'Anniversaries This Week',
+            dateFrom: currentWeekStart,
+            dateTo: currentWeekEnd,
+          });
+          anniversaryTitleAdded = true;
+        }
+        
+        finalList.push(celebration);
+      });
+      
+      setCelebrations(finalList);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching celebrations:', error);
@@ -400,7 +460,25 @@ const CelebrationSlideshow = () => {
           </>
         )}
 
-        <div className="celebration-slideshow-card">
+        {currentCelebration.type === 'section-title' ? (
+          // Title Card
+          <div className="celebration-title-card">
+            <h1 className="celebration-section-title">{currentCelebration.title}</h1>
+            <div className="celebration-title-dates">
+              {currentCelebration.dateFrom && currentCelebration.dateTo && (
+                <span>
+                  {currentCelebration.dateFrom.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - {currentCelebration.dateTo.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                </span>
+              )}
+            </div>
+            <div className="celebration-title-animated-emoji">
+              {currentCelebration.title.includes('Birthday') ? '🎂' : '💝'}
+            </div>
+            <div className="celebration-title-decoration">✨</div>
+          </div>
+        ) : (
+          // Normal Celebration Card
+          <div className="celebration-slideshow-card">
           {/* Left Side - Image */}
           <div className="celebration-image-section">
             <div 
@@ -534,6 +612,7 @@ const CelebrationSlideshow = () => {
             </div>
           </div>
         </div>
+        )}
 
         {/* Dots Navigation */}
         {celebrations.length > 1 && (

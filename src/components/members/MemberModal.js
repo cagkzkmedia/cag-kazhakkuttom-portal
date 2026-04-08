@@ -6,7 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { addMember, updateMember } from '../../redux/slices/memberSlice';
-import { createMember, updateMember as updateMemberService } from '../../services/memberService.firebase';
+import { createMember, updateMember as updateMemberService, getAllMembers } from '../../services/memberService.firebase';
 import { convertImageToBase64, validateImageFile } from '../../utils/imageUtils';
 import ImageCropModal from '../common/ImageCropModal';
 import './MemberModal.css';
@@ -25,6 +25,8 @@ const MemberModal = ({ member, onClose, onSuccess, onRefresh }) => {
     membershipType: 'regular',
     maritalStatus: '',
     marriageDate: '',
+    spouseId: '',
+    spouseName: '',
     hasPortalAccess: false,
     profileImage: '',
   });
@@ -32,6 +34,7 @@ const MemberModal = ({ member, onClose, onSuccess, onRefresh }) => {
   const [imagePreview, setImagePreview] = useState(null);
   const [showCropModal, setShowCropModal] = useState(false);
   const [imageToCrop, setImageToCrop] = useState(null);
+  const [allMembers, setAllMembers] = useState([]);
 
   useEffect(() => {
     if (member) {
@@ -40,7 +43,18 @@ const MemberModal = ({ member, onClose, onSuccess, onRefresh }) => {
         setImagePreview(member.profileImage);
       }
     }
+    // Fetch all members for spouse selector
+    fetchAllMembers();
   }, [member]);
+
+  const fetchAllMembers = async () => {
+    try {
+      const members = await getAllMembers();
+      setAllMembers(members || []);
+    } catch (error) {
+      console.error('Error fetching members:', error);
+    }
+  };
 
   const handleChange = (e) => {
     setFormData({
@@ -252,15 +266,48 @@ const MemberModal = ({ member, onClose, onSuccess, onRefresh }) => {
             </div>
 
             {formData.maritalStatus === 'married' && (
-              <div className="form-group">
-                <label>Marriage Date</label>
-                <input
-                  type="date"
-                  name="marriageDate"
-                  value={formData.marriageDate}
-                  onChange={handleChange}
-                />
-              </div>
+              <>
+                <div className="form-group">
+                  <label>Marriage Date</label>
+                  <input
+                    type="date"
+                    name="marriageDate"
+                    value={formData.marriageDate}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Spouse (Link Profile)</label>
+                  <select
+                    name="spouseId"
+                    value={formData.spouseId}
+                    onChange={handleChange}
+                  >
+                    <option value="">-- No Spouse Linked --</option>
+                    {allMembers.map((m) => (
+                      <option key={m.id} value={m.id} disabled={m.id === member?.id}>
+                        {m.name || `${m.firstName || ''} ${m.lastName || ''}`.trim()}
+                      </option>
+                    ))}
+                  </select>
+                  <small style={{color: '#718096', marginTop: '4px', display: 'block'}}>
+                    Select spouse to show anniversaries together in slideshow
+                  </small>
+                </div>
+                <div className="form-group">
+                  <label>Spouse Name (if profile not created)</label>
+                  <input
+                    type="text"
+                    name="spouseName"
+                    placeholder="Enter spouse name"
+                    value={formData.spouseName}
+                    onChange={handleChange}
+                  />
+                  <small style={{color: '#718096', marginTop: '4px', display: 'block'}}>
+                    If spouse doesn't have a profile yet, enter their name here
+                  </small>
+                </div>
+              </>
             )}
           </div>
 
