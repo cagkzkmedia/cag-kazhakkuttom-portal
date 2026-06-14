@@ -136,10 +136,13 @@ const WeeklyEvents = ({ isOpen, onClose }) => {
     if (!slideshowOpen) return;
 
     const handleKey = (e) => {
+      const len = sortedDays.length;
       if (e.key === 'ArrowLeft') {
-        setCurrentSlide((s) => (s - 1 + sortedDays.length) % Math.max(1, sortedDays.length));
+        if (len === 0) return;
+        setCurrentSlide((s) => ((s - 1 + len) % len + len) % len);
       } else if (e.key === 'ArrowRight') {
-        setCurrentSlide((s) => (s + 1) % Math.max(1, sortedDays.length));
+        if (len === 0) return;
+        setCurrentSlide((s) => (s + 1) % len);
       } else if (e.key === 'Escape') {
         setSlideshowOpen(false);
       }
@@ -148,6 +151,19 @@ const WeeklyEvents = ({ isOpen, onClose }) => {
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
   }, [slideshowOpen, sortedDays.length]);
+
+  // Prev / Next handlers (guard against zero-length)
+  const prevSlide = () => {
+    const len = sortedDays.length;
+    if (len === 0) return;
+    setCurrentSlide((s) => ((s - 1 + len) % len + len) % len);
+  };
+
+  const nextSlide = () => {
+    const len = sortedDays.length;
+    if (len === 0) return;
+    setCurrentSlide((s) => (s + 1) % len);
+  };
 
   // Close on ESC key
   useEffect(() => {
@@ -271,9 +287,9 @@ const WeeklyEvents = ({ isOpen, onClose }) => {
       {slideshowOpen && (
         <div className="slideshow-overlay" onClick={() => setSlideshowOpen(false)}>
           <div className="slideshow-container" onClick={(e) => e.stopPropagation()}>
-            <button className="slideshow-close" onClick={() => setSlideshowOpen(false)}>✕</button>
-            <button className="slideshow-prev" onClick={() => setCurrentSlide((s) => (s - 1 + sortedDays.length) % sortedDays.length)}>‹</button>
-            <button className="slideshow-next" onClick={() => setCurrentSlide((s) => (s + 1) % sortedDays.length)}>›</button>
+            <button className="slideshow-close" onClick={() => setSlideshowOpen(false)} aria-label="Close slideshow">✕</button>
+            <button className="slideshow-prev" onClick={prevSlide} aria-label="Previous slide">‹</button>
+            <button className="slideshow-next" onClick={nextSlide} aria-label="Next slide">›</button>
 
             <div className="slideshow-slide">
               {sortedDays.length === 0 ? (
