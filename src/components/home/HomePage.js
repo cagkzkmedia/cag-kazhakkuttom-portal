@@ -1050,6 +1050,8 @@ const HomePage = () => {
               <button onClick={() => window.scrollTo({ top: document.querySelector('.services-section').offsetTop, behavior: 'smooth' })} className="footer-link">⛪ Services</button>
               <button onClick={() => window.scrollTo({ top: document.querySelector('.ministries-section').offsetTop, behavior: 'smooth' })} className="footer-link">🙏 Ministries</button>
               <button onClick={() => navigate('/celebrations')} className="footer-link">🎉 Celebrations</button>
+                           <button onClick={() => navigate('/prayer-cards')} className="footer-link">🙏 Prayer Cards</button>
+
               <button onClick={() => navigate('/gallery')} className="footer-link">📸 Photo Gallery</button>
               <button onClick={() => navigate('/articles')} className="footer-link">📚 All Articles</button>
               <button onClick={() => navigate('/announcements')} className="footer-link">📢 All News</button>

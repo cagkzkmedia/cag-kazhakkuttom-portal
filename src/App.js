@@ -33,6 +33,9 @@ import TestimonialForm from './components/testimonials/TestimonialForm';
 import CelebrationsPage from './components/celebrations/CelebrationsPage';
 import CelebrationSlideshow from './components/celebrations/CelebrationSlideshow';
 import YouTubeThumbnailCreator from './components/youtube-thumbnail/YouTubeThumbnailCreator';
+import PrayerCardsPage from './components/prayer-cards/PrayerCardsPage';
+import PrayerCardsPresentationView from './components/prayer-cards/PrayerCardsPresentationView';
+
 import AdminChatPanel from './components/chat/AdminChatPanel';
 
 // Member Portal Components
@@ -112,18 +115,21 @@ function App() {
           <Routes>
             {/* Home Page */}
             <Route path="/" element={<HomePage />} />
-            
+
             {/* Public Pages */}
             <Route path="/celebrations" element={<CelebrationsPage />} />
             <Route path="/celebrations/slideshow" element={<CelebrationSlideshow />} />
             <Route path="/youtube-thumbnail-creator" element={<YouTubeThumbnailCreator />} />
             <Route path="/articles" element={<AllArticlesPage />} />
+            <Route path="/prayer-cards" element={<PrayerCardsPage />} />
+            <Route path="/prayer-cards/presentation" element={<PrayerCardsPresentationView />} />
+
             <Route path="/announcements" element={<AllAnnouncementsPage />} />
             <Route path="/donate" element={<DonationPage />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/sitemap" element={<Sitemap />} />
             <Route path="/bible-reading-plan" element={<BibleReadingPlan />} />
-            
+
             {/* Ministry Pages */}
             <Route path="/ministry/childrens" element={<ChildrensMinistry />} />
             <Route path="/ministry/youth" element={<YouthMinistry />} />
@@ -133,10 +139,10 @@ function App() {
             <Route path="/ministry/prayer" element={<PrayerMinistry />} />
             <Route path="/ministry/ladies" element={<LadiesMinistry />} />
             <Route path="/ministry/mission" element={<MissionMinistry />} />
-            
+
             {/* Article Detail Page */}
             <Route path="/article/:id" element={<ArticleDetailPage />} />
-            
+
             {/* Announcement Detail Page */}
             <Route path="/announcement/:id" element={<AnnouncementDetailPage />} />
 
@@ -176,117 +182,117 @@ function App() {
             >
               <Route index element={<Navigate to="/admin/dashboard" replace />} />
               <Route path="dashboard" element={<Dashboard />} />
-              <Route 
-                path="members" 
+              <Route
+                path="members"
                 element={
                   <RoleGuard allowedRoles={['admin']}>
                     <Members />
                   </RoleGuard>
-                } 
+                }
               />
-              <Route 
-                path="member-approvals" 
+              <Route
+                path="member-approvals"
                 element={
                   <RoleGuard allowedRoles={['admin']}>
                     <AdminMemberApprovals />
                   </RoleGuard>
-                } 
+                }
               />
-              <Route 
-                path="events" 
+              <Route
+                path="events"
                 element={
                   <RoleGuard allowedRoles={['admin', 'events_manager']}>
                     <Events />
                   </RoleGuard>
-                } 
+                }
               />
-              <Route 
-                path="weekly-events" 
+              <Route
+                path="weekly-events"
                 element={
                   <RoleGuard allowedRoles={['admin', 'events_manager']}>
                     <WeeklyEvents />
                   </RoleGuard>
-                } 
+                }
               />
-              <Route 
-                path="donations" 
+              <Route
+                path="donations"
                 element={
                   <RoleGuard allowedRoles={['admin', 'finance_manager']}>
                     <Donations />
                   </RoleGuard>
-                } 
+                }
               />
-              <Route 
-                path="users" 
+              <Route
+                path="users"
                 element={
                   <RoleGuard allowedRoles={['admin']}>
                     <UserManagement />
                   </RoleGuard>
-                } 
+                }
               />
-              <Route 
-                path="resources" 
+              <Route
+                path="resources"
                 element={
                   <RoleGuard allowedRoles={['admin', 'resource_manager']}>
                     <ResourcesManager />
                   </RoleGuard>
-                } 
+                }
               />
-              <Route 
-                path="testimonials" 
+              <Route
+                path="testimonials"
                 element={
                   <RoleGuard allowedRoles={['admin', 'content_manager']}>
                     <TestimonialsManagement />
                   </RoleGuard>
-                } 
+                }
               />
-              <Route 
-                path="announcements" 
+              <Route
+                path="announcements"
                 element={
                   <RoleGuard allowedRoles={['admin', 'content_manager']}>
                     <AnnouncementManagement />
                   </RoleGuard>
-                } 
+                }
               />
-              <Route 
-                path="gallery" 
+              <Route
+                path="gallery"
                 element={
                   <RoleGuard allowedRoles={['admin', 'content_manager']}>
                     <GalleryManagement />
                   </RoleGuard>
-                } 
+                }
               />
-              <Route 
-                path="bible-reading-progress" 
+              <Route
+                path="bible-reading-progress"
                 element={
                   <RoleGuard allowedRoles={['admin']}>
                     <AdminBibleReadingProgress />
                   </RoleGuard>
-                } 
+                }
               />
-              <Route 
-                path="chat" 
+              <Route
+                path="chat"
                 element={
                   <RoleGuard allowedRoles={['admin']}>
                     <AdminChatPanel />
                   </RoleGuard>
-                } 
+                }
               />
-              <Route 
-                path="testimonials/new" 
+              <Route
+                path="testimonials/new"
                 element={
                   <RoleGuard allowedRoles={['admin', 'content_manager']}>
                     <TestimonialForm />
                   </RoleGuard>
-                } 
+                }
               />
-              <Route 
-                path="testimonials/:id" 
+              <Route
+                path="testimonials/:id"
                 element={
                   <RoleGuard allowedRoles={['admin', 'content_manager']}>
                     <TestimonialForm />
                   </RoleGuard>
-                } 
+                }
               />
               <Route path="settings" element={<Settings />} />
               <Route path="change-password" element={<ChangePassword />} />
