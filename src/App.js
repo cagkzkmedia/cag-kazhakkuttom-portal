@@ -31,6 +31,7 @@ import AllArticlesPage from './components/articles/AllArticlesPage';
 import TestimonialsManagement from './components/testimonials/TestimonialsManagement';
 import TestimonialForm from './components/testimonials/TestimonialForm';
 import CelebrationsPage from './components/celebrations/CelebrationsPage';
+import WeeklyEventsSlideshow from './components/events/WeeklyEventsSlideshow';
 import CelebrationSlideshow from './components/celebrations/CelebrationSlideshow';
 import YouTubeThumbnailCreator from './components/youtube-thumbnail/YouTubeThumbnailCreator';
 import PrayerCardsPage from './components/prayer-cards/PrayerCardsPage';
@@ -118,6 +119,7 @@ function App() {
 
             {/* Public Pages */}
             <Route path="/celebrations" element={<CelebrationsPage />} />
+            <Route path="/weekly-events/slideshow" element={<WeeklyEventsSlideshow />} />
             <Route path="/celebrations/slideshow" element={<CelebrationSlideshow />} />
             <Route path="/youtube-thumbnail-creator" element={<YouTubeThumbnailCreator />} />
             <Route path="/articles" element={<AllArticlesPage />} />

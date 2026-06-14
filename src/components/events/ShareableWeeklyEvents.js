@@ -3,7 +3,7 @@
  * Generates a downloadable/shareable image of the week's events
  */
 
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import html2canvas from 'html2canvas';
 import cagLogo from '../../assets/cag-logo.png';
 import './ShareableWeeklyEvents.css';
@@ -134,6 +134,30 @@ const ShareableWeeklyEvents = ({ events, weekRange, onClose }) => {
     return groupedEvents[a].date - groupedEvents[b].date;
   });
 
+  const [slideshowOpen, setSlideshowOpen] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    if (!slideshowOpen) return;
+    const handleKey = (e) => {
+      if (e.key === 'ArrowRight') nextSlide();
+      if (e.key === 'ArrowLeft') prevSlide();
+      if (e.key === 'Escape') setSlideshowOpen(false);
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [slideshowOpen, currentSlide]);
+
+  const totalSlides = 2 + Math.max(sortedDays.length, 0); // 0: overview, 1: everyday, 2..: days
+
+  const prevSlide = () => {
+    setCurrentSlide((s) => (s - 1 + totalSlides) % totalSlides);
+  };
+
+  const nextSlide = () => {
+    setCurrentSlide((s) => (s + 1) % totalSlides);
+  };
+
   return (
     <div className="shareable-modal-overlay" onClick={onClose}>
       <div className="shareable-modal" onClick={(e) => e.stopPropagation()}>
@@ -228,6 +252,9 @@ const ShareableWeeklyEvents = ({ events, weekRange, onClose }) => {
         </div>
 
         <div className="shareable-actions">
+          <button className="btn-slideshow" onClick={() => { setSlideshowOpen(true); setCurrentSlide(0); }}>
+            📽️ Slideshow
+          </button>
           <button className="btn-download" onClick={downloadAsImage}>
             💾 Download as Image
           </button>
@@ -235,6 +262,101 @@ const ShareableWeeklyEvents = ({ events, weekRange, onClose }) => {
             📱 Share
           </button>
         </div>
+
+        {slideshowOpen && (
+          <div className="slideshow-overlay" onClick={() => setSlideshowOpen(false)}>
+            <div className="slideshow-container" onClick={(e) => e.stopPropagation()}>
+              <button className="slideshow-close" onClick={() => setSlideshowOpen(false)} aria-label="Close slideshow">✕</button>
+              <button className="slideshow-prev" onClick={prevSlide} aria-label="Previous slide">‹</button>
+              <button className="slideshow-next" onClick={nextSlide} aria-label="Next slide">›</button>
+
+              <div className="slideshow-slide fullscreen-slideshow">
+                {totalSlides <= 2 ? (
+                  <div className="no-events-message">
+                    <div className="no-events-icon"></div>
+                    <h3>No Events This Week</h3>
+                    <p>There are no scheduled events for the current week.</p>
+                  </div>
+                ) : (
+                  (() => {
+                    // Slide 0: Overview / This Week Events
+                    if (currentSlide === 0) {
+                      return (
+                        <div className="slide-content overview-slide">
+                          <div className="slide-header">
+                            <h1>This Week's Events</h1>
+                            <div className="slide-week-range">{weekRange}</div>
+                          </div>
+                          <div className="slide-body-overview">
+                            <p className="overview-text">Total days with events: {sortedDays.length}</p>
+                          </div>
+                          <div className="slide-footer">
+                            <div className="slide-pos">{currentSlide + 1} / {totalSlides}</div>
+                          </div>
+                        </div>
+                      );
+                    }
+
+                    // Slide 1: Every Day Events
+                    if (currentSlide === 1) {
+                      return (
+                        <div className="slide-content everyday-slide">
+                          <div className="slide-header">
+                            <h1>Every Day This Week</h1>
+                          </div>
+                          <div className="slide-events">
+                            {everyDayEvents.length === 0 ? (
+                              <p className="no-everyday">No everyday events this week.</p>
+                            ) : (
+                              everyDayEvents.map((event, idx) => (
+                                <div key={idx} className="slide-event-card">
+                                  <div className="slide-event-time">{event.time ? formatTo12Hour(event.time) : 'All Day'}</div>
+                                  <div className="slide-event-title">{event.title}</div>
+                                  {event.location && <div className="slide-event-location">{event.location}</div>}
+                                </div>
+                              ))
+                            )}
+                          </div>
+                          <div className="slide-footer">
+                            <div className="slide-pos">{currentSlide + 1} / {totalSlides}</div>
+                          </div>
+                        </div>
+                      );
+                    }
+
+                    // Remaining slides: day slides (index - 2)
+                    const dayIndex = currentSlide - 2;
+                    const dayKey = sortedDays[dayIndex];
+                    const dayData = groupedEvents[dayKey];
+                    return (
+                      <div className="slide-content day-slide">
+                        <div className="slide-header">
+                          <div className="slide-day-name">{dayData.dayName}</div>
+                          <div className="slide-day-number">{dayData.dayNum}</div>
+                          <div className="slide-day-full">{dayKey}</div>
+                        </div>
+
+                        <div className="slide-events">
+                          {dayData.events.map((event, idx) => (
+                            <div key={idx} className="slide-event-card">
+                              <div className="slide-event-time">{event.time ? formatTo12Hour(event.time) : 'All Day'}</div>
+                              <div className="slide-event-title">{event.title}</div>
+                              {event.location && <div className="slide-event-location">{event.location}</div>}
+                            </div>
+                          ))}
+                        </div>
+
+                        <div className="slide-footer">
+                          <div className="slide-pos">{currentSlide + 1} / {totalSlides}</div>
+                        </div>
+                      </div>
+                    );
+                  })()
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
