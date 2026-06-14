@@ -2,7 +2,6 @@
  * Weekly Events Component
  * Display current week events grouped by day with nice background
  */
-
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setEvents } from '../../redux/slices/eventSlice';
@@ -13,21 +12,18 @@ import './WeeklyEvents.css';
 
 const WeeklyEvents = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
-  const { events } = useSelector((state) => state.events);
+  const { events } = useSelector((state) => state.events) || { events: [] };
   const [loading, setLoading] = useState(true);
   const [groupedEvents, setGroupedEvents] = useState({});
   const [showShareable, setShowShareable] = useState(false);
-  const [slideshowOpen, setSlideshowOpen] = useState(false);
-  const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
     loadEvents();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (events.length > 0) {
-      groupEventsByDay();
-    }
+    if (events && events.length > 0) groupEventsByDay();
   }, [events]);
 
   const loadEvents = async () => {
@@ -43,22 +39,16 @@ const WeeklyEvents = ({ isOpen, onClose }) => {
   };
 
   const getWeekRange = () => {
-  const now = new Date();
-  const currentDay = now.getDay(); // Sunday = 0, Monday = 1, ... Saturday = 6
-
-  // Find Sunday of the current week
-  const sunday = new Date(now);
-  sunday.setDate(now.getDate() - currentDay);
-  sunday.setHours(0, 0, 0, 0);
-
-  // Find Saturday of the current week
-  const saturday = new Date(sunday);
-  saturday.setDate(sunday.getDate() + 6);
-  saturday.setHours(23, 59, 59, 999);
-
-  return { start: sunday, end: saturday };
-};
-
+    const now = new Date();
+    const currentDay = now.getDay();
+    const sunday = new Date(now);
+    sunday.setDate(now.getDate() - currentDay);
+    sunday.setHours(0, 0, 0, 0);
+    const saturday = new Date(sunday);
+    saturday.setDate(sunday.getDate() + 6);
+    saturday.setHours(23, 59, 59, 999);
+    return { start: sunday, end: saturday };
+  };
 
   const isInCurrentWeek = (date) => {
     const eventDate = new Date(date);
@@ -67,37 +57,22 @@ const WeeklyEvents = ({ isOpen, onClose }) => {
   };
 
   const groupEventsByDay = () => {
-    const weekEvents = events.filter(event => isInCurrentWeek(event.date));
-    
+    const weekEvents = (events || []).filter((event) => isInCurrentWeek(event.date));
     const grouped = weekEvents.reduce((acc, event) => {
       const eventDate = new Date(event.date);
-      const dayKey = eventDate.toLocaleDateString('en-US', { 
-        weekday: 'long', 
-        month: 'long', 
+      const dayKey = eventDate.toLocaleDateString('en-US', {
+        weekday: 'long',
+        month: 'long',
         day: 'numeric',
-        year: 'numeric'
+        year: 'numeric',
       });
-      
-      if (!acc[dayKey]) {
-        acc[dayKey] = {
-          date: eventDate,
-          events: []
-        };
-      }
-      
+      if (!acc[dayKey]) acc[dayKey] = { date: eventDate, events: [] };
       acc[dayKey].events.push(event);
       return acc;
     }, {});
-
-    // Sort events within each day by time
-    Object.keys(grouped).forEach(day => {
-      grouped[day].events.sort((a, b) => {
-        const timeA = a.time || '00:00';
-        const timeB = b.time || '00:00';
-        return timeA.localeCompare(timeB);
-      });
+    Object.keys(grouped).forEach((day) => {
+      grouped[day].events.sort((a, b) => (a.time || '00:00').localeCompare(b.time || '00:00'));
     });
-
     setGroupedEvents(grouped);
   };
 
@@ -106,119 +81,46 @@ const WeeklyEvents = ({ isOpen, onClose }) => {
     return `${start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${end.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
   };
 
-  const getDayOfWeek = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
-  };
+  const getDayOfWeek = (date) => new Date(date).toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
+  const getDateNumber = (date) => new Date(date).getDate();
 
-  const getDateNumber = (dateString) => {
-    const date = new Date(dateString);
-    return date.getDate();
-  };
-
-  const sortedDays = Object.keys(groupedEvents).sort((a, b) => {
-    return groupedEvents[a].date - groupedEvents[b].date;
-  });
+  const sortedDays = Object.keys(groupedEvents).sort((a, b) => groupedEvents[a].date - groupedEvents[b].date || 0);
 
   useEffect(() => {
-    if (sortedDays.length > 0) {
-      const todayIndex = sortedDays.findIndex((dayKey) => {
-        const d = groupedEvents[dayKey].date;
-        return new Date(d).toDateString() === new Date().toDateString();
-      });
-
-      setCurrentSlide(todayIndex >= 0 ? todayIndex : 0);
-    }
-  }, [sortedDays, groupedEvents]);
-
-  // Keyboard navigation for slideshow
-  useEffect(() => {
-    if (!slideshowOpen) return;
-
-    const handleKey = (e) => {
-      const len = sortedDays.length;
-      if (e.key === 'ArrowLeft') {
-        if (len === 0) return;
-        setCurrentSlide((s) => ((s - 1 + len) % len + len) % len);
-      } else if (e.key === 'ArrowRight') {
-        if (len === 0) return;
-        setCurrentSlide((s) => (s + 1) % len);
-      } else if (e.key === 'Escape') {
-        setSlideshowOpen(false);
-      }
-    };
-
-    window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
-  }, [slideshowOpen, sortedDays.length]);
-
-  // Prev / Next handlers (guard against zero-length)
-  const prevSlide = () => {
-    const len = sortedDays.length;
-    if (len === 0) return;
-    setCurrentSlide((s) => ((s - 1 + len) % len + len) % len);
-  };
-
-  const nextSlide = () => {
-    const len = sortedDays.length;
-    if (len === 0) return;
-    setCurrentSlide((s) => (s + 1) % len);
-  };
-
-  // Close on ESC key
-  useEffect(() => {
-    const handleEsc = (e) => {
-      if (e.key === 'Escape' && isOpen) {
-        onClose();
-      }
-    };
+    const handleEsc = (e) => { if (e.key === 'Escape' && isOpen) onClose(); };
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
-  const currentWeekEvents = events.filter(event => {
+  const currentWeekEvents = (events || []).filter((event) => {
     const eventDate = new Date(event.date);
     const { start, end } = getWeekRange();
     return eventDate >= start && eventDate <= end;
   });
 
-  if (loading) {
-    return (
-      <div className="weekly-events-modal-overlay" onClick={onClose}>
-        <div className="weekly-events-page" onClick={(e) => e.stopPropagation()}>
-          <button className="modal-close-btn" onClick={onClose}>✕</button>
-          <div className="weekly-events-container">
-            <div className="loading-spinner">
-              <div className="spinner"></div>
-              <p>Loading events...</p>
-            </div>
+  if (loading) return (
+    <div className="weekly-events-modal-overlay" onClick={onClose}>
+      <div className="weekly-events-page" onClick={(e) => e.stopPropagation()}>
+        <button className="modal-close-btn" onClick={onClose}>✕</button>
+        <div className="weekly-events-container">
+          <div className="loading-spinner">
+            <div className="spinner"></div>
+            <p>Loading events...</p>
           </div>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 
   return (
     <>
       <div className="weekly-events-modal-overlay" onClick={onClose}>
         <div className="weekly-events-page" onClick={(e) => e.stopPropagation()}>
           <button className="modal-close-btn" onClick={onClose}>✕</button>
-          <button 
-            className="modal-share-btn" 
-            onClick={() => setShowShareable(true)}
-            title="Share as Image"
-          >
-            📱
-          </button>
-          <button
-            className="modal-slideshow-btn"
-            onClick={() => setSlideshowOpen(true)}
-            title="Open Slideshow"
-          >
-            ▶
-          </button>
+          <button className="modal-share-btn" onClick={() => setShowShareable(true)} title="Share as Image">📱</button>
+
           <div className="weekly-events-header">
             <div className="header-content">
               <h1>📅 This Week's Events</h1>
@@ -238,7 +140,6 @@ const WeeklyEvents = ({ isOpen, onClose }) => {
                 {sortedDays.map((dayKey) => {
                   const dayData = groupedEvents[dayKey];
                   const isToday = new Date().toDateString() === dayData.date.toDateString();
-
                   return (
                     <div key={dayKey} className={`day-card ${isToday ? 'today' : ''}`}>
                       <div className="day-header">
@@ -249,27 +150,19 @@ const WeeklyEvents = ({ isOpen, onClose }) => {
                         {isToday && <span className="today-badge">Today</span>}
                       </div>
 
-                      <div className="day-title">
-                        <h3>{dayKey}</h3>
-                      </div>
+                      <div className="day-title"><h3>{dayKey}</h3></div>
 
                       <div className="day-events">
                         {dayData.events.map((event) => (
                           <div key={event.id} className="week-event-card">
                             <div className="event-time">
                               <span className="time-icon">🕐</span>
-                              <span className="time-text">
-                                {event.time ? formatTo12Hour(event.time) : 'All Day'}
-                              </span>
+                              <span className="time-text">{event.time ? formatTo12Hour(event.time) : 'All Day'}</span>
                             </div>
-
                             <div className="event-details">
                               <h4>{event.title}</h4>
                               {event.location && (
-                                <div className="event-location">
-                                  <span className="location-icon">📍</span>
-                                  <span>{event.location}</span>
-                                </div>
+                                <div className="event-location"><span className="location-icon">📍</span><span>{event.location}</span></div>
                               )}
                             </div>
                           </div>
@@ -284,63 +177,17 @@ const WeeklyEvents = ({ isOpen, onClose }) => {
         </div>
       </div>
 
-      {slideshowOpen && (
-        <div className="slideshow-overlay" onClick={() => setSlideshowOpen(false)}>
-          <div className="slideshow-container" onClick={(e) => e.stopPropagation()}>
-            <button className="slideshow-close" onClick={() => setSlideshowOpen(false)} aria-label="Close slideshow">✕</button>
-            <button className="slideshow-prev" onClick={prevSlide} aria-label="Previous slide">‹</button>
-            <button className="slideshow-next" onClick={nextSlide} aria-label="Next slide">›</button>
-
-            <div className="slideshow-slide">
-              {sortedDays.length === 0 ? (
-                <div className="no-events-message">
-                  <div className="no-events-icon">📭</div>
-                  <h3>No Events This Week</h3>
-                  <p>There are no scheduled events for the current week.</p>
-                </div>
-              ) : (
-                (() => {
-                  const dayKey = sortedDays[currentSlide];
-                  const dayData = groupedEvents[dayKey];
-                  return (
-                    <div className="slide-content">
-                      <div className="slide-header">
-                        <div className="slide-day-name">{getDayOfWeek(dayData.date)}</div>
-                        <div className="slide-day-number">{getDateNumber(dayData.date)}</div>
-                        <div className="slide-day-full">{dayKey}</div>
-                      </div>
-
-                      <div className="slide-events">
-                        {dayData.events.map((event) => (
-                          <div key={event.id} className="slide-event-card">
-                            <div className="slide-event-time">{event.time ? formatTo12Hour(event.time) : 'All Day'}</div>
-                            <div className="slide-event-title">{event.title}</div>
-                            {event.location && <div className="slide-event-location">{event.location}</div>}
-                          </div>
-                        ))}
-                      </div>
-
-                      <div className="slide-footer">
-                        <div className="slide-pos">{currentSlide + 1} / {sortedDays.length}</div>
-                      </div>
-                    </div>
-                  );
-                })()
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-
       {showShareable && (
-        <ShareableWeeklyEvents
-          events={currentWeekEvents}
-          weekRange={formatDateRange()}
-          onClose={() => setShowShareable(false)}
-        />
+        <ShareableWeeklyEvents events={currentWeekEvents} weekRange={formatDateRange()} onClose={() => setShowShareable(false)} />
       )}
     </>
   );
 };
 
 export default WeeklyEvents;
+
+
+
+
+
+
