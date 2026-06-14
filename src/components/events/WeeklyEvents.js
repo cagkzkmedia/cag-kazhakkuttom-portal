@@ -131,6 +131,24 @@ const WeeklyEvents = ({ isOpen, onClose }) => {
     }
   }, [sortedDays, groupedEvents]);
 
+  // Keyboard navigation for slideshow
+  useEffect(() => {
+    if (!slideshowOpen) return;
+
+    const handleKey = (e) => {
+      if (e.key === 'ArrowLeft') {
+        setCurrentSlide((s) => (s - 1 + sortedDays.length) % Math.max(1, sortedDays.length));
+      } else if (e.key === 'ArrowRight') {
+        setCurrentSlide((s) => (s + 1) % Math.max(1, sortedDays.length));
+      } else if (e.key === 'Escape') {
+        setSlideshowOpen(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [slideshowOpen, sortedDays.length]);
+
   // Close on ESC key
   useEffect(() => {
     const handleEsc = (e) => {
