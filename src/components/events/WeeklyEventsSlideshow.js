@@ -72,7 +72,7 @@ const WeeklyEventsSlideshow = () => {
   const prevSlide = () => setCurrentSlide(s => (s - 1 + totalSlides) % totalSlides);
   const nextSlide = () => setCurrentSlide(s => (s + 1) % totalSlides);
 
-  if (loading) return <div className="slideshow-loading">Loading slideshow...</div>;
+  if (loading) return <div className="slideshow-loading">Loading events...</div>;
 
   return (
     <div className="slideshow-overlay" onClick={() => navigate(-1)}>

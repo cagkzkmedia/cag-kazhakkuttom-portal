@@ -399,15 +399,36 @@
 }
 
 /* Fullscreen Slideshow (celebration-like) */
+.slideshow-loading {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 12000;
+  background: linear-gradient(135deg, #4f46e5 0%, #0ea5e9 100%);
+  padding: 18px 26px;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+  font-weight: 800;
+  color: #ffffff;
+  font-size: 18px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.18);
+}
+
 .slideshow-overlay {
   position: fixed;
   inset: 0;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background:
+    radial-gradient(600px 400px at 10% 20%, rgba(79,70,229,0.18), transparent 10%),
+    radial-gradient(500px 300px at 90% 80%, rgba(14,165,233,0.12), transparent 10%),
+    linear-gradient(135deg, #0f172a 0%, #0b2545 60%, #081029 100%);
   z-index: 11000;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  background-attachment: fixed;
 }
 
 .slideshow-container {
@@ -418,6 +439,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  backdrop-filter: blur(6px);
 }
 
 .slideshow-close {
@@ -464,24 +486,31 @@
 }
 
 .slide-content {
-  background: rgba(255,255,255,0.95);
-  color: #1f2937;
+  background: linear-gradient(180deg, rgba(7,10,23,0.88), rgba(8,16,36,0.9));
+  color: #f8fafc;
   width: min(1100px, 92%);
   max-height: calc(100vh - 120px);
-  border-radius: 28px;
+  border-radius: 20px;
   padding: 28px;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.45);
+  box-shadow: 0 40px 120px rgba(2,6,23,0.7);
   overflow: auto;
+  border: 1px solid rgba(255,255,255,0.04);
+  backdrop-filter: blur(4px) saturate(120%);
 }
 
 .slide-header { text-align: center; margin-bottom: 18px; }
-.slide-header h1 { margin: 0; font-size: 36px; color: #1f2937; }
+.slide-header h1 { margin: 0; font-size: 40px; color: #0b2545; text-shadow: 0 6px 18px rgba(11,37,69,0.08); }
 .slide-week-range { margin-top: 8px; color: #374151; font-weight: 700; }
 .slide-events { display: flex; flex-direction: column; gap: 12px; }
-.slide-event-card { padding: 12px; border-radius: 8px; background: #f3f4f6; }
-.slide-event-time { font-weight: 700; color: #374151; }
-.slide-event-title { font-size: 18px; font-weight: 800; color: #0f172a; }
-.slide-pos { margin-top: 12px; text-align: right; color: #6b7280; font-weight: 700; }
+.slide-event-card { padding: 14px; border-radius: 10px; background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); box-shadow: 0 8px 28px rgba(2,6,23,0.6); border: 1px solid rgba(255,255,255,0.03); }
+.slide-event-time { font-weight: 800; color: #bfdbfe; font-size: 16px; margin-bottom: 6px; }
+.slide-event-title { font-size: 20px; font-weight: 900; color: #f8fafc; line-height: 1.1; }
+.slide-pos { margin-top: 12px; text-align: right; color: #374151; font-weight: 800; }
+
+/* Day / Date styling inside slideshow */
+.slide-day-name { font-size: 14px; font-weight: 800; color: #86efac; letter-spacing: 1px; }
+.slide-day-number { font-size: 48px; font-weight: 900; color: #ffd166; line-height: 1; }
+.slide-day-full { font-size: 14px; color: #e6edf3; font-weight: 700; margin-top: 6px; }
 
 /* (Emoji decorations removed) */
 
