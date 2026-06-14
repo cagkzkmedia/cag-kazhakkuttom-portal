@@ -17,6 +17,8 @@ const WeeklyEvents = ({ isOpen, onClose }) => {
   const [loading, setLoading] = useState(true);
   const [groupedEvents, setGroupedEvents] = useState({});
   const [showShareable, setShowShareable] = useState(false);
+  const [slideshowOpen, setSlideshowOpen] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
     loadEvents();
@@ -118,6 +120,17 @@ const WeeklyEvents = ({ isOpen, onClose }) => {
     return groupedEvents[a].date - groupedEvents[b].date;
   });
 
+  useEffect(() => {
+    if (sortedDays.length > 0) {
+      const todayIndex = sortedDays.findIndex((dayKey) => {
+        const d = groupedEvents[dayKey].date;
+        return new Date(d).toDateString() === new Date().toDateString();
+      });
+
+      setCurrentSlide(todayIndex >= 0 ? todayIndex : 0);
+    }
+  }, [sortedDays, groupedEvents]);
+
   // Close on ESC key
   useEffect(() => {
     const handleEsc = (e) => {
@@ -165,6 +178,13 @@ const WeeklyEvents = ({ isOpen, onClose }) => {
           >
             📱
           </button>
+          <button
+            className="modal-slideshow-btn"
+            onClick={() => setSlideshowOpen(true)}
+            title="Open Slideshow"
+          >
+            ▶
+          </button>
           <div className="weekly-events-header">
             <div className="header-content">
               <h1>📅 This Week's Events</h1>
@@ -183,52 +203,100 @@ const WeeklyEvents = ({ isOpen, onClose }) => {
               <div className="days-grid">
                 {sortedDays.map((dayKey) => {
                   const dayData = groupedEvents[dayKey];
-                const isToday = new Date().toDateString() === dayData.date.toDateString();
-                
-                return (
-                  <div key={dayKey} className={`day-card ${isToday ? 'today' : ''}`}>
-                    <div className="day-header">
-                      <div className="day-badge">
-                        <span className="day-name">{getDayOfWeek(dayData.date)}</span>
-                        <span className="day-number">{getDateNumber(dayData.date)}</span>
-                      </div>
-                      {isToday && <span className="today-badge">Today</span>}
-                    </div>
-                    
-                    <div className="day-title">
-                      <h3>{dayKey}</h3>
-                    </div>
+                  const isToday = new Date().toDateString() === dayData.date.toDateString();
 
-                    <div className="day-events">
-                      {dayData.events.map((event) => (
-                        <div key={event.id} className="week-event-card">
-                          <div className="event-time">
-                            <span className="time-icon">🕐</span>
-                            <span className="time-text">
-                              {event.time ? formatTo12Hour(event.time) : 'All Day'}
-                            </span>
-                          </div>
-                          
-                          <div className="event-details">
-                            <h4>{event.title}</h4>
-                            {event.location && (
-                              <div className="event-location">
-                                <span className="location-icon">📍</span>
-                                <span>{event.location}</span>
-                              </div>
-                            )}
-                          </div>
+                  return (
+                    <div key={dayKey} className={`day-card ${isToday ? 'today' : ''}`}>
+                      <div className="day-header">
+                        <div className="day-badge">
+                          <span className="day-name">{getDayOfWeek(dayData.date)}</span>
+                          <span className="day-number">{getDateNumber(dayData.date)}</span>
                         </div>
-                      ))}
+                        {isToday && <span className="today-badge">Today</span>}
+                      </div>
+
+                      <div className="day-title">
+                        <h3>{dayKey}</h3>
+                      </div>
+
+                      <div className="day-events">
+                        {dayData.events.map((event) => (
+                          <div key={event.id} className="week-event-card">
+                            <div className="event-time">
+                              <span className="time-icon">🕐</span>
+                              <span className="time-text">
+                                {event.time ? formatTo12Hour(event.time) : 'All Day'}
+                              </span>
+                            </div>
+
+                            <div className="event-details">
+                              <h4>{event.title}</h4>
+                              {event.location && (
+                                <div className="event-location">
+                                  <span className="location-icon">📍</span>
+                                  <span>{event.location}</span>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
+                  );
+                })}
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+
+      {slideshowOpen && (
+        <div className="slideshow-overlay" onClick={() => setSlideshowOpen(false)}>
+          <div className="slideshow-container" onClick={(e) => e.stopPropagation()}>
+            <button className="slideshow-close" onClick={() => setSlideshowOpen(false)}>✕</button>
+            <button className="slideshow-prev" onClick={() => setCurrentSlide((s) => (s - 1 + sortedDays.length) % sortedDays.length)}>‹</button>
+            <button className="slideshow-next" onClick={() => setCurrentSlide((s) => (s + 1) % sortedDays.length)}>›</button>
+
+            <div className="slideshow-slide">
+              {sortedDays.length === 0 ? (
+                <div className="no-events-message">
+                  <div className="no-events-icon">📭</div>
+                  <h3>No Events This Week</h3>
+                  <p>There are no scheduled events for the current week.</p>
+                </div>
+              ) : (
+                (() => {
+                  const dayKey = sortedDays[currentSlide];
+                  const dayData = groupedEvents[dayKey];
+                  return (
+                    <div className="slide-content">
+                      <div className="slide-header">
+                        <div className="slide-day-name">{getDayOfWeek(dayData.date)}</div>
+                        <div className="slide-day-number">{getDateNumber(dayData.date)}</div>
+                        <div className="slide-day-full">{dayKey}</div>
+                      </div>
+
+                      <div className="slide-events">
+                        {dayData.events.map((event) => (
+                          <div key={event.id} className="slide-event-card">
+                            <div className="slide-event-time">{event.time ? formatTo12Hour(event.time) : 'All Day'}</div>
+                            <div className="slide-event-title">{event.title}</div>
+                            {event.location && <div className="slide-event-location">{event.location}</div>}
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="slide-footer">
+                        <div className="slide-pos">{currentSlide + 1} / {sortedDays.length}</div>
+                      </div>
+                    </div>
+                  );
+                })()
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       {showShareable && (
         <ShareableWeeklyEvents
