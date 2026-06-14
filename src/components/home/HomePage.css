@@ -1235,6 +1235,60 @@ background: linear-gradient(to top, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.75) 
   .pastor-message {
     font-size: 14px;
   }
+
+/* CTAs for associate pastors (Call / WhatsApp) */
+.pastor-ctas {
+  margin-top: 18px;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+.pastor-card.associate-pastor .pastor-ctas {
+  justify-content: flex-start;
+}
+
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-weight: 700;
+  text-decoration: none;
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  transition: transform 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.18);
+}
+
+@media (max-width: 767px) {
+  .pastor-ctas {
+    gap: 8px;
+  }
+
+  .cta-button {
+    font-size: 12px;
+    padding: 6px 8px;
+  }
+}
+
+.call-cta {
+  /* Theme-matching purple gradient */
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+}
+
+.whatsapp-cta {
+  /* Complementary purple variant to match site theme */
+  background: linear-gradient(90deg, #8b5cf6 0%, #6d28d9 100%);
+}
 }
 
 @media (min-width: 768px) and (max-width: 991px) {

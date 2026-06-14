@@ -11,6 +11,7 @@ import agLogo from '../../assets/ag-logo.png';
 import pastorImage from '../../assets/pr-family.jpg';
 import pastorSelvinImage from '../../assets/pastor-selvin.jpg';
 import pastorGladvinImage from '../../assets/pastor-gladvin.jpg';
+
 import churchGroupImage from '../../assets/church-group.jpg';
 import gallery1 from '../../assets/gallery1.jpg';
 import gallery2 from '../../assets/gallery2.jpg';
@@ -25,6 +26,11 @@ import { getAllGalleryPhotos } from '../../services/galleryService.firebase';
 import { formatTo12Hour } from '../../utils/timeFormatter';
 import YouTubeFeed from '../common/youtubeFeed';
 import ChatWidget from '../chat/ChatWidget';
+// Contact numbers for associate pastors. Update these values if you have specific numbers.
+const tamilPastorPhone = '+917305839578';
+const hindiPastorPhone = '+918590305446';
+
+const sanitizeNumber = (num) => (num || '').toString().replace(/\D/g, '');
 // Mock articles for demonstration
 const MOCK_ARTICLES = [
   {
@@ -545,6 +551,10 @@ const HomePage = () => {
                   <p className="pastor-message">
                     "Serving our Tamil-speaking congregation with dedication and love, bringing the message of Christ to our community."
                   </p>
+                  <div className="pastor-ctas">
+                    <a href={`tel:${tamilPastorPhone}`} className="cta-button call-cta">📞 {tamilPastorPhone}</a>
+                    <a href={`https://wa.me/${sanitizeNumber(tamilPastorPhone)}`} target="_blank" rel="noopener noreferrer" className="cta-button whatsapp-cta">💬 WhatsApp</a>
+                  </div>
                 </div>
               </div>
 
@@ -564,6 +574,10 @@ const HomePage = () => {
                   <p className="pastor-message">
                     "Ministering to our Hindi-speaking family with compassion, teaching God's Word and building His kingdom."
                   </p>
+                  <div className="pastor-ctas">
+                    <a href={`tel:${hindiPastorPhone}`} className="cta-button call-cta">📞 {hindiPastorPhone}</a>
+                    <a href={`https://wa.me/${sanitizeNumber(hindiPastorPhone)}`} target="_blank" rel="noopener noreferrer" className="cta-button whatsapp-cta">💬 WhatsApp</a>
+                  </div>
                 </div>
               </div>
             </div>
