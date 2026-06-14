@@ -612,3 +612,51 @@
     font-size: 13px;
   }
 }
+
+/* Responsive slideshow adjustments */
+@media (max-width: 768px) {
+  .slide-content {
+    width: 96%;
+    padding: 20px;
+    border-radius: 16px;
+  }
+
+  .slide-header h1 { font-size: 28px; }
+  .slide-event-title { font-size: 18px; }
+  .slide-event-time { font-size: 14px; }
+  .slide-day-number { font-size: 36px; }
+  .slide-day-name { font-size: 13px; }
+
+  .slide-event-card { padding: 12px; }
+
+  .slideshow-prev, .slideshow-next {
+    width: 48px;
+    height: 48px;
+    font-size: 28px;
+  }
+
+  .slideshow-close { top: 12px; right: 12px; width: 40px; height: 40px; font-size: 22px; }
+}
+
+@media (max-width: 480px) {
+  .slide-content {
+    width: 98%;
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .slide-header h1 { font-size: 22px; }
+  .slide-event-title { font-size: 16px; }
+  .slide-event-time { font-size: 13px; }
+  .slide-day-number { font-size: 28px; }
+  .slide-day-name { font-size: 12px; }
+
+  .slide-event-card { padding: 10px; }
+  .slide-events { gap: 10px; }
+
+  /* Simplify controls on very small screens */
+  .slideshow-prev, .slideshow-next { display: none; }
+  .slideshow-close { top: 10px; right: 10px; width: 36px; height: 36px; font-size: 20px; }
+
+  .slide-pos { font-size: 12px; }
+}
