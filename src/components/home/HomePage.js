@@ -627,7 +627,7 @@ const HomePage = () => {
               <div className="service-day">Sunday</div>
               <div className="service-details">
                 <h4>🙏 Tamil Service</h4>
-                <p>6:30 PM</p>
+                <p>6:00 PM</p>
               </div>
             </div>
             
