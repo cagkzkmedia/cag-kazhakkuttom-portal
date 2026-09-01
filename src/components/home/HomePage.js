@@ -1018,7 +1018,7 @@ const HomePage = () => {
             <div className="contact-item">
               <div className="contact-icon">✉️</div>
               <h4>Email</h4>
-              <p>waytoagkazhakuttom@gmail.com</p>
+              <p>waytoagkazhakkoottom@gmail.com</p>
             </div>
             <div className="contact-item">
               <div className="contact-icon">🌐</div>
@@ -1066,6 +1066,7 @@ const HomePage = () => {
               <button onClick={() => navigate('/celebrations')} className="footer-link">🎉 Celebrations</button>
               <button onClick={() => navigate('/weekly-events/slideshow')} className="footer-link">📅 This Week Events</button>
               <button onClick={() => navigate('/prayer-cards')} className="footer-link">🙏 Prayer Cards</button>
+              <button onClick={() => navigate('/songs')} className="footer-link">🎵 Song library</button>
 
               <button onClick={() => navigate('/gallery')} className="footer-link">📸 Photo Gallery</button>
               <button onClick={() => navigate('/articles')} className="footer-link">📚 All Articles</button>
@@ -1163,7 +1164,7 @@ const HomePage = () => {
             
             {/* Previous Button */}
             <button 
-              className="photo-modal-nav-btn photo-modal-prev-btn" 
+              className="photo-modal_nav-btn photo-modal-prev-btn" 
               onClick={(e) => {
                 e.stopPropagation();
                 handlePrevPhoto();
@@ -1175,7 +1176,7 @@ const HomePage = () => {
             
             {/* Next Button */}
             <button 
-              className="photo-modal-nav-btn photo-modal-next-btn" 
+              className="photo-modal_nav-btn photo-modal-next-btn" 
               onClick={(e) => {
                 e.stopPropagation();
                 handleNextPhoto();

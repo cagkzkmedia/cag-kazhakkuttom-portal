@@ -71,6 +71,7 @@ import Sitemap from './components/common/Sitemap';
 import GalleryManagement from './components/gallery/GalleryManagement';
 import Gallery from './components/gallery/Gallery';
 import BibleReadingPlan from './components/bible-reading/BibleReadingPlan';
+import SongManagement from './components/songs/SongManagement';
 
 import './App.css';
 
@@ -131,6 +132,7 @@ function App() {
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/sitemap" element={<Sitemap />} />
             <Route path="/bible-reading-plan" element={<BibleReadingPlan />} />
+            <Route path="/songs" element={<SongManagement />} />
 
             {/* Ministry Pages */}
             <Route path="/ministry/childrens" element={<ChildrensMinistry />} />

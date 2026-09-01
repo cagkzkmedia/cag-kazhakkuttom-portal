@@ -31,6 +31,7 @@ const Sidebar = ({ isOpen, onItemClick, onClose }) => {
     { path: 'weekly-events', icon: '📆', label: 'Weekly Events', roles: ['admin', 'events_manager'], isAction: true },
     { path: '/admin/donations', icon: '💰', label: 'Donations', roles: ['admin', 'finance_manager'] },
     { path: '/admin/resources', icon: '📚', label: 'Resources', roles: ['admin', 'resource_manager'] },
+    { path: '/songs', icon: '🎵', label: 'Songs', roles: ['admin', 'content_manager'] },
     { path: '/admin/testimonials', icon: '💬', label: 'Testimonials', roles: ['admin', 'content_manager'] },
     { path: '/admin/announcements', icon: '📢', label: 'Latest News', roles: ['admin', 'content_manager'] },
     { path: '/admin/gallery', icon: '📸', label: 'Gallery', roles: ['admin', 'content_manager'] },

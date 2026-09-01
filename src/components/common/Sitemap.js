@@ -15,6 +15,7 @@ const Sitemap = () => {
         { path: '/celebrations', label: 'Celebrations' },
         { path: '/articles', label: 'Resources & Articles' },
         { path: '/announcements', label: 'Latest News & Announcements' },
+        { path: '/songs', label: 'Songs' },
         { path: '/donate', label: 'Donate' },
       ]
     },

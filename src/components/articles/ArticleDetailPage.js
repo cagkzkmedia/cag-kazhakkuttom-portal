@@ -156,13 +156,15 @@ const ArticleDetailPage = () => {
 
   const handleShare = async (platform) => {
     const url = window.location.href;
-    const title = article.title;
-    const text = article.description || article.excerpt;
+    const title = article?.title || 'Resource';
+    const description = article?.description || article?.excerpt || 'Read this resource from Christ AG Church Kazhakkoottom.';
+    const authorName = article?.author || author?.name || 'Christ AG Church Kazhakkoottam';
+    const shareText = `Title: ${title}\nAuthor: ${authorName}\nDescription: ${description}`;
 
     // Try native Web Share API first (works on mobile)
     if (platform === 'native' && navigator.share) {
       try {
-        await navigator.share({ title, text, url });
+        await navigator.share({ title, text: shareText, url });
         return;
       } catch (err) {
         console.log('Share cancelled');
@@ -176,17 +178,17 @@ const ArticleDetailPage = () => {
         shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
         break;
       case 'twitter':
-        shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`;
+        shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(shareText)}`;
         break;
       case 'whatsapp':
-        shareUrl = `https://wa.me/?text=${encodeURIComponent(title + ' ' + url)}`;
+        shareUrl = `https://wa.me/?text=${encodeURIComponent(shareText + '\n\n' + url)}`;
         break;
       case 'email':
-        shareUrl = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(text + '\n\n' + url)}`;
+        shareUrl = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(shareText + '\n\n' + url)}`;
         break;
       case 'copy':
         try {
-          await navigator.clipboard.writeText(url);
+          await navigator.clipboard.writeText(`${shareText}\n\n${url}`);
           alert('Link copied to clipboard!');
           return;
         } catch (err) {
