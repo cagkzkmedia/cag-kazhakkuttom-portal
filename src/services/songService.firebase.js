@@ -92,6 +92,7 @@ export const createSong = async (songData) => {
     const newSong = {
       title: (songData.title || '').trim(),
       tempo: normalizeTempo(songData.tempo),
+      timeSignature: (songData.timeSignature || '4/4').toString().trim(),
       scale: normalizeScale(songData.scale),
       notes: (songData.notes || '').trim(),
       createdAt: serverTimestamp(),
@@ -120,6 +121,7 @@ export const updateSong = async (id, songData) => {
       ...songData,
       title: (songData.title || '').trim(),
       tempo: normalizeTempo(songData.tempo),
+      timeSignature: (songData.timeSignature || '4/4').toString().trim(),
       scale: normalizeScale(songData.scale),
       notes: (songData.notes || '').trim(),
       updatedAt: serverTimestamp(),

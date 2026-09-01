@@ -1,11 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createSong, deleteSong, getSongs } from '../../services/songService.firebase';
+import { createSong, deleteSong, getSongs, updateSong } from '../../services/songService.firebase';
 import './SongManagement.css';
 
 const initialFormState = {
   title: '',
   tempo: 'slow',
+  timeSignature: '4/4',
   scaleType: 'major',
   scaleKey: 'C',
   notes: '',
@@ -59,6 +60,7 @@ const SongManagement = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const [formData, setFormData] = useState(initialFormState);
   const [tempoFilter, setTempoFilter] = useState('all');
+  const [timeSignatureFilter, setTimeSignatureFilter] = useState('all');
   const [scaleTypeFilter, setScaleTypeFilter] = useState('all');
   const [scaleKeyFilter, setScaleKeyFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -66,6 +68,17 @@ const SongManagement = () => {
 
   const currentScaleOptions = getScaleOptions(formData.scaleType);
   const currentFilterScaleOptions = getScaleOptions(scaleTypeFilter === 'all' ? 'major' : scaleTypeFilter);
+
+  const popularTimeSignatures = [
+    '4/4',
+    '3/4',
+    '6/8',
+    '2/4',
+    '12/8',
+    '5/4',
+  ];
+
+  const [editingSongId, setEditingSongId] = useState(null);
 
   useEffect(() => {
     loadSongs();
@@ -112,14 +125,17 @@ const SongManagement = () => {
       const matchesScaleType = scaleTypeFilter === 'all' || normalizeText(songScaleType) === scaleTypeFilter;
       const matchesScaleKey =
         scaleKeyFilter === 'all' || normalizeText(songScaleKey || songScaleType) === normalizeText(scaleKeyFilter);
+      const matchesTimeSignature =
+        timeSignatureFilter === 'all' || (song.timeSignature || '4/4') === timeSignatureFilter;
+
       const matchesSearch =
         query.length === 0 ||
         normalizeText(song.title).includes(query) ||
         normalizeText(song.notes).includes(query);
 
-      return matchesTempo && matchesScaleType && matchesScaleKey && matchesSearch;
+      return matchesTempo && matchesTimeSignature && matchesScaleType && matchesScaleKey && matchesSearch;
     });
-  }, [songs, tempoFilter, scaleTypeFilter, scaleKeyFilter, searchQuery]);
+  }, [songs, tempoFilter, timeSignatureFilter, scaleTypeFilter, scaleKeyFilter, searchQuery]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -129,6 +145,12 @@ const SongManagement = () => {
           ...prev,
           scaleType: value,
           scaleKey: value === 'minor' ? 'A' : 'C',
+        };
+      }
+      if (name === 'timeSignature') {
+        return {
+          ...prev,
+          timeSignature: value,
         };
       }
 
@@ -156,23 +178,38 @@ const SongManagement = () => {
       setIsSubmitting(true);
       setErrorMessage('');
 
-      await Promise.all(
-        titles.map((title) =>
-          createSong({
-            title,
-            tempo: formData.tempo,
-            scale: `${formData.scaleType}-${formData.scaleKey}`,
-            notes: formData.notes,
-          })
-        )
-      );
+      if (editingSongId) {
+        // Single edit
+        await updateSong(editingSongId, {
+          title: titles[0],
+          tempo: formData.tempo,
+          timeSignature: formData.timeSignature,
+          scale: `${formData.scaleType}-${formData.scaleKey}`,
+          notes: formData.notes,
+        });
+      } else {
+        await Promise.all(
+          titles.map((title) =>
+            createSong({
+              title,
+              tempo: formData.tempo,
+              timeSignature: formData.timeSignature,
+              scale: `${formData.scaleType}-${formData.scaleKey}`,
+              notes: formData.notes,
+            })
+          )
+        );
+      }
 
       setSuccessMessage(
         titles.length > 1
           ? `${titles.length} songs saved successfully to Firebase.`
+          : editingSongId
+          ? 'Song updated successfully.'
           : 'Song saved successfully to Firebase.'
       );
       setFormData(initialFormState);
+      setEditingSongId(null);
       await loadSongs();
     } catch (error) {
       console.error('Error saving song:', error);
@@ -180,6 +217,29 @@ const SongManagement = () => {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleEditSong = (song) => {
+    const songScale = song.scale || 'major-C';
+    const [songScaleType, songScaleKey] = songScale.split('-');
+
+    setFormData({
+      title: song.title || '',
+      tempo: song.tempo || 'slow',
+      timeSignature: song.timeSignature || '4/4',
+      scaleType: songScaleType || 'major',
+      scaleKey: songScaleKey || (songScaleType === 'minor' ? 'A' : 'C'),
+      notes: song.notes || '',
+    });
+
+    setEditingSongId(song.id);
+    setShowNewSongForm(true);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingSongId(null);
+    setFormData(initialFormState);
+    setShowNewSongForm(false);
   };
 
   const handleDeleteSong = async (songId) => {
@@ -239,8 +299,13 @@ const SongManagement = () => {
       {showNewSongForm ? (
         <div className="song-form-card single-form-card">
           <div className="song-form-topbar">
-            <h2>Add New Song</h2>
-            <button type="button" className="text-btn" onClick={closeNewSongForm}>Close</button>
+            <h2>{editingSongId ? 'Edit Song' : 'Add New Song'}</h2>
+            <div>
+              {editingSongId ? (
+                <button type="button" className="text-btn" onClick={handleCancelEdit}>Cancel Edit</button>
+              ) : null}
+              <button type="button" className="text-btn" onClick={closeNewSongForm}>Close</button>
+            </div>
           </div>
 
           <form onSubmit={handleSubmit}>
@@ -256,6 +321,22 @@ const SongManagement = () => {
                 >
                   <option value="slow">Slow</option>
                   <option value="fast">Fast</option>
+                </select>
+              </div>
+              <div className="form-group">
+                <label htmlFor="time-signature">Time Signature</label>
+                <select
+                  id="time-signature"
+                  name="timeSignature"
+                  value={formData.timeSignature}
+                  onChange={handleInputChange}
+                  disabled={isSubmitting}
+                >
+                  {popularTimeSignatures.map((ts) => (
+                    <option key={ts} value={ts}>
+                      {ts}
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -321,7 +402,7 @@ const SongManagement = () => {
             </div>
 
             <button className="primary-btn" type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Saving...' : 'Save Song'}
+              {isSubmitting ? 'Saving...' : editingSongId ? 'Save Changes' : 'Save Song'}
             </button>
           </form>
         </div>
@@ -365,6 +446,22 @@ const SongManagement = () => {
                 {scaleTypeOptions.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="filter-block">
+              <label htmlFor="time-signature-filter">Time Signature</label>
+              <select
+                id="time-signature-filter"
+                value={timeSignatureFilter}
+                onChange={(event) => setTimeSignatureFilter(event.target.value)}
+              >
+                <option value="all">All</option>
+                {popularTimeSignatures.map((ts) => (
+                  <option key={ts} value={ts}>
+                    {ts}
                   </option>
                 ))}
               </select>
@@ -416,10 +513,19 @@ const SongManagement = () => {
                     >
                       Delete
                     </button>
+                    <button
+                      type="button"
+                      className="edit-btn"
+                      onClick={() => handleEditSong(song)}
+                      disabled={isSubmitting}
+                    >
+                      Edit
+                    </button>
                   </div>
 
                   <div className="song-tags">
                     <span className="song-tag tempo-tag">{song.tempo || 'slow'}</span>
+                    <span className="song-tag time-signature-tag">{song.timeSignature || '4/4'}</span>
                     <span className="song-tag scale-tag">
                       {(() => {
                         const songScale = song.scale || 'major-C';
