@@ -1235,6 +1235,7 @@ background: linear-gradient(to top, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.75) 
   .pastor-message {
     font-size: 14px;
   }
+}
 
 /* CTAs for associate pastors (Call / WhatsApp) */
 .pastor-ctas {
@@ -1289,7 +1290,7 @@ background: linear-gradient(to top, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.75) 
   /* Complementary purple variant to match site theme */
   background: linear-gradient(90deg, #8b5cf6 0%, #6d28d9 100%);
 }
-}
+
 
 @media (min-width: 768px) and (max-width: 991px) {
   .pastor-card.senior-pastor {
