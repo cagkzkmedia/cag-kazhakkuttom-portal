@@ -247,10 +247,9 @@ const PrayerCardsPresentationView = () => {
             <div key={prayer.id} className={`presentation-card ${prayer.prayed ? 'prayed' : ''}`}>
               <div className="card-inner">
                 <div className="card-header">
-                  <div className="card-name">{prayer.name}</div>
+                  <div className="card-name">{prayer.name || prayer.prayer}</div>
                   {prayer.prayed && <span className="card-prayed-badge">✓ PRAYED</span>}
                 </div>
-                <div className="card-text">{prayer.prayer}</div>
               </div>
             </div>
           ))}

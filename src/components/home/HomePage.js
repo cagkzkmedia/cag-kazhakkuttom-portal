@@ -1021,6 +1021,18 @@ const HomePage = () => {
               <p>waytoagkazhakkoottom@gmail.com</p>
             </div>
             <div className="contact-item">
+              <div className="contact-icon">🙏</div>
+              <h4>Prayer Requests</h4>
+              <p>Share your prayer needs with our church family and we will remember you in prayer.</p>
+              <button
+                type="button"
+                className="prayer-request-card-link"
+                onClick={() => navigate('/prayer-request')}
+              >
+                ✨ Submit a Prayer Request
+              </button>
+            </div>
+            <div className="contact-item">
               <div className="contact-icon">🌐</div>
               <h4>Connect Online</h4>
               <p><a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a> | <a href="https://www.youtube.com/@assembliesofgodkazhakootta4792" target="_blank" rel="noopener noreferrer">YouTube</a> | <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a><br/>Join our online community</p>

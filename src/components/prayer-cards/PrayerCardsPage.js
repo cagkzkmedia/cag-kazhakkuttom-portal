@@ -14,7 +14,6 @@ const PrayerCardsPage = () => {
   const [prayers, setPrayers] = useState([]);
   const [celebrations, setCelebrations] = useState([]);
   const [formData, setFormData] = useState({
-    name: '',
     prayer: '',
   });
   const [submitted, setSubmitted] = useState(false);
@@ -100,24 +99,16 @@ const PrayerCardsPage = () => {
   };
 
   const validateForm = () => {
-    if (!formData.name.trim()) {
-      setError('Please enter your name');
-      return false;
-    }
     if (!formData.prayer.trim()) {
       setError('Please enter your prayer request');
       return false;
     }
-    if (formData.prayer.length < 10) {
-      setError('Prayer request must be at least 10 characters');
+    if (formData.prayer.trim().length < 5) {
+      setError('Prayer request must be at least 5 characters');
       return false;
     }
-    if (formData.name.length > 50) {
-      setError('Name must be 50 characters or less');
-      return false;
-    }
-    if (formData.prayer.length > 500) {
-      setError('Prayer request must be 500 characters or less');
+    if (formData.prayer.trim().length > 200) {
+      setError('Prayer request must be 200 characters or less');
       return false;
     }
     return true;
@@ -132,8 +123,8 @@ const PrayerCardsPage = () => {
 
     const newPrayer = {
       id: Date.now(),
-      name: formData.name.trim(),
-      prayer: formData.prayer.trim(),
+      name: formData.prayer.trim(),
+      prayer: '',
       timestamp: new Date().toLocaleString(),
       prayed: false,
     };
@@ -143,7 +134,6 @@ const PrayerCardsPage = () => {
     savePrayers(updatedPrayers);
 
     setFormData({
-      name: '',
       prayer: '',
     });
     setSubmitted(true);
@@ -225,33 +215,18 @@ const PrayerCardsPage = () => {
 
             <form onSubmit={handleSubmit}>
               <div className="form-group">
-                <label htmlFor="name">Your Name *</label>
+                <label htmlFor="prayer">Prayer Request *</label>
                 <input
                   type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  placeholder="Enter your name"
-                  maxLength="50"
-                  required
-                />
-                <span className="char-count">{formData.name.length}/50</span>
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="prayer">Prayer Request *</label>
-                <textarea
                   id="prayer"
                   name="prayer"
                   value={formData.prayer}
                   onChange={handleInputChange}
-                  placeholder="Please share your prayer request... (e.g., healing, guidance, thanksgiving, etc.)"
-                  rows="5"
-                  maxLength="500"
+                  placeholder="Enter your prayer request"
+                  maxLength="200"
                   required
                 />
-                <span className="char-count">{formData.prayer.length}/500</span>
+                <span className="char-count">{formData.prayer.length}/200</span>
               </div>
 
               <button type="submit" className="submit-btn">
@@ -407,7 +382,6 @@ const PrayerCardsPage = () => {
                   </div>
 
                   <div className="prayer-card-content">
-                    <p className="prayer-text">{prayer.prayer}</p>
                   </div>
 
                   <div className="prayer-card-actions">

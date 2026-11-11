@@ -1270,17 +1270,6 @@ background: linear-gradient(to top, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.75) 
   box-shadow: 0 10px 26px rgba(0,0,0,0.18);
 }
 
-@media (max-width: 767px) {
-  .pastor-ctas {
-    gap: 8px;
-  }
-
-  .cta-button {
-    font-size: 12px;
-    padding: 6px 8px;
-  }
-}
-
 .call-cta {
   /* Theme-matching purple gradient */
   background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
@@ -2239,25 +2228,6 @@ background: linear-gradient(to top, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.75) 
   line-height: 1.7;
   color: #718096;
   margin: 0 0 24px 0;
-}
-
-.quick-link-btn {
-  display: inline-block;
-  padding: 12px 28px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-}
-
-.quick-link-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
 }
 
 .ministry-card h3 {
@@ -3262,7 +3232,7 @@ background: linear-gradient(to top, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.75) 
   font-size: 16px;
   color: #667eea;
   text-align: center;
-  margin: 0 0 50px 0;
+  margin: 0 0 40px 0;
   font-weight: 500;
 }
 
@@ -3833,4 +3803,65 @@ background: linear-gradient(to top, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.75) 
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+/* Prayer Request Card */
+.prayer-request-card {
+  background: white;
+  padding: 40px 32px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.prayer-request-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+}
+
+.prayer-request-card h3 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 0 0 12px 0;
+}
+
+.prayer-request-card p {
+  font-size: 15px;
+  color: #718096;
+  line-height: 1.7;
+  margin: 0 0 24px 0;
+}
+
+.prayer-request-card-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 10px 22px rgba(139, 92, 246, 0.24);
+}
+
+.prayer-request-card-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(139, 92, 246, 0.32);
+  background: linear-gradient(135deg, #7c3aed 0%, #9333ea 100%);
+}
+
+.prayer-request-card-link:focus {
+  outline: 3px solid rgba(139, 92, 246, 0.25);
+  outline-offset: 2px;
 }

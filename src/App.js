@@ -36,6 +36,8 @@ import CelebrationSlideshow from './components/celebrations/CelebrationSlideshow
 import YouTubeThumbnailCreator from './components/youtube-thumbnail/YouTubeThumbnailCreator';
 import PrayerCardsPage from './components/prayer-cards/PrayerCardsPage';
 import PrayerCardsPresentationView from './components/prayer-cards/PrayerCardsPresentationView';
+import PrayerRequestPage from './components/prayer-cards/PrayerRequestPage';
+import PrayerRequestsManagement from './components/admin/PrayerRequestsManagement';
 
 import AdminChatPanel from './components/chat/AdminChatPanel';
 
@@ -125,6 +127,7 @@ function App() {
             <Route path="/youtube-thumbnail-creator" element={<YouTubeThumbnailCreator />} />
             <Route path="/articles" element={<AllArticlesPage />} />
             <Route path="/prayer-cards" element={<PrayerCardsPage />} />
+            <Route path="/prayer-request" element={<PrayerRequestPage />} />
             <Route path="/prayer-cards/presentation" element={<PrayerCardsPresentationView />} />
 
             <Route path="/announcements" element={<AllAnnouncementsPage />} />
@@ -295,6 +298,14 @@ function App() {
                 element={
                   <RoleGuard allowedRoles={['admin', 'content_manager']}>
                     <TestimonialForm />
+                  </RoleGuard>
+                }
+              />
+              <Route
+                path="prayer-requests"
+                element={
+                  <RoleGuard allowedRoles={['admin']}>
+                    <PrayerRequestsManagement />
                   </RoleGuard>
                 }
               />

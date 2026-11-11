@@ -1,0 +1,121 @@
+.prayer-request-popup-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1400;
+  padding: 20px;
+}
+
+.prayer-request-popup {
+  width: min(700px, 100%);
+  max-height: 80vh;
+  overflow: auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 28px 50px rgba(15, 23, 42, 0.2);
+  border: 1px solid #e5e7eb;
+}
+
+.prayer-request-popup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 22px;
+  border-bottom: 1px solid #e5e7eb;
+  background: linear-gradient(135deg, #f5f3ff, #eef2ff);
+}
+
+.prayer-request-popup-header h3 {
+  margin: 0;
+  color: #1f2937;
+  font-size: 1.5rem;
+}
+
+.prayer-request-popup-close {
+  background: transparent;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #4b5563;
+}
+
+.prayer-request-popup-body {
+  padding: 18px 22px 22px;
+  display: grid;
+  gap: 16px;
+}
+
+.prayer-request-popup-item {
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 16px;
+  background: #fafafa;
+}
+
+.prayer-request-popup-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.prayer-request-popup-top strong {
+  color: #111827;
+  font-size: 1.05rem;
+}
+
+.prayer-request-popup-date {
+  color: #6b7280;
+  font-size: 0.8rem;
+}
+
+.prayer-request-popup-item p {
+  margin: 6px 0;
+  line-height: 1.5;
+  color: #374151;
+}
+
+.prayer-request-popup-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.prayer-request-popup-actions button {
+  background: #7c3aed;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.prayer-request-popup-actions button:hover {
+  background: #6d28d9;
+}
+
+.prayer-request-popup-empty {
+  padding: 18px 22px 26px;
+  color: #4b5563;
+}
+
+@media (max-width: 640px) {
+  .prayer-request-popup-header {
+    padding: 18px;
+  }
+
+  .prayer-request-popup-body {
+    padding: 16px 18px 20px;
+  }
+
+  .prayer-request-popup-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
