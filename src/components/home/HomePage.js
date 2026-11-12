@@ -135,7 +135,7 @@ const HomePage = () => {
           });
         }
       }, 300);
-      
+
       return () => clearTimeout(scrollTimeout);
     }
   }, [location]);
@@ -169,13 +169,13 @@ const HomePage = () => {
       try {
         const allEvents = await getAllEvents();
         const now = new Date();
-        
+
         // Calculate Sunday of the current week
         const day = now.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
         const sunday = new Date(now);
         sunday.setDate(now.getDate() - day);
         sunday.setHours(0, 0, 0, 0);
-        
+
         // Calculate Saturday of the current week
         const saturday = new Date(sunday);
         saturday.setDate(sunday.getDate() + 6);
@@ -227,7 +227,7 @@ const HomePage = () => {
         console.log('Loading testimonials from Firebase...');
         const allTestimonials = await getAllTestimonials();
         console.log('Testimonials loaded from Firebase:', allTestimonials);
-        
+
         if (mounted) {
           setTestimonials(allTestimonials);
         }
@@ -278,10 +278,10 @@ const HomePage = () => {
           url: photo.imageBase64,
           description: photo.description
         }));
-        
+
         // Combine static photos with Firebase photos
         const combined = [...GALLERY_PHOTOS, ...transformedPhotos];
-        
+
         if (mounted) {
           setGalleryPhotos(transformedPhotos);
           setAllGalleryPhotos(combined);
@@ -336,8 +336,8 @@ const HomePage = () => {
             <img src={churchLogo} alt="CAG Logo" className="navbar-logo-img" />
             <span className="navbar-brand">Christ AG Church</span>
           </div>
-          
-          <button 
+
+          <button
             className="mobile-menu-toggle"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
@@ -349,14 +349,14 @@ const HomePage = () => {
             <button onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setIsMobileMenuOpen(false); }} className="navbar-link">Home</button>
             <button onClick={() => { window.scrollTo({ top: document.querySelector('.about-section')?.offsetTop || 0, behavior: 'smooth' }); setIsMobileMenuOpen(false); }} className="navbar-link">About Us</button>
             <button onClick={() => { window.scrollTo({ top: document.querySelector('.services-section')?.offsetTop || 0, behavior: 'smooth' }); setIsMobileMenuOpen(false); }} className="navbar-link">Services</button>
-            
+
             {/* Ministries Dropdown */}
-            <div 
+            <div
               className="navbar-dropdown"
               onMouseEnter={() => setOpenSubmenu('ministries')}
               onMouseLeave={() => setOpenSubmenu(null)}
             >
-              <button 
+              <button
                 className="navbar-link navbar-dropdown-trigger"
                 onClick={() => setOpenSubmenu(openSubmenu === 'ministries' ? null : 'ministries')}
               >
@@ -381,14 +381,14 @@ const HomePage = () => {
             <button onClick={() => { navigate('/articles'); setIsMobileMenuOpen(false); }} className="navbar-link">Articles</button>
             <button onClick={() => { navigate('/announcements'); setIsMobileMenuOpen(false); }} className="navbar-link">News</button>
             <button onClick={() => { navigate('/bible-reading-plan'); setIsMobileMenuOpen(false); }} className="navbar-link">Bible Reading</button>
-            
+
             {/* Login Dropdown */}
-            <div 
+            <div
               className="navbar-dropdown"
               onMouseEnter={() => setOpenSubmenu('login')}
               onMouseLeave={() => setOpenSubmenu(null)}
             >
-              <button 
+              <button
                 className="navbar-link navbar-dropdown-trigger"
                 onClick={() => setOpenSubmenu(openSubmenu === 'login' ? null : 'login')}
               >
@@ -421,9 +421,9 @@ const HomePage = () => {
           <p className="church-tagline">
             "For where two or three gather in my name, there am I with them." - Matthew 18:20
           </p>
-          
+
           <div className="hero-cta">
-           <button className="primary-cta" onClick={() => window.scrollTo({ top: document.querySelector('.services-section').offsetTop, behavior: 'smooth' })}>
+            <button className="primary-cta" onClick={() => window.scrollTo({ top: document.querySelector('.services-section').offsetTop, behavior: 'smooth' })}>
               Explore Our Services
             </button>
             <button className="secondary-cta" onClick={() => window.scrollTo({ top: document.querySelector('.contact-section').offsetTop, behavior: 'smooth' })}>
@@ -473,7 +473,7 @@ const HomePage = () => {
           <div className="announcements-content">
             <div className="announcements-header">
               <h2>📢 Latest News and Announcements</h2>
-              <button 
+              <button
                 className="view-all-announcements-btn"
                 onClick={() => navigate('/announcements')}
               >
@@ -482,8 +482,8 @@ const HomePage = () => {
             </div>
             <div className="announcements-carousel">
               {announcements.map(announcement => (
-                <div 
-                  key={announcement.id} 
+                <div
+                  key={announcement.id}
                   className="announcement-banner"
                   onClick={() => navigate(`/announcement/${announcement.id}`)}
                 >
@@ -509,16 +509,16 @@ const HomePage = () => {
       <section className="about-section">
         <div className="about-content">
           <h2>Welcome to Our Church Family</h2>
-          
+
           {/* Pastor Introduction */}
           <div className="pastor-section">
-            
+
             {/* Senior Pastor - Featured */}
             <div className="pastor-card senior-pastor">
               <div className="pastor-image-container">
-                <img 
-                  src={pastorImage} 
-                  alt="Pastor Jobin Elisha" 
+                <img
+                  src={pastorImage}
+                  alt="Pastor Jobin Elisha"
                   className="pastor-image"
                 />
                 <div className="pastor-icon-badge">✝️</div>
@@ -527,7 +527,7 @@ const HomePage = () => {
                 <h3>Pastor Jobin Elisha</h3>
                 <p className="pastor-title">Senior Pastor</p>
                 <p className="pastor-message">
-                  "Welcome to Christ AG Church! We are a family united in faith, committed to worshiping God, 
+                  "Welcome to Christ AG Church! We are a family united in faith, committed to worshiping God,
                   growing together, and serving our community with Christ's love."
                 </p>
               </div>
@@ -538,9 +538,9 @@ const HomePage = () => {
               {/* Associate Pastor - Tamil Service */}
               <div className="pastor-card associate-pastor">
                 <div className="pastor-image-container associate-pastor-image">
-                  <img 
-                    src={pastorSelvinImage} 
-                    alt="Pastor Selvin" 
+                  <img
+                    src={pastorSelvinImage}
+                    alt="Pastor Selvin"
                     className="pastor-image"
                   />
                   <div className="pastor-icon-badge">✝️</div>
@@ -561,9 +561,9 @@ const HomePage = () => {
               {/* Associate Pastor - Hindi Service */}
               <div className="pastor-card associate-pastor">
                 <div className="pastor-image-container associate-pastor-image">
-                  <img 
-                    src={pastorGladvinImage} 
-                    alt="Pastor Gladvin" 
+                  <img
+                    src={pastorGladvinImage}
+                    alt="Pastor Gladvin"
                     className="pastor-image"
                   />
                   <div className="pastor-icon-badge">✝️</div>
@@ -644,7 +644,7 @@ const HomePage = () => {
                 <p>6:00 PM</p>
               </div>
             </div>
-            
+
             {/* Weekday Services */}
             <div className="service-item">
               <div className="service-day">Tuesday</div>
@@ -692,13 +692,13 @@ const HomePage = () => {
                     const day = now.getDay();
                     const sunday = new Date(now);
                     sunday.setDate(now.getDate() - day);
-                    
+
                     const saturday = new Date(sunday);
                     saturday.setDate(sunday.getDate() + 6);
-                    
+
                     const sundayStr = sunday.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
                     const saturdayStr = saturday.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-                    
+
                     return <p>{sundayStr} - {saturdayStr}</p>;
                   })()}
                 </div>
@@ -709,10 +709,10 @@ const HomePage = () => {
                   const today = new Date();
                   const isToday = today.toDateString() === eventDate.toDateString();
                   const dayName = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][eventDate.getDay()];
-                  
+
                   return (
-                    <div 
-                      key={e.id} 
+                    <div
+                      key={e.id}
                       className={`home-week-event-card ${isToday ? 'today' : ''}`}
                       onClick={() => {
                         setSelectedEvent(e);
@@ -754,9 +754,9 @@ const HomePage = () => {
       {/* YouTube Feed Section */}
       <section className="youtube-section">
         <div className="youtube-content">
-          <YouTubeFeed 
-            channelId={process.env.REACT_APP_YOUTUBE_CHANNEL_ID} 
-            apiKey={process.env.REACT_APP_YOUTUBE_API_KEY} 
+          <YouTubeFeed
+            channelId={process.env.REACT_APP_YOUTUBE_CHANNEL_ID}
+            apiKey={process.env.REACT_APP_YOUTUBE_API_KEY}
           />
         </div>
       </section>
@@ -850,16 +850,16 @@ const HomePage = () => {
           <p className="section-subtitle">Moments of worship, fellowship, and service in our community</p>
           <div className="gallery-grid">
             {allGalleryPhotos.slice(0, 5).map(photo => (
-              <div 
-                key={photo.id} 
+              <div
+                key={photo.id}
                 className="gallery-item"
                 onClick={() => {
                   setSelectedPhoto(photo);
                   setIsPhotoModalOpen(true);
                 }}
               >
-                <img 
-                  src={photo.url} 
+                <img
+                  src={photo.url}
                   alt={photo.title}
                   className="gallery-image"
                 />
@@ -873,7 +873,7 @@ const HomePage = () => {
             ))}
           </div>
           <div className="gallery-view-all">
-            <button 
+            <button
               className="view-all-gallery-btn"
               onClick={() => navigate('/gallery')}
             >
@@ -888,7 +888,7 @@ const HomePage = () => {
         <div className="resources-content">
           <h2>📚 Resources & Articles</h2>
           <p className="section-subtitle">Spiritual growth and learning materials for our community</p>
-          
+
           {articles.length === 0 ? (
             <div className="no-articles">
               <p>No articles available at the moment. Check back soon!</p>
@@ -900,8 +900,8 @@ const HomePage = () => {
                   <div key={article.id} className="article-card">
                     {article.imageUrl && (
                       <div className="article-image">
-                        <img 
-                          src={article.imageUrl} 
+                        <img
+                          src={article.imageUrl}
                           alt={article.title}
                           onError={(e) => {
                             e.target.style.display = 'none';
@@ -921,7 +921,7 @@ const HomePage = () => {
                       {article.author && (
                         <p className="article-author">By {article.author}</p>
                       )}
-                      <button 
+                      <button
                         className="read-more-btn"
                         onClick={() => navigate(`/article/${article.id}`)}
                       >
@@ -931,9 +931,9 @@ const HomePage = () => {
                   </div>
                 ))}
               </div>
-              
+
               <div className="view-all-articles-section">
-                <button 
+                <button
                   className="btn-view-all-articles"
                   onClick={() => navigate('/articles')}
                 >
@@ -998,7 +998,7 @@ const HomePage = () => {
             <div className="contact-item">
               <div className="contact-icon">📍</div>
               <h4>Address</h4>
-              <p>2nd Floor, Mak Tower, 5705/4<br/>National Highway<br/>Near Kartika Park Hotel, Kazhakkoottam<br/>Thiruvananthapuram, Kerala 695582</p>
+              <p>2nd Floor, Mak Tower, 5705/4<br />National Highway<br />Near Kartika Park Hotel, Kazhakkoottam<br />Thiruvananthapuram, Kerala 695582</p>
               <a href="https://maps.app.goo.gl/Wx4TuyxxA675yHzW7" target="_blank" rel="noopener noreferrer" className="map-link">
                 🗺️ Open in Google Maps
               </a>
@@ -1008,11 +1008,11 @@ const HomePage = () => {
               <h4>Phone</h4>
               <p>
                 <a href="tel:+918590525909" className="phone-link">+91 85905 25909</a>
-                <br/>
+                <br />
                 <a href="https://wa.me/918590525909" target="_blank" rel="noopener noreferrer" className="whatsapp-link">
                   💬 WhatsApp Us
                 </a>
-                <br/>Office Hours:<br/>Mon-Sat: 9 AM - 5 PM
+                <br />Office Hours:<br />Mon-Sat: 9 AM - 5 PM
               </p>
             </div>
             <div className="contact-item">
@@ -1020,22 +1020,17 @@ const HomePage = () => {
               <h4>Email</h4>
               <p>waytoagkazhakkoottom@gmail.com</p>
             </div>
-            <div className="contact-item">
+
+            <div className="contact-item" onClick={() => navigate('/prayer-request')}>
               <div className="contact-icon">🙏</div>
               <h4>Prayer Requests</h4>
               <p>Share your prayer needs with our church family and we will remember you in prayer.</p>
-              <button
-                type="button"
-                className="prayer-request-card-link"
-                onClick={() => navigate('/prayer-request')}
-              >
-                ✨ Submit a Prayer Request
-              </button>
+              <button className="quick-link-btn"> ✨ Submit a Prayer Request</button>
             </div>
             <div className="contact-item">
               <div className="contact-icon">🌐</div>
               <h4>Connect Online</h4>
-              <p><a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a> | <a href="https://www.youtube.com/@assembliesofgodkazhakootta4792" target="_blank" rel="noopener noreferrer">YouTube</a> | <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a><br/>Join our online community</p>
+              <p><a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a> | <a href="https://www.youtube.com/@assembliesofgodkazhakootta4792" target="_blank" rel="noopener noreferrer">YouTube</a> | <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a><br />Join our online community</p>
             </div>
           </div>
         </div>
@@ -1102,7 +1097,7 @@ const HomePage = () => {
           <p className="footer-copyright">
             © 2025 Christ AG Church Kazhakkoottam. All rights reserved. | Built with ❤️ for God's Glory
           </p>
-          </div>
+        </div>
       </footer>
 
       {/* Scroll to Top Button */}
@@ -1115,7 +1110,7 @@ const HomePage = () => {
         <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>
             <button className="modal-close-btn" onClick={() => setIsModalOpen(false)}>✕</button>
-            
+
             <div className="modal-header">
               <h2>{selectedEvent.title}</h2>
             </div>
@@ -1145,7 +1140,7 @@ const HomePage = () => {
                 <div className="modal-section">
                   <h3>🎥 Join Online</h3>
                   <p>Zoom Meeting Available</p>
-                  <button 
+                  <button
                     className="zoom-button"
                     onClick={() => {
                       if (selectedEvent.zoomLink.startsWith('http')) {
@@ -1173,10 +1168,10 @@ const HomePage = () => {
         <div className="photo-modal-overlay" onClick={() => setIsPhotoModalOpen(false)}>
           <div className="photo-modal-content" onClick={e => e.stopPropagation()}>
             <button className="photo-modal-close-btn" onClick={() => setIsPhotoModalOpen(false)}>✕</button>
-            
+
             {/* Previous Button */}
-            <button 
-              className="photo-modal_nav-btn photo-modal-prev-btn" 
+            <button
+              className="photo-modal_nav-btn photo-modal-prev-btn"
               onClick={(e) => {
                 e.stopPropagation();
                 handlePrevPhoto();
@@ -1185,10 +1180,10 @@ const HomePage = () => {
             >
               ‹
             </button>
-            
+
             {/* Next Button */}
-            <button 
-              className="photo-modal_nav-btn photo-modal-next-btn" 
+            <button
+              className="photo-modal_nav-btn photo-modal-next-btn"
               onClick={(e) => {
                 e.stopPropagation();
                 handleNextPhoto();
@@ -1197,10 +1192,10 @@ const HomePage = () => {
             >
               ›
             </button>
-            
+
             <div className="photo-modal-body">
-              <img 
-                src={selectedPhoto.url} 
+              <img
+                src={selectedPhoto.url}
                 alt={selectedPhoto.title}
                 className="photo-modal-image"
               />
@@ -1234,7 +1229,7 @@ const HomePage = () => {
           </div>
         </div>
       )}
-      
+
       {/* Chat Widget */}
       <ChatWidget />
     </div>
